@@ -1,4 +1,4 @@
-# FM Tire Management System - Business Requirements
+# GR Installment Manager - Business Requirements
 
 ## Business Model Overview
 

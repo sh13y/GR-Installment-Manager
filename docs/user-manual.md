@@ -1,4 +1,4 @@
-# FM Tire Management System - User Manual
+# GR Installment Manager - User Manual
 
 ## Getting Started
 

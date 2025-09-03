@@ -1,4 +1,4 @@
--- Create Admin User Profile for FM Tire Management System
+-- Create Admin User Profile for GR Installment Manager
 -- UUID from your Supabase auth user: 080b1167-0ed2-47a8-98d7-ffa9ae52966f
 
 INSERT INTO users (

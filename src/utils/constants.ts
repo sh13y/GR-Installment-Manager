@@ -13,10 +13,10 @@ export const BUSINESS_CONSTANTS = {
 
 // App Constants
 export const APP_CONFIG = {
-  APP_NAME: 'FM Tire Management',
-  COMPANY_NAME: 'FM Tire Sales',
+  APP_NAME: 'GR Installment Manager',
+  COMPANY_NAME: 'GR Installments',
   CURRENCY: 'LKR',
-  CURRENCY_SYMBOL: '₹',
+  CURRENCY_SYMBOL: 'Rs. ',
   DATE_FORMAT: 'yyyy-MM-dd',
   DATETIME_FORMAT: 'yyyy-MM-dd HH:mm:ss',
 } as const

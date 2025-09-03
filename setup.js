@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
-console.log('🚀 FM Tire Management System Setup');
+console.log('🚀 GR Installment Manager Setup');
 console.log('=====================================\n');
 
 // Check if Node.js version is compatible

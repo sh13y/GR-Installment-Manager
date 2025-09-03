@@ -1,4 +1,4 @@
-# FM Tire Management System - Deployment Guide
+# GR Installment Manager - Deployment Guide
 
 ## Prerequisites
 

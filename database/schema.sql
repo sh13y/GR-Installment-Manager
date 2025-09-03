@@ -1,4 +1,4 @@
--- FM Tire Management System Database Schema
+-- GR Installment Manager Database Schema
 -- Supabase PostgreSQL Database
 
 -- Enable UUID extension

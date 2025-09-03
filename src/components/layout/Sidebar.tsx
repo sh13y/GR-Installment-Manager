@@ -29,6 +29,13 @@ const icons = {
   UserGroupIcon,
 }
 
+interface NavigationItem {
+  name: string
+  href: string
+  icon: string
+  adminOnly?: boolean
+}
+
 interface SidebarProps {
   isMobileOpen: boolean
   setIsMobileOpen: (open: boolean) => void
@@ -38,7 +45,7 @@ export default function Sidebar({ isMobileOpen, setIsMobileOpen }: SidebarProps)
   const pathname = usePathname()
   const { userProfile, signOut } = useAuth()
 
-  const navigationItems = Object.values(NAVIGATION).filter(item => {
+  const navigationItems = Object.values(NAVIGATION).filter((item: NavigationItem) => {
     if (item.adminOnly) {
       return userProfile?.role === USER_ROLES.SUPER_ADMIN
     }
@@ -49,7 +56,7 @@ export default function Sidebar({ isMobileOpen, setIsMobileOpen }: SidebarProps)
     await signOut()
   }
 
-  const NavLink = ({ item }: { item: typeof NAVIGATION.DASHBOARD }) => {
+  const NavLink = ({ item }: { item: NavigationItem }) => {
     const IconComponent = icons[item.icon as keyof typeof icons]
     const isActive = pathname === item.href
 
@@ -87,7 +94,7 @@ export default function Sidebar({ isMobileOpen, setIsMobileOpen }: SidebarProps)
           <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200">
             <div className="flex items-center">
               <div className="h-8 w-8 bg-primary-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">FM</span>
+                <span className="text-white font-bold text-sm">GR</span>
               </div>
               <span className="ml-2 text-lg font-semibold text-gray-900">
                 {APP_CONFIG.APP_NAME}

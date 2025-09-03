@@ -1,10 +1,10 @@
-# FM Tire Management System
+# GR Installment Manager
 
-A comprehensive business management system for installment-based tire sales business.
+A comprehensive business management system for installment-based product sales business.
 
 ## Business Model
 
-### Product: FM Tyre
+### Product: Various Products with Installment Plans
 - **Cost Price**: ₹5,110 per tire
 - **Selling Price**: ₹5,610 (₹500 profit margin)
 - **Customer Payment Structure**: 

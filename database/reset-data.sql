@@ -1,4 +1,4 @@
--- Reset FM Tire Management System Data
+-- Reset GR Installment Manager Data
 -- This script removes all test data but keeps the database structure and default product
 
 -- WARNING: This will delete ALL customer, sales, and payment data!

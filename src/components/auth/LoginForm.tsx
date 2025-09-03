@@ -47,7 +47,7 @@ export default function LoginForm() {
       <div className="max-w-md w-full space-y-8">
         <div>
           <div className="mx-auto h-16 w-16 bg-white rounded-full flex items-center justify-center">
-            <span className="text-2xl font-bold text-primary-600">FM</span>
+            <span className="text-2xl font-bold text-primary-600">GR</span>
           </div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-white text-shadow">
             {APP_CONFIG.APP_NAME}
@@ -126,7 +126,7 @@ export default function LoginForm() {
 
           <div className="text-center">
             <p className="text-sm text-gray-600">
-              Default login: admin@fmtire.com / password123
+              Default login: eworks.rajapaksha@gmail.com / [your_password]
             </p>
           </div>
         </form>

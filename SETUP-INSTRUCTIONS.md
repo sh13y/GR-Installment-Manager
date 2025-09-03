@@ -1,4 +1,4 @@
-# FM Tire Management System - Setup Instructions
+# GR Installment Manager - Setup Instructions
 
 ## Fix "Invalid Login Credentials" Error
 
@@ -11,7 +11,7 @@ The login error occurs because the default admin user hasn't been created yet. F
 2. Sign up or log in to your account
 3. Click **"New Project"**
 4. Fill in project details:
-   - **Name**: FM Tire Management
+   - **Name**: GR Installment Manager
    - **Database Password**: Choose a strong password (save it!)
    - **Region**: Select closest to your location
 5. Click **"Create new project"**
@@ -54,9 +54,9 @@ Since we're using Supabase Auth, we need to create the user through the dashboar
 1. In Supabase dashboard, go to **Authentication > Users**
 2. Click **"Add user"**
 3. Fill in the details:
-   - **Email**: `admin@fmtire.com`
-   - **Password**: `password123`
-   - **Confirm password**: `password123`
+   - **Email**: `eworks.rajapaksha@gmail.com`
+   - **Password**: `your_secure_password`
+   - **Confirm password**: `your_secure_password`
 4. Click **"Create user"**
 5. **Copy the User ID** that appears (looks like: 1234abcd-5678-90ef-ghij-klmnopqrstuv)
 

@@ -1,7 +1,7 @@
 {
-  "name": "fm-tire-management",
+  "name": "gr-installment-manager",
   "version": "1.0.0",
-  "description": "Comprehensive tire management system for installment-based sales",
+  "description": "Comprehensive installment management system for product sales",
   "private": true,
   "scripts": {
     "dev": "next dev",

@@ -1,4 +1,4 @@
--- Create Default Admin User for FM Tire Management System
+-- Create Default Admin User for GR Installment Manager
 -- Run this AFTER running the main schema.sql
 
 -- First, let's create the admin user in Supabase auth

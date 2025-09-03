@@ -115,21 +115,21 @@ export default function ReportsContent() {
               total_amount,
               remaining_balance,
               status,
-              customers(full_name, nic_number, phone),
-              products(name)
+              customer:customers!customer_id(full_name, nic_number, phone),
+              product:products!product_id(name)
             `)
             .gte('sale_date', dateRange.startDate)
             .lte('sale_date', dateRange.endDate)
           
           data = salesData?.map(sale => ({
-            Date: sale.sale_date,
-            Customer: (sale.customers as any)?.full_name,
-            NIC: (sale.customers as any)?.nic_number,
-            Phone: (sale.customers as any)?.phone,
-            Product: (sale.products as any)?.name,
-            'Initial Payment': sale.initial_payment,
-            'Total Amount': sale.total_amount,
-            'Remaining Balance': sale.remaining_balance,
+            Date: formatDate(sale.sale_date),
+            Customer: (sale.customer as any)?.full_name || 'Unknown',
+            NIC: (sale.customer as any)?.nic_number || 'N/A',
+            Phone: (sale.customer as any)?.phone || 'N/A',
+            Product: (sale.product as any)?.name || 'N/A',
+            'Initial Payment': formatCurrency(sale.initial_payment),
+            'Total Amount': formatCurrency(sale.total_amount),
+            'Remaining Balance': formatCurrency(sale.remaining_balance),
             Status: sale.status
           })) || []
           filename = `sales-report-${dateRange.startDate}-to-${dateRange.endDate}`
@@ -142,17 +142,19 @@ export default function ReportsContent() {
               payment_date,
               amount,
               payment_method,
-              sales(customers(full_name, nic_number))
+              sale:sales!sale_id(
+                customer:customers!customer_id(full_name, nic_number)
+              )
             `)
             .gte('payment_date', dateRange.startDate)
             .lte('payment_date', dateRange.endDate)
           
           data = paymentsData?.map(payment => ({
-            Date: payment.payment_date,
-            Customer: (payment.sales as any)?.customers?.full_name,
-            NIC: (payment.sales as any)?.customers?.nic_number,
-            Amount: payment.amount,
-            Method: payment.payment_method
+            Date: formatDate(payment.payment_date),
+            Customer: (payment.sale as any)?.customer?.full_name || 'Unknown',
+            NIC: (payment.sale as any)?.customer?.nic_number || 'N/A',
+            Amount: formatCurrency(payment.amount),
+            Method: payment.payment_method || 'Cash'
           })) || []
           filename = `payments-report-${dateRange.startDate}-to-${dateRange.endDate}`
           break
@@ -162,15 +164,15 @@ export default function ReportsContent() {
             .from('customers')
             .select('*')
             .gte('created_at', dateRange.startDate)
-            .lte('created_at', dateRange.endDate)
+            .lte('created_at', dateRange.endDate + ' 23:59:59')
           
           data = customersData?.map(customer => ({
-            'Registration Date': customer.registration_date,
+            'Registration Date': formatDate(customer.registration_date),
             'Full Name': customer.full_name,
             'NIC Number': customer.nic_number,
             Phone: customer.phone,
-            Email: customer.email || '',
-            Address: customer.address || '',
+            Email: customer.email || 'N/A',
+            Address: customer.address || 'N/A',
             'Registration Fee Paid': customer.registration_fee_paid ? 'Yes' : 'No',
             Status: customer.is_active ? 'Active' : 'Inactive'
           })) || []
@@ -231,12 +233,63 @@ export default function ReportsContent() {
             </div>
             <div className="flex items-end">
               <button
-                onClick={fetchReportData}
+                onClick={async () => {
+                  toast.loading('Generating report...', { id: 'report-loading' })
+                  await fetchReportData()
+                  toast.success('Report data updated!', { id: 'report-loading' })
+                }}
+                disabled={loading}
                 className="btn-primary w-full"
               >
-                Generate Report
+                {loading ? (
+                  <>
+                    <div className="loading-spinner-small mr-2"></div>
+                    Loading...
+                  </>
+                ) : (
+                  <>
+                    <ChartBarIcon className="h-5 w-5 mr-2" />
+                    Generate Report
+                  </>
+                )}
               </button>
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Export Actions */}
+      <div className="card">
+        <div className="card-header">
+          <h3 className="text-lg font-medium text-gray-900">Export Reports</h3>
+          <p className="text-sm text-gray-500">Download reports as CSV files for the selected date range</p>
+        </div>
+        <div className="card-body">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <button
+              onClick={() => exportToCSV('sales')}
+              className="btn-primary flex items-center justify-center"
+              disabled={loading}
+            >
+              <DocumentArrowDownIcon className="h-5 w-5 mr-2" />
+              Export Sales Report
+            </button>
+            <button
+              onClick={() => exportToCSV('payments')}
+              className="btn-primary flex items-center justify-center"
+              disabled={loading}
+            >
+              <DocumentArrowDownIcon className="h-5 w-5 mr-2" />
+              Export Payments Report
+            </button>
+            <button
+              onClick={() => exportToCSV('customers')}
+              className="btn-primary flex items-center justify-center"
+              disabled={loading}
+            >
+              <DocumentArrowDownIcon className="h-5 w-5 mr-2" />
+              Export Customers Report
+            </button>
           </div>
         </div>
       </div>

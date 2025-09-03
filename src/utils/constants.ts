@@ -13,7 +13,7 @@ export const BUSINESS_CONSTANTS = {
 
 // App Constants
 export const APP_CONFIG = {
-  APP_NAME: 'GR Installment Manager',
+  APP_NAME: 'GR Manager',
   COMPANY_NAME: 'GR Installments',
   CURRENCY: 'LKR',
   CURRENCY_SYMBOL: 'Rs. ',

@@ -127,7 +127,7 @@ export default function PaymentForm({
           <option value="">Choose a customer sale to record payment for</option>
           {activeSales.map((sale) => (
             <option key={sale.id} value={sale.id}>
-              {sale.customer?.full_name || 'Unknown Customer'} ({sale.customer?.nic_number || 'No NIC'}) - Phone: {sale.customer?.phone || 'No Phone'} | Balance: {formatCurrency(sale.remaining_balance)} | Daily: ₹{sale.product?.daily_installment || BUSINESS_CONSTANTS.DAILY_INSTALLMENT}
+              {sale.customer?.full_name || 'Unknown Customer'} ({sale.customer?.nic_number || 'No NIC'}) - Phone: {sale.customer?.phone || 'No Phone'} | Balance: {formatCurrency(sale.remaining_balance)} | Daily: Rs. {sale.product?.daily_installment || BUSINESS_CONSTANTS.DAILY_INSTALLMENT}
             </option>
           ))}
         </select>
@@ -201,21 +201,21 @@ export default function PaymentForm({
                 className="btn-outline text-xs px-3 py-1"
                 onClick={() => handleQuickAmount(1)}
               >
-                1 Day (₹{selectedSaleData.product?.daily_installment || BUSINESS_CONSTANTS.DAILY_INSTALLMENT})
+                1 Day (Rs. {selectedSaleData.product?.daily_installment || BUSINESS_CONSTANTS.DAILY_INSTALLMENT})
               </button>
               <button
                 type="button"
                 className="btn-outline text-xs px-3 py-1"
                 onClick={() => handleQuickAmount(7)}
               >
-                1 Week (₹{(selectedSaleData.product?.daily_installment || BUSINESS_CONSTANTS.DAILY_INSTALLMENT) * 7})
+                1 Week (Rs. {(selectedSaleData.product?.daily_installment || BUSINESS_CONSTANTS.DAILY_INSTALLMENT) * 7})
               </button>
               <button
                 type="button"
                 className="btn-outline text-xs px-3 py-1"
                 onClick={() => handleQuickAmount(30)}
               >
-                1 Month (₹{(selectedSaleData.product?.daily_installment || BUSINESS_CONSTANTS.DAILY_INSTALLMENT) * 30})
+                1 Month (Rs. {(selectedSaleData.product?.daily_installment || BUSINESS_CONSTANTS.DAILY_INSTALLMENT) * 30})
               </button>
               <button
                 type="button"
@@ -229,7 +229,7 @@ export default function PaymentForm({
         )}
 
         <div className="relative">
-          <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">₹</span>
+          <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">Rs.</span>
           <input
             id="amount"
             type="number"

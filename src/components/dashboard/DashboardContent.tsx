@@ -43,11 +43,11 @@ export default function DashboardContent() {
       const totalCustomers = customersResult.count || 0
       const totalSales = salesResult.count || 0
       
-      // Calculate registration fee revenue (₹250 per customer who paid)
+      // Calculate registration fee revenue (Rs. 250 per customer who paid)
       const registrationFeesCount = registrationFeesResult.data?.length || 0
-      const registrationRevenue = registrationFeesCount * 250 // ₹250 per registration
+      const registrationRevenue = registrationFeesCount * 250 // Rs. 250 per registration
 
-      // Calculate initial payments revenue (₹610 each sale)
+      // Calculate initial payments revenue (Rs. 610 each sale)
       const sales = salesResult.data || []
       const initialPaymentsRevenue = sales.reduce((sum, sale) => sum + (sale.initial_payment || 0), 0)
 

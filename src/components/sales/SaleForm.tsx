@@ -236,7 +236,7 @@ export default function SaleForm({ onSubmit, onCancel }: SaleFormProps) {
           Initial Payment *
         </label>
         <div className="relative">
-          <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">₹</span>
+          <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">Rs.</span>
           <input
             id="initial_payment"
             type="number"
@@ -284,7 +284,7 @@ export default function SaleForm({ onSubmit, onCancel }: SaleFormProps) {
             </div>
             <div className="flex justify-between text-xs text-gray-500">
               <span>Daily Installment:</span>
-              <span>₹{selectedProduct.daily_installment} × {Math.ceil(remainingBalance / selectedProduct.daily_installment)} days</span>
+              <span>Rs. {selectedProduct.daily_installment} × {Math.ceil(remainingBalance / selectedProduct.daily_installment)} days</span>
             </div>
           </div>
         </div>

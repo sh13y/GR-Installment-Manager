@@ -4,39 +4,39 @@
 
 ### Product Details
 - **Product**: FM Tyre (Three-wheel tires)
-- **Cost Price**: ₹5,110 per tire
-- **Selling Price**: ₹5,610 per tire
-- **Profit Margin**: ₹500 per tire
+- **Cost Price**: Rs. 5,110 per tire
+- **Selling Price**: Rs. 5,610 per tire
+- **Profit Margin**: Rs. 500 per tire
 
 ### Customer Payment Structure
 
 #### Registration Process
-- **New Customer Fee**: ₹250 (one-time, lifetime registration)
+- **New Customer Fee**: Rs. 250 (one-time, lifetime registration)
 - **Customer Identification**: NIC Number (unique identifier)
 
 #### Purchase Flow
-1. **Initial Payment**: ₹610 from customer
-2. **Business Investment**: ₹5,000 (to complete ₹5,610 tire purchase)
-3. **Customer Owes**: ₹5,000 + ₹700 service charge = ₹5,700
-4. **Installment Plan**: ₹57 per day × 100 installments maximum
-5. **Early Payment**: Customers can pay more than ₹57 daily to finish faster
+1. **Initial Payment**: Rs. 610 from customer
+2. **Business Investment**: Rs. 5,000 (to complete Rs. 5,610 tire purchase)
+3. **Customer Owes**: Rs. 5,000 + Rs. 700 service charge = Rs. 5,700
+4. **Installment Plan**: Rs. 57 per day × 100 installments maximum
+5. **Early Payment**: Customers can pay more than Rs. 57 daily to finish faster
 
 ### Business Calculations
 
 ```
-Tire Cost to Business: ₹5,110
-Selling Price: ₹5,610
-Profit per Tire: ₹500
+Tire Cost to Business: Rs. 5,110
+Selling Price: Rs. 5,610
+Profit per Tire: Rs. 500
 
 Customer Payment Breakdown:
-- Initial Payment: ₹610
-- Remaining Balance: ₹5,000
-- Service Charge: ₹700
-- Total Customer Payment: ₹5,700
+- Initial Payment: Rs. 610
+- Remaining Balance: Rs. 5,000
+- Service Charge: Rs. 700
+- Total Customer Payment: Rs. 5,700
 
-Daily Installment: ₹57
+Daily Installment: Rs. 57
 Maximum Installments: 100 days
-Early Payment: Allowed (>₹57/day)
+Early Payment: Allowed (>Rs. 57/day)
 ```
 
 ## System Requirements
@@ -48,20 +48,20 @@ Early Payment: Allowed (>₹57/day)
 - **User Identification**: NIC numbers for unique user identification
 
 ### 2. Customer Management
-- **Registration**: New customer onboarding with ₹250 fee
+- **Registration**: New customer onboarding with Rs. 250 fee
 - **Profile Management**: Personal information, contact details
 - **Status Tracking**: Registration fee payment status
 - **Search & Filter**: By name, NIC, phone number
 
 ### 3. Sales Management
 - **Transaction Recording**: New tire sales with payment tracking
-- **Initial Payment**: ₹610 collection and recording
-- **Balance Calculation**: Automatic calculation of remaining ₹5,700
+- **Initial Payment**: Rs. 610 collection and recording
+- **Balance Calculation**: Automatic calculation of remaining Rs. 5,700
 - **Status Tracking**: Active, completed, defaulted sales
 
 ### 4. Payment Management
-- **Daily Installments**: ₹57 minimum daily payments
-- **Flexible Payments**: Accept more than ₹57 per day
+- **Daily Installments**: Rs. 57 minimum daily payments
+- **Flexible Payments**: Accept more than Rs. 57 per day
 - **Payment History**: Complete payment trail per customer
 - **Balance Updates**: Real-time outstanding balance calculation
 - **Payment Methods**: Cash, bank transfer, cheque options
@@ -113,20 +113,20 @@ Early Payment: Allowed (>₹57/day)
 ### 1. Customer Registration
 - Collect customer personal information
 - Validate NIC number uniqueness
-- Record ₹250 registration fee payment
+- Record Rs. 250 registration fee payment
 - Generate customer profile
 - Issue customer ID
 
 ### 2. Tire Sales Process
 - Select customer (existing or new)
-- Record ₹610 initial payment
-- Calculate ₹5,700 remaining balance
+- Record Rs. 610 initial payment
+- Calculate Rs. 5,700 remaining balance
 - Set up installment schedule
 - Update inventory count
 - Generate sale receipt
 
 ### 3. Payment Collection
-- Daily payment entry (minimum ₹57)
+- Daily payment entry (minimum Rs. 57)
 - Update remaining balance
 - Track payment history
 - Generate payment receipts

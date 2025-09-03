@@ -92,11 +92,11 @@ export default function Sidebar({ isMobileOpen, setIsMobileOpen }: SidebarProps)
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200">
-            <div className="flex items-center">
-              <div className="h-8 w-8 bg-primary-600 rounded-lg flex items-center justify-center">
+            <div className="flex items-center min-w-0">
+              <div className="h-8 w-8 bg-primary-600 rounded-lg flex items-center justify-center flex-shrink-0">
                 <span className="text-white font-bold text-sm">GR</span>
               </div>
-              <span className="ml-2 text-lg font-semibold text-gray-900">
+              <span className="ml-2 text-lg font-semibold text-gray-900 truncate">
                 {APP_CONFIG.APP_NAME}
               </span>
             </div>

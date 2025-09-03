@@ -239,7 +239,7 @@ export default function ReportsContent() {
                   toast.success('Report data updated!', { id: 'report-loading' })
                 }}
                 disabled={loading}
-                className="btn-primary w-full"
+                className="btn-primary w-full flex items-center justify-center"
               >
                 {loading ? (
                   <>

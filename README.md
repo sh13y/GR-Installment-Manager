@@ -7,16 +7,16 @@ A comprehensive business management system for installment-based product sales b
 ## Business Model
 
 ### Product: Various Products with Installment Plans
-- **Cost Price**: ₹5,110 per tire
-- **Selling Price**: ₹5,610 (₹500 profit margin)
+- **Cost Price**: Rs. 5,110 per tire
+- **Selling Price**: Rs. 5,610 (Rs. 500 profit margin)
 - **Customer Payment Structure**: 
-  - Initial Payment: ₹610
-  - Remaining Balance: ₹5,000 + Service Charge ₹700 = ₹5,700
-  - Daily Installment: ₹57 × 100 installments (max)
-  - Customers can pay more than ₹57 daily to finish faster
+  - Initial Payment: Rs. 610
+  - Remaining Balance: Rs. 5,000 + Service Charge Rs. 700 = Rs. 5,700
+  - Daily Installment: Rs. 57 × 100 installments (max)
+  - Customers can pay more than Rs. 57 daily to finish faster
 
 ### Registration
-- **New Customer Fee**: ₹250 (one-time registration)
+- **New Customer Fee**: Rs. 250 (one-time registration)
 - **Customer ID**: NIC Number (unique identifier)
 
 ## System Features

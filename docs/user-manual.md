@@ -30,7 +30,7 @@ After logging in, you'll see the main dashboard with:
    - **Phone Number**: Contact number
    - **Email**: Optional email address
    - **Address**: Optional address
-4. Check **"Registration Fee Paid"** if the ₹250 fee was collected
+4. Check **"Registration Fee Paid"** if the Rs. 250 fee was collected
 5. Click **"Create Customer"**
 
 #### Managing Existing Customers
@@ -45,7 +45,7 @@ After logging in, you'll see the main dashboard with:
 2. Click **"New Sale"** button
 3. Select customer (must have paid registration fee)
 4. Select product (usually FM Tyre)
-5. Enter initial payment amount (recommended: ₹610)
+5. Enter initial payment amount (recommended: Rs. 610)
 6. Review the sale summary:
    - Product price + service charge = total amount
    - Initial payment reduces the balance
@@ -65,7 +65,7 @@ After logging in, you'll see the main dashboard with:
 2. Use **Quick Payment Entry** for active sales OR click **"Record Payment"**
 3. Select the sale (or it's pre-selected if from quick entry)
 4. Enter payment amount:
-   - Minimum: ₹57 (daily installment)
+   - Minimum: Rs. 57 (daily installment)
    - Can pay more to finish faster
    - Use quick amount buttons for convenience
 5. Select payment date (defaults to today)
@@ -112,18 +112,18 @@ After logging in, you'll see the main dashboard with:
    - Plan customer visits or calls
 
 2. **Customer Registration**:
-   - Collect ₹250 registration fee
+   - Collect Rs. 250 registration fee
    - Create customer profile
    - Issue customer ID (NIC number)
 
 3. **Tire Sales**:
-   - Customer pays ₹610 initial payment
+   - Customer pays Rs. 610 initial payment
    - Create sale record
    - Customer takes tire
-   - Remaining ₹5,700 to be paid in installments
+   - Remaining Rs. 5,700 to be paid in installments
 
 4. **Payment Collection**:
-   - Collect minimum ₹57 daily installments
+   - Collect minimum Rs. 57 daily installments
    - Accept higher amounts for faster completion
    - Record all payments immediately
    - Issue receipts if needed
@@ -249,11 +249,11 @@ After logging in, you'll see the main dashboard with:
 - **Esc**: Close modals/dialogs
 
 ### Important Numbers
-- **Registration Fee**: ₹250 (one-time)
-- **Initial Payment**: ₹610 (recommended)
-- **Daily Installment**: ₹57 (minimum)
-- **Service Charge**: ₹700
-- **Total Customer Payment**: ₹5,700
+- **Registration Fee**: Rs. 250 (one-time)
+- **Initial Payment**: Rs. 610 (recommended)
+- **Daily Installment**: Rs. 57 (minimum)
+- **Service Charge**: Rs. 700
+- **Total Customer Payment**: Rs. 5,700
 
 ### Contact Information
 - **System Administrator**: [Your contact info]

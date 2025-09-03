@@ -45,25 +45,27 @@ export default function SaleSelector({ sales, onSelectSale }: SaleSelectorProps)
                     NIC: {sale.customer?.nic_number}
                   </p>
                   <p className="text-xs text-gray-500">
-                    {sale.customer?.phone}
+                    📞 {sale.customer?.phone}
                   </p>
                 </div>
                 <div className="ml-3 flex-shrink-0">
-                  <CurrencyDollarIcon className="h-5 w-5 text-primary-500" />
+                  <div className="bg-primary-100 p-2 rounded-full">
+                    <CurrencyDollarIcon className="h-4 w-4 text-primary-600" />
+                  </div>
                 </div>
               </div>
               
               <div className="mt-3 space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Balance:</span>
+                  <span className="text-gray-500">Outstanding:</span>
                   <span className="font-semibold text-red-600">
                     {formatCurrency(sale.remaining_balance)}
                   </span>
                 </div>
                 
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Daily:</span>
-                  <span className="text-gray-900">
+                  <span className="text-gray-500">Daily Amount:</span>
+                  <span className="font-medium text-green-600">
                     ₹{sale.product?.daily_installment || 57}
                   </span>
                 </div>
@@ -71,6 +73,11 @@ export default function SaleSelector({ sales, onSelectSale }: SaleSelectorProps)
                 <div className="flex justify-between text-xs text-gray-500">
                   <span>Sale Date:</span>
                   <span>{formatDate(sale.sale_date)}</span>
+                </div>
+                
+                <div className="flex justify-between text-xs text-gray-500">
+                  <span>Total Sale:</span>
+                  <span>{formatCurrency(sale.total_amount)}</span>
                 </div>
               </div>
               

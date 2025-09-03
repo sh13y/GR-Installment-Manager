@@ -2,6 +2,8 @@
 
 A comprehensive business management system for installment-based product sales business.
 
+> **Latest Update**: Enhanced authentication system with improved connection resilience and better user experience for payment and sale selection interfaces.
+
 ## Business Model
 
 ### Product: Various Products with Installment Plans

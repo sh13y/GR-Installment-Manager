@@ -51,13 +51,13 @@ export default function SalesContent() {
         .from('sales')
         .select(`
           *,
-          customers (
+          customer:customers!customer_id (
             id,
             full_name,
             nic_number,
             phone
           ),
-          products (
+          product:products!product_id (
             id,
             name,
             selling_price,
@@ -68,9 +68,18 @@ export default function SalesContent() {
 
       if (error) {
         toast.error('Error fetching sales')
-        console.error('Error:', error)
+        console.error('❌ Sales fetch error:', error)
         return
       }
+
+      console.log('📊 Sales Data:', data?.map(sale => ({
+        id: sale.id,
+        customerName: sale.customer?.full_name,
+        customerNIC: sale.customer?.nic_number,
+        customerPhone: sale.customer?.phone,
+        customerObject: sale.customer,
+        customerId: sale.customer_id
+      })))
 
       setSales(data || [])
     } catch (error) {

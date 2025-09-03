@@ -127,7 +127,7 @@ export default function PaymentForm({
           <option value="">Choose a customer sale to record payment for</option>
           {activeSales.map((sale) => (
             <option key={sale.id} value={sale.id}>
-              {sale.customer?.full_name} ({sale.customer?.nic_number}) - {sale.customer?.phone} | Outstanding: {formatCurrency(sale.remaining_balance)} | Daily: ₹{sale.product?.daily_installment || BUSINESS_CONSTANTS.DAILY_INSTALLMENT}
+              {sale.customer?.full_name || 'Unknown Customer'} ({sale.customer?.nic_number || 'No NIC'}) - Phone: {sale.customer?.phone || 'No Phone'} | Balance: {formatCurrency(sale.remaining_balance)} | Daily: ₹{sale.product?.daily_installment || BUSINESS_CONSTANTS.DAILY_INSTALLMENT}
             </option>
           ))}
         </select>

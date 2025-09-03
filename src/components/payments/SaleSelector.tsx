@@ -38,14 +38,14 @@ export default function SaleSelector({ sales, onSelectSale }: SaleSelectorProps)
             >
               <div className="flex items-start justify-between">
                 <div className="flex-1 min-w-0">
-                  <h4 className="text-sm font-medium text-gray-900 truncate">
-                    {sale.customer?.full_name}
+                  <h4 className="text-base font-semibold text-gray-900 truncate mb-1">
+                    {sale.customer?.full_name || 'Unknown Customer'}
                   </h4>
-                  <p className="text-xs text-gray-500 mt-1">
-                    {sale.customer?.nic_number}
+                  <p className="text-sm text-gray-700 font-medium">
+                    NIC: {sale.customer?.nic_number || 'No NIC'}
                   </p>
-                  <p className="text-xs text-gray-500">
-                    {sale.customer?.phone}
+                  <p className="text-sm text-gray-600">
+                    Phone: {sale.customer?.phone || 'No Phone'}
                   </p>
                 </div>
                 <div className="ml-3 flex-shrink-0">

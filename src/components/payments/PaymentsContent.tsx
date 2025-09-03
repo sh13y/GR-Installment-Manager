@@ -111,13 +111,13 @@ export default function PaymentsContent() {
           .from('sales')
           .select(`
             *,
-            customers (
+            customer:customers!customer_id (
               id,
               full_name,
               nic_number,
               phone
             ),
-            products (
+            product:products!product_id (
               name,
               daily_installment
             )
@@ -141,6 +141,16 @@ export default function PaymentsContent() {
 
       setPayments(paymentsResult.data || [])
       setActiveSales(salesResult.data || [])
+      
+      // Debug: Log sales data to see if customer info is loading
+      console.log('💳 Active Sales Data:', salesResult.data?.map(sale => ({
+        id: sale.id,
+        customerName: sale.customer?.full_name,
+        customerNIC: sale.customer?.nic_number,
+        customerPhone: sale.customer?.phone,
+        remainingBalance: sale.remaining_balance
+      })))
+      
     } catch (error) {
       toast.error('An unexpected error occurred')
       console.error('Error:', error)

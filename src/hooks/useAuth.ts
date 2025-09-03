@@ -31,73 +31,160 @@ export function useAuthProvider(): AuthContextType {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Get initial session
-    const getInitialSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession()
-      setUser(session?.user ?? null)
+    // Get initial session with retry logic
+    const getInitialSession = async (retryCount = 0) => {
+      const maxRetries = 3
       
-      if (session?.user) {
-        await fetchUserProfile(session.user.id)
-      }
-      
-      setLoading(false)
-    }
-
-    getInitialSession()
-
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
+      try {
+        console.log('🔍 Getting initial session...', { attempt: retryCount + 1 })
+        
+        const sessionPromise = supabase.auth.getSession()
+        const timeoutPromise = new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('Session timeout')), 10000)
+        )
+        
+        const { data: { session } } = await Promise.race([sessionPromise, timeoutPromise]) as any
+        
+        console.log('📋 Session status:', session ? 'found' : 'none')
         setUser(session?.user ?? null)
         
         if (session?.user) {
           await fetchUserProfile(session.user.id)
-        } else {
-          setUserProfile(null)
         }
         
         setLoading(false)
+      } catch (error: any) {
+        console.error('❌ Session error:', error, { attempt: retryCount + 1 })
+        
+        if (retryCount < maxRetries) {
+          console.log('🔄 Retrying session check...', { nextAttempt: retryCount + 2 })
+          setTimeout(() => getInitialSession(retryCount + 1), 2000)
+        } else {
+          console.error('❌ Max retries exceeded for session check')
+          setLoading(false)
+        }
+      }
+    }
+
+    getInitialSession()
+
+    // Listen for auth changes with error handling
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        console.log('🔄 Auth state change:', { event, hasSession: !!session })
+        
+        try {
+          setUser(session?.user ?? null)
+          
+          if (session?.user) {
+            await fetchUserProfile(session.user.id)
+          } else {
+            setUserProfile(null)
+          }
+          
+          setLoading(false)
+        } catch (error) {
+          console.error('❌ Error handling auth state change:', error)
+          setLoading(false)
+        }
       }
     )
 
-    return () => subscription.unsubscribe()
+    return () => {
+      console.log('🧹 Cleaning up auth subscription')
+      subscription.unsubscribe()
+    }
   }, [])
 
-  const fetchUserProfile = async (userId: string) => {
+  const fetchUserProfile = async (userId: string, retryCount = 0) => {
+    const maxRetries = 3
+    
     try {
-      const { data, error } = await supabase
+      console.log('👤 Fetching user profile...', { userId: userId.substring(0, 8) + '***', attempt: retryCount + 1 })
+      
+      const profilePromise = supabase
         .from('users')
         .select('*')
         .eq('id', userId)
         .single()
+      
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Profile fetch timeout')), 10000)
+      )
+      
+      const { data, error } = await Promise.race([profilePromise, timeoutPromise]) as any
 
       if (error) {
-        console.error('Error fetching user profile:', error)
+        console.error('❌ Error fetching user profile:', error, { attempt: retryCount + 1 })
+        
+        if (retryCount < maxRetries && (error.message.includes('timeout') || error.message.includes('network'))) {
+          console.log('🔄 Retrying profile fetch...', { nextAttempt: retryCount + 2 })
+          setTimeout(() => fetchUserProfile(userId, retryCount + 1), 2000)
+          return
+        }
+        
         return
       }
 
+      console.log('✅ User profile fetched successfully')
       setUserProfile(data)
-    } catch (error) {
-      console.error('Error fetching user profile:', error)
+    } catch (error: any) {
+      console.error('❌ Unexpected error fetching user profile:', error, { attempt: retryCount + 1 })
+      
+      if (retryCount < maxRetries) {
+        console.log('🔄 Retrying profile fetch...', { nextAttempt: retryCount + 2 })
+        setTimeout(() => fetchUserProfile(userId, retryCount + 1), 2000)
+      }
     }
   }
 
   const signIn = async (email: string, password: string) => {
     try {
       setLoading(true)
+      console.log('🔐 Starting sign in process...', { email: email.substring(0, 3) + '***' })
       
-      const { data, error } = await supabase.auth.signInWithPassword({
+      // Add connection timeout
+      const authPromise = supabase.auth.signInWithPassword({
         email,
         password,
       })
-
+      
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Authentication timeout - check your internet connection')), 15000)
+      )
+      
+      const { data, error } = await Promise.race([authPromise, timeoutPromise]) as any
+      
       if (error) {
+        console.error('❌ Auth error:', error)
+        
+        // Provide more specific error messages
+        if (error.message.includes('Invalid login credentials')) {
+          return { error: 'Invalid email or password. Please check your credentials.' }
+        } else if (error.message.includes('Network')) {
+          return { error: 'Network error. Please check your internet connection and try again.' }
+        } else if (error.message.includes('timeout')) {
+          return { error: 'Connection timeout. Please check your internet connection and try again.' }
+        }
+        
         return { error: error.message }
       }
-
+      
+      if (!data.user) {
+        console.error('❌ No user data returned from auth')
+        return { error: 'Authentication failed - no user data received' }
+      }
+      
+      console.log('✅ Sign in successful', { userId: data.user.id })
       return { error: null }
-    } catch (error) {
-      return { error: 'An unexpected error occurred' }
+    } catch (error: any) {
+      console.error('❌ Unexpected sign in error:', error)
+      
+      if (error.message.includes('timeout')) {
+        return { error: 'Connection timeout. Please check your internet connection and try again.' }
+      }
+      
+      return { error: 'An unexpected error occurred. Please try again.' }
     } finally {
       setLoading(false)
     }

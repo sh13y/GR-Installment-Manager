@@ -187,7 +187,7 @@ export default function SaleForm({ onSubmit, onCancel }: SaleFormProps) {
           <option value="">Select a customer</option>
           {customers.map((customer) => (
             <option key={customer.id} value={customer.id}>
-              {customer.full_name} ({customer.nic_number}) - 📞 {customer.phone}
+              {customer.full_name} ({customer.nic_number}) - {customer.phone}
             </option>
           ))}
         </select>
@@ -202,7 +202,7 @@ export default function SaleForm({ onSubmit, onCancel }: SaleFormProps) {
         
         {/* Helper text */}
         <p className="text-xs text-gray-500 mt-1">
-          Shows: Customer Name (NIC) - Phone Number
+          Format: Customer Name (NIC) - Phone Number
         </p>
       </div>
 

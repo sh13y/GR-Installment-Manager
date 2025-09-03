@@ -110,65 +110,27 @@ export default function PaymentForm({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      {/* Sale Selection - Enhanced Display */}
+      {/* Sale Selection - Simple Dropdown Interface */}
       <div>
         <label htmlFor="sale_id" className="form-label">
           Select Sale *
         </label>
         
-        {/* Visual Sale Cards (if not many sales) */}
-        {activeSales.length <= 8 && !selectedSale && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
-            {activeSales.map((sale) => (
-              <div
-                key={sale.id}
-                onClick={() => handleInputChange('sale_id', sale.id)}
-                className={`border-2 rounded-lg p-3 cursor-pointer transition-all duration-200 ${
-                  formData.sale_id === sale.id
-                    ? 'border-primary-500 bg-primary-50'
-                    : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
-                }`}
-              >
-                <div className="flex justify-between items-start">
-                  <div className="flex-1">
-                    <h4 className="font-medium text-gray-900">{sale.customer?.full_name}</h4>
-                    <p className="text-sm text-gray-600">📞 {sale.customer?.phone}</p>
-                    <p className="text-xs text-gray-500">NIC: {sale.customer?.nic_number}</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-sm font-semibold text-red-600">
-                      {formatCurrency(sale.remaining_balance)}
-                    </p>
-                    <p className="text-xs text-gray-500">outstanding</p>
-                  </div>
-                </div>
-                <div className="mt-2 flex justify-between text-xs text-gray-500">
-                  <span>Daily: ₹{sale.product?.daily_installment || BUSINESS_CONSTANTS.DAILY_INSTALLMENT}</span>
-                  <span>Total: {formatCurrency(sale.total_amount)}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-        
-        {/* Fallback Dropdown for many sales or when pre-selected */}
-        {(activeSales.length > 8 || selectedSale) && (
-          <select
-            id="sale_id"
-            required
-            className={`form-select ${errors.sale_id ? 'border-red-500' : ''}`}
-            value={formData.sale_id}
-            onChange={(e) => handleInputChange('sale_id', e.target.value)}
-            disabled={!!selectedSale}
-          >
-            <option value="">Choose a sale to record payment for</option>
-            {activeSales.map((sale) => (
-              <option key={sale.id} value={sale.id}>
-                {sale.customer?.full_name} ({sale.customer?.nic_number}) - {sale.customer?.phone} | Balance: {formatCurrency(sale.remaining_balance)} | Daily: ₹{sale.product?.daily_installment || BUSINESS_CONSTANTS.DAILY_INSTALLMENT}
-              </option>
-            ))}
-          </select>
-        )}
+        <select
+          id="sale_id"
+          required
+          className={`form-select ${errors.sale_id ? 'border-red-500' : ''}`}
+          value={formData.sale_id}
+          onChange={(e) => handleInputChange('sale_id', e.target.value)}
+          disabled={!!selectedSale}
+        >
+          <option value="">Choose a customer sale to record payment for</option>
+          {activeSales.map((sale) => (
+            <option key={sale.id} value={sale.id}>
+              {sale.customer?.full_name} ({sale.customer?.nic_number}) - {sale.customer?.phone} | Outstanding: {formatCurrency(sale.remaining_balance)} | Daily: ₹{sale.product?.daily_installment || BUSINESS_CONSTANTS.DAILY_INSTALLMENT}
+            </option>
+          ))}
+        </select>
         
         {errors.sale_id && (
           <p className="form-error">{errors.sale_id}</p>
@@ -176,10 +138,7 @@ export default function PaymentForm({
         
         {/* Helper text */}
         <p className="text-xs text-gray-500 mt-1">
-          {activeSales.length <= 8 && !selectedSale 
-            ? "Click on a card above to select a sale" 
-            : "Shows: Customer Name (NIC) - Phone | Remaining Balance | Daily Amount"
-          }
+          Format: Customer Name (NIC) - Phone | Outstanding Balance | Daily Amount
         </p>
       </div>
 

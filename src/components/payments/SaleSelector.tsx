@@ -42,10 +42,10 @@ export default function SaleSelector({ sales, onSelectSale }: SaleSelectorProps)
                     {sale.customer?.full_name}
                   </h4>
                   <p className="text-xs text-gray-500 mt-1">
-                    NIC: {sale.customer?.nic_number}
+                    {sale.customer?.nic_number}
                   </p>
                   <p className="text-xs text-gray-500">
-                    📞 {sale.customer?.phone}
+                    {sale.customer?.phone}
                   </p>
                 </div>
                 <div className="ml-3 flex-shrink-0">

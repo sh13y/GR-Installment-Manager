@@ -7,6 +7,17 @@ export const metadata: Metadata = {
   description: 'Comprehensive installment management system for product sales',
   keywords: ['installment management', 'installment sales', 'business management'],
   authors: [{ name: APP_CONFIG.COMPANY_NAME }],
+  icons: {
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon-16x16.svg', sizes: '16x16', type: 'image/svg+xml' },
+    ],
+    apple: [
+      { url: '/apple-touch-icon.svg', sizes: '180x180', type: 'image/svg+xml' },
+    ],
+    shortcut: '/favicon.svg',
+  },
+  manifest: '/site.webmanifest',
 }
 
 export const viewport: Viewport = {

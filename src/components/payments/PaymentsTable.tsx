@@ -60,19 +60,19 @@ export default function PaymentsTable({ payments, loading }: PaymentsTableProps)
                 <td className="table-cell">
                   <div>
                     <div className="text-sm font-medium text-gray-900">
-                      {payment.sales?.customers?.full_name || 'Unknown Customer'}
+                      {(payment as any).sales?.customers?.full_name || 'Unknown Customer'}
                     </div>
                     <div className="text-sm text-gray-500">
-                      NIC: {payment.sales?.customers?.nic_number}
+                      NIC: {(payment as any).sales?.customers?.nic_number}
                     </div>
                     <div className="text-sm text-gray-500">
-                      {payment.sales?.customers?.phone}
+                      {(payment as any).sales?.customers?.phone}
                     </div>
                   </div>
                 </td>
                 <td className="table-cell">
                   <span className="text-sm text-gray-900">
-                    {payment.sales?.products?.name || 'FM Tyre'}
+                    {(payment as any).sales?.products?.name || 'FM Tyre'}
                   </span>
                 </td>
                 <td className="table-cell">

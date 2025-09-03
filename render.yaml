@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: gr-installment-manager
+    env: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_SUPABASE_URL
+        fromDatabase:
+          name: NEXT_PUBLIC_SUPABASE_URL
+          property: connectionString
+      - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
+        fromDatabase:
+          name: NEXT_PUBLIC_SUPABASE_ANON_KEY
+          property: connectionString
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        fromDatabase:
+          name: SUPABASE_SERVICE_ROLE_KEY
+          property: connectionString
+      - key: NEXTAUTH_SECRET
+        generateValue: true
+      - key: NEXTAUTH_URL
+        value: https://gr-installment-manager.onrender.com

@@ -71,11 +71,12 @@ export default function PaymentsContent() {
 
     // Search filter
     if (searchTerm) {
-      filtered = filtered.filter(payment => 
-        payment.sales?.customers?.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        payment.sales?.customers?.nic_number?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        payment.sales?.customers?.phone?.includes(searchTerm)
-      )
+      filtered = filtered.filter(payment => {
+        const paymentWithRefs = payment as any
+        return paymentWithRefs.sales?.customers?.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+               paymentWithRefs.sales?.customers?.nic_number?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+               paymentWithRefs.sales?.customers?.phone?.includes(searchTerm)
+      })
     }
 
     setFilteredPayments(filtered)

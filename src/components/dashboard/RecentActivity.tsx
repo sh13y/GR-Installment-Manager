@@ -84,7 +84,7 @@ export default function RecentActivity() {
           id: `sale-${sale.id}`,
           type: 'sale',
           title: 'New Sale Created',
-          description: sale.customers?.full_name || 'Unknown Customer',
+          description: (sale.customers as any)?.full_name || 'Unknown Customer',
           amount: sale.total_amount,
           timestamp: sale.created_at,
           link: `/sales/${sale.id}`
@@ -97,7 +97,7 @@ export default function RecentActivity() {
           id: `payment-${payment.id}`,
           type: 'payment',
           title: 'Payment Received',
-          description: payment.sales?.customers?.full_name || 'Unknown Customer',
+          description: (payment.sales as any)?.customers?.full_name || 'Unknown Customer',
           amount: payment.amount,
           timestamp: payment.created_at,
           link: `/payments`

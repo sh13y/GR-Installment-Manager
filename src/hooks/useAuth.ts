@@ -10,7 +10,7 @@ interface AuthContextType {
   userProfile: AppUser | null
   loading: boolean
   signIn: (email: string, password: string) => Promise<{ error: string | null }>
-  signUp: (userData: Partial<AppUser>) => Promise<{ error: string | null }>
+  signUp: (userData: Partial<AppUser> & { password?: string }) => Promise<{ error: string | null }>
   signOut: () => Promise<void>
   updateProfile: (updates: Partial<AppUser>) => Promise<{ error: string | null }>
 }
@@ -103,7 +103,7 @@ export function useAuthProvider(): AuthContextType {
     }
   }
 
-  const signUp = async (userData: Partial<AppUser>) => {
+  const signUp = async (userData: Partial<AppUser> & { password?: string }) => {
     try {
       setLoading(true)
 

@@ -123,10 +123,10 @@ export default function ReportsContent() {
           
           data = salesData?.map(sale => ({
             Date: sale.sale_date,
-            Customer: sale.customers?.full_name,
-            NIC: sale.customers?.nic_number,
-            Phone: sale.customers?.phone,
-            Product: sale.products?.name,
+            Customer: (sale.customers as any)?.full_name,
+            NIC: (sale.customers as any)?.nic_number,
+            Phone: (sale.customers as any)?.phone,
+            Product: (sale.products as any)?.name,
             'Initial Payment': sale.initial_payment,
             'Total Amount': sale.total_amount,
             'Remaining Balance': sale.remaining_balance,
@@ -149,8 +149,8 @@ export default function ReportsContent() {
           
           data = paymentsData?.map(payment => ({
             Date: payment.payment_date,
-            Customer: payment.sales?.customers?.full_name,
-            NIC: payment.sales?.customers?.nic_number,
+            Customer: (payment.sales as any)?.customers?.full_name,
+            NIC: (payment.sales as any)?.customers?.nic_number,
             Amount: payment.amount,
             Method: payment.payment_method
           })) || []

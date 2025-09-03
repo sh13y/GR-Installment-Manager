@@ -97,14 +97,14 @@ export interface Inventory {
 export interface DashboardStats {
   totalCustomers: number
   totalSales: number
-  totalRevenue: number
-  pendingPayments: number
+  totalRevenue: number // Only actual money received (payments + registration fees)
+  pendingPayments: number // Outstanding balances from active sales
   completedSales: number
   activeSales: number
   todayPayments: number
-  monthlyRevenue: number
-  registrationRevenue?: number
-  salesRevenue?: number
+  monthlyRevenue: number // Only actual money received this month
+  registrationRevenue?: number // Total registration fees collected
+  paymentsRevenue?: number // Total installment payments collected
 }
 
 export interface SalesChart {

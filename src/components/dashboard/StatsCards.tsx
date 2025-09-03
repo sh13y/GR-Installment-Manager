@@ -38,7 +38,7 @@ export default function StatsCards({ stats }: StatsCardsProps) {
       color: 'text-purple-600',
       bgColor: 'bg-purple-50',
       change: null,
-      subtitle: `Registration: ${formatCurrency(stats.registrationRevenue || 0)} + Sales: ${formatCurrency(stats.salesRevenue || 0)}`,
+      subtitle: `Registration: ${formatCurrency(stats.registrationRevenue || 0)} + Payments: ${formatCurrency(stats.paymentsRevenue || 0)}`,
     },
     {
       name: 'Active Sales',

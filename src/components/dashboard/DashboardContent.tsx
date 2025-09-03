@@ -43,45 +43,61 @@ export default function DashboardContent() {
       const totalCustomers = customersResult.count || 0
       const totalSales = salesResult.count || 0
       
-      // Calculate registration fee revenue
+      // Calculate registration fee revenue (₹250 per customer who paid)
       const registrationFeesCount = registrationFeesResult.data?.length || 0
       const registrationRevenue = registrationFeesCount * 250 // ₹250 per registration
 
-      // Calculate sales revenue
+      // Calculate actual payment revenue (money actually received)
+      const payments = paymentsResult.data || []
+      const paymentsRevenue = payments.reduce((sum, payment) => sum + (payment.amount || 0), 0)
+      
+      // Total actual revenue = Registration fees + Actual payments received
+      const totalRevenue = registrationRevenue + paymentsRevenue
+      
       const sales = salesResult.data || []
-      const salesRevenue = sales.reduce((sum, sale) => sum + (sale.total_amount || 0), 0)
-      
-      // Total revenue = Registration fees + Sales revenue
-      const totalRevenue = registrationRevenue + salesRevenue
-      
       const activeSales = sales.filter(sale => sale.status === 'active').length
       const completedSales = sales.filter(sale => sale.status === 'completed').length
 
-      const payments = paymentsResult.data || []
-      const totalPaid = payments.reduce((sum, payment) => sum + (payment.amount || 0), 0)
-      const pendingPayments = salesRevenue - totalPaid // Only sales create pending payments
+      // Calculate pending amounts (outstanding balances from sales)
+      const salesData = await supabase
+        .from('sales')
+        .select('remaining_balance')
+        .eq('status', 'active')
+      
+      const pendingPayments = salesData.data?.reduce((sum, sale) => sum + (sale.remaining_balance || 0), 0) || 0
 
       const todayPayments = todayPaymentsResult.data || []
       const todayTotal = todayPayments.reduce((sum, payment) => sum + (payment.amount || 0), 0)
 
-      // Calculate monthly revenue (current month)
+      // Calculate monthly revenue (current month) - only actual payments + registrations
       const currentMonth = new Date().toISOString().slice(0, 7)
       const monthlyPayments = payments.filter(payment => 
         payment.created_at?.startsWith(currentMonth)
       )
-      const monthlyRevenue = monthlyPayments.reduce((sum, payment) => sum + (payment.amount || 0), 0) + registrationRevenue
+      const monthlyPaymentRevenue = monthlyPayments.reduce((sum, payment) => sum + (payment.amount || 0), 0)
+      
+      // Get monthly registrations
+      const monthlyRegistrations = await supabase
+        .from('customers')
+        .select('registration_fee_paid, created_at')
+        .eq('registration_fee_paid', true)
+        .gte('created_at', `${currentMonth}-01`)
+        .lt('created_at', `${currentMonth}-32`)
+      
+      const monthlyRegistrationRevenue = (monthlyRegistrations.data?.length || 0) * 250
+      const monthlyRevenue = monthlyPaymentRevenue + monthlyRegistrationRevenue
 
       setStats({
         totalCustomers,
         totalSales,
-        totalRevenue,
-        pendingPayments,
+        totalRevenue, // Only actual money received
+        pendingPayments, // Outstanding balances 
         completedSales,
         activeSales,
         todayPayments: todayTotal,
-        monthlyRevenue,
-        registrationRevenue, // Add this for detailed breakdown
-        salesRevenue, // Add this for detailed breakdown
+        monthlyRevenue, // Only actual money received this month
+        registrationRevenue, // Total registration revenue
+        paymentsRevenue, // Total payment revenue
       })
     } catch (error) {
       console.error('Error fetching dashboard data:', error)

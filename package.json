@@ -9,8 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
-    "setup": "node setup.js",
-    "postinstall": "npm run setup"
+    "setup": "node setup.js"
   },
   "dependencies": {
     "next": "^14.0.4",

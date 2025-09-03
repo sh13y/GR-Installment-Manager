@@ -26,14 +26,19 @@ if (!fs.existsSync('package.json')) {
 
 console.log('✅ Project structure validated');
 
-// Install dependencies
-console.log('\n📦 Installing dependencies...');
-try {
-  execSync('npm install', { stdio: 'inherit' });
-  console.log('✅ Dependencies installed successfully');
-} catch (error) {
-  console.error('❌ Failed to install dependencies:', error.message);
-  process.exit(1);
+// Skip npm install in production/CI environments
+if (process.env.NODE_ENV === 'production' || process.env.CI || process.env.VERCEL) {
+  console.log('⏭️  Skipping dependency installation in production/CI environment');
+} else {
+  // Install dependencies
+  console.log('\n📦 Installing dependencies...');
+  try {
+    execSync('npm install', { stdio: 'inherit' });
+    console.log('✅ Dependencies installed successfully');
+  } catch (error) {
+    console.error('❌ Failed to install dependencies:', error.message);
+    process.exit(1);
+  }
 }
 
 // Check if .env.local exists

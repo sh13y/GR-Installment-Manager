@@ -1,0 +1,100 @@
+import { Sale } from '@/types'
+import { formatCurrency, formatDate } from '@/utils/helpers'
+import { ClockIcon, CurrencyDollarIcon } from '@heroicons/react/24/outline'
+
+interface SaleSelectorProps {
+  sales: Sale[]
+  onSelectSale: (sale: Sale) => void
+}
+
+export default function SaleSelector({ sales, onSelectSale }: SaleSelectorProps) {
+  // Show only first 6 sales, prioritize by remaining balance and days since last payment
+  const prioritizedSales = sales
+    .sort((a, b) => {
+      // Sort by remaining balance (higher first) and then by creation date (older first)
+      const balanceDiff = (b.remaining_balance || 0) - (a.remaining_balance || 0)
+      if (balanceDiff !== 0) return balanceDiff
+      return new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+    })
+    .slice(0, 6)
+
+  if (sales.length === 0) {
+    return null
+  }
+
+  return (
+    <div className="card">
+      <div className="card-header">
+        <h3 className="text-lg font-medium text-gray-900">Quick Payment Entry</h3>
+        <p className="text-sm text-gray-500">Click on any active sale to record a payment</p>
+      </div>
+      <div className="card-body">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {prioritizedSales.map((sale) => (
+            <div
+              key={sale.id}
+              onClick={() => onSelectSale(sale)}
+              className="border border-gray-200 rounded-lg p-4 hover:border-primary-300 hover:bg-primary-50 cursor-pointer transition-colors duration-200"
+            >
+              <div className="flex items-start justify-between">
+                <div className="flex-1 min-w-0">
+                  <h4 className="text-sm font-medium text-gray-900 truncate">
+                    {sale.customer?.full_name}
+                  </h4>
+                  <p className="text-xs text-gray-500 mt-1">
+                    NIC: {sale.customer?.nic_number}
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    {sale.customer?.phone}
+                  </p>
+                </div>
+                <div className="ml-3 flex-shrink-0">
+                  <CurrencyDollarIcon className="h-5 w-5 text-primary-500" />
+                </div>
+              </div>
+              
+              <div className="mt-3 space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-500">Balance:</span>
+                  <span className="font-semibold text-red-600">
+                    {formatCurrency(sale.remaining_balance)}
+                  </span>
+                </div>
+                
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-500">Daily:</span>
+                  <span className="text-gray-900">
+                    ₹{sale.product?.daily_installment || 57}
+                  </span>
+                </div>
+                
+                <div className="flex justify-between text-xs text-gray-500">
+                  <span>Sale Date:</span>
+                  <span>{formatDate(sale.sale_date)}</span>
+                </div>
+              </div>
+              
+              <div className="mt-3 pt-3 border-t border-gray-100">
+                <div className="flex items-center text-xs text-gray-500">
+                  <ClockIcon className="h-3 w-3 mr-1" />
+                  <span>
+                    {Math.ceil(sale.remaining_balance / (sale.product?.daily_installment || 57))} days remaining
+                  </span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        
+        {sales.length > 6 && (
+          <div className="mt-4 text-center">
+            <p className="text-sm text-gray-500">
+              Showing {prioritizedSales.length} of {sales.length} active sales. 
+              Use the "Record Payment" button above to see all sales.
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}

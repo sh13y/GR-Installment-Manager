@@ -53,6 +53,7 @@ CREATE TABLE sales (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     customer_id UUID NOT NULL REFERENCES customers(id),
     product_id UUID NOT NULL REFERENCES products(id),
+    quantity INTEGER NOT NULL DEFAULT 1 CHECK (quantity > 0),
     sale_date DATE DEFAULT CURRENT_DATE,
     initial_payment DECIMAL(10,2) NOT NULL,
     total_amount DECIMAL(10,2) NOT NULL, -- including service charge

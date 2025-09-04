@@ -18,6 +18,7 @@ export default function SaleForm({ onSubmit, onCancel }: SaleFormProps) {
   const [formData, setFormData] = useState<SaleFormType>({
     customer_id: '',
     product_id: '',
+    quantity: 1,
     initial_payment: BUSINESS_CONSTANTS.INITIAL_PAYMENT,
   })
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null)
@@ -102,6 +103,10 @@ export default function SaleForm({ onSubmit, onCancel }: SaleFormProps) {
       newErrors.product_id = 'Please select a product'
     }
 
+    if (!formData.quantity || formData.quantity <= 0) {
+      newErrors.quantity = 'Quantity must be greater than 0'
+    }
+
     if (!formData.initial_payment || formData.initial_payment <= 0) {
       newErrors.initial_payment = 'Initial payment must be greater than 0'
     } else if (formData.initial_payment < BUSINESS_CONSTANTS.INITIAL_PAYMENT) {
@@ -127,13 +132,15 @@ export default function SaleForm({ onSubmit, onCancel }: SaleFormProps) {
         return
       }
 
-      // Calculate amounts
-      const totalAmount = selectedProduct.selling_price + selectedProduct.service_charge
+      // Calculate amounts - service charge is fixed Rs. 700 per sale regardless of quantity
+      const productTotal = selectedProduct.selling_price * formData.quantity
+      const totalAmount = productTotal + selectedProduct.service_charge
       const remainingBalance = totalAmount - formData.initial_payment
 
       const submitData = {
         customer_id: formData.customer_id,
         product_id: formData.product_id,
+        quantity: formData.quantity,
         initial_payment: formData.initial_payment,
         total_amount: totalAmount,
         remaining_balance: remainingBalance,
@@ -165,9 +172,9 @@ export default function SaleForm({ onSubmit, onCancel }: SaleFormProps) {
     )
   }
 
-  // Calculate totals for display
-  const totalAmount = selectedProduct ? 
-    selectedProduct.selling_price + selectedProduct.service_charge : 0
+  // Calculate totals for display - service charge is fixed Rs. 700 per sale regardless of quantity
+  const productTotal = selectedProduct ? selectedProduct.selling_price * formData.quantity : 0
+  const totalAmount = selectedProduct ? productTotal + selectedProduct.service_charge : 0
   const remainingBalance = totalAmount - formData.initial_payment
 
   return (
@@ -230,6 +237,29 @@ export default function SaleForm({ onSubmit, onCancel }: SaleFormProps) {
         )}
       </div>
 
+      {/* Quantity */}
+      <div>
+        <label htmlFor="quantity" className="form-label">
+          Quantity *
+        </label>
+        <input
+          id="quantity"
+          type="number"
+          min="1"
+          max="10"
+          required
+          className={`form-input ${errors.quantity ? 'border-red-500' : ''}`}
+          value={formData.quantity}
+          onChange={(e) => handleInputChange('quantity', parseInt(e.target.value) || 1)}
+        />
+        {errors.quantity && (
+          <p className="form-error">{errors.quantity}</p>
+        )}
+        <p className="text-xs text-gray-500 mt-1">
+          Number of products to purchase (1-10)
+        </p>
+      </div>
+
       {/* Initial Payment */}
       <div>
         <label htmlFor="initial_payment" className="form-label">
@@ -263,11 +293,19 @@ export default function SaleForm({ onSubmit, onCancel }: SaleFormProps) {
           <h4 className="text-sm font-medium text-gray-900 mb-3">Sale Summary</h4>
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
-              <span className="text-gray-600">Product Price:</span>
+              <span className="text-gray-600">Product Price (Each):</span>
               <span className="font-medium">{formatCurrency(selectedProduct.selling_price)}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600">Service Charge:</span>
+              <span className="text-gray-600">Quantity:</span>
+              <span className="font-medium">{formData.quantity}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-600">Product Total:</span>
+              <span className="font-medium">{formatCurrency(productTotal)}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-600">Service Charge (Fixed):</span>
               <span className="font-medium">{formatCurrency(selectedProduct.service_charge)}</span>
             </div>
             <div className="flex justify-between border-t pt-2">

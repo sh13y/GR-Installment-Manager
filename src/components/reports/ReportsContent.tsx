@@ -14,7 +14,19 @@ import {
 import toast from 'react-hot-toast'
 
 export default function ReportsContent() {
-  const [reportData, setReportData] = useState({
+  const [reportData, setReportData] = useState<{
+    totalCustomers: number
+    totalSales: number
+    totalRevenue: number
+    outstandingBalance: number
+    completedSales: number
+    activeSales: number
+    todayCollections: number
+    monthlyRevenue: number
+    recentSales: any[]
+    recentPayments: any[]
+    topCustomers: any[]
+  }>({
     totalCustomers: 0,
     totalSales: 0,
     totalRevenue: 0,
@@ -84,7 +96,11 @@ export default function ReportsContent() {
         .slice(0, 10)
 
       // Top customers by total sales value
-      const customerSales = sales.reduce((acc, sale) => {
+      const customerSales: Record<string, {
+        customer: any,
+        totalAmount: number,
+        salesCount: number
+      }> = sales.reduce((acc, sale) => {
         const customerId = sale.customer_id
         if (!acc[customerId]) {
           acc[customerId] = {
@@ -96,7 +112,7 @@ export default function ReportsContent() {
         acc[customerId].totalAmount += sale.total_amount || 0
         acc[customerId].salesCount += 1
         return acc
-      }, {})
+      }, {} as Record<string, any>)
 
       const topCustomers = Object.values(customerSales)
         .sort((a: any, b: any) => b.totalAmount - a.totalAmount)
@@ -118,69 +134,6 @@ export default function ReportsContent() {
     } catch (error) {
       console.error('Error calculating report data:', error)
       toast.error('Error calculating report data')
-    } finally {
-      setLoading(false)
-    }
-
-  const fetchReportData = async () => {
-    try {
-      setLoading(true)
-
-      // Fetch various metrics
-      const [
-        customersResult,
-        salesResult,
-        paymentsResult,
-        todayPaymentsResult
-      ] = await Promise.all([
-        supabase.from('customers').select('id', { count: 'exact' }),
-        supabase.from('sales').select('id, total_amount, status, remaining_balance', { count: 'exact' }),
-        supabase.from('payments').select('amount, payment_date'),
-        supabase
-          .from('payments')
-          .select('amount')
-          .gte('payment_date', new Date().toISOString().split('T')[0])
-      ])
-
-      const totalCustomers = customersResult.count || 0
-      const totalSales = salesResult.count || 0
-      
-      const sales = salesResult.data || []
-      const totalRevenue = sales.reduce((sum, sale) => sum + (sale.total_amount || 0), 0)
-      const outstandingBalance = sales
-        .filter(sale => sale.status === 'active')
-        .reduce((sum, sale) => sum + (sale.remaining_balance || 0), 0)
-      const completedSales = sales.filter(sale => sale.status === 'completed').length
-      const activeSales = sales.filter(sale => sale.status === 'active').length
-
-      const payments = paymentsResult.data || []
-      const todayPayments = todayPaymentsResult.data || []
-      const todayCollections = todayPayments.reduce((sum, payment) => sum + (payment.amount || 0), 0)
-
-      // Monthly revenue
-      const currentMonth = new Date().toISOString().slice(0, 7)
-      const monthlyPayments = payments.filter(payment => 
-        payment.payment_date?.startsWith(currentMonth)
-      )
-      const monthlyRevenue = monthlyPayments.reduce((sum, payment) => sum + (payment.amount || 0), 0)
-
-      setReportData({
-        totalCustomers,
-        totalSales,
-        totalRevenue,
-        outstandingBalance,
-        completedSales,
-        activeSales,
-        todayCollections,
-        monthlyRevenue,
-        recentSales: [],
-        recentPayments: [],
-        topCustomers: []
-      })
-
-    } catch (error) {
-      toast.error('Error fetching report data')
-      console.error('Error:', error)
     } finally {
       setLoading(false)
     }
@@ -321,7 +274,7 @@ export default function ReportsContent() {
               <button
                 onClick={async () => {
                   toast.loading('Generating report...', { id: 'report-loading' })
-                  await fetchReportData()
+                  await calculateReportData()
                   toast.success('Report data updated!', { id: 'report-loading' })
                 }}
                 disabled={loading}

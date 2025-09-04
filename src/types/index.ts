@@ -46,6 +46,7 @@ export interface Sale {
   id: string
   customer_id: string
   product_id: string
+  quantity: number
   sale_date: string
   initial_payment: number
   total_amount: number
@@ -131,6 +132,7 @@ export interface CustomerForm {
 export interface SaleForm {
   customer_id: string
   product_id: string
+  quantity: number
   initial_payment: number
 }
 

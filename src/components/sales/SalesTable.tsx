@@ -49,6 +49,7 @@ export default function SalesTable({
             <tr>
               <th className="table-header-cell">Customer</th>
               <th className="table-header-cell">Product</th>
+              <th className="table-header-cell">Qty</th>
               <th className="table-header-cell">Sale Date</th>
               <th className="table-header-cell">Initial Payment</th>
               <th className="table-header-cell">Total Amount</th>
@@ -76,6 +77,11 @@ export default function SalesTable({
                 <td className="table-cell">
                   <div className="text-sm text-gray-900">
                     {sale.product?.name || 'FM Tyre'}
+                  </div>
+                </td>
+                <td className="table-cell">
+                  <div className="text-sm font-medium text-gray-900">
+                    {sale.quantity || 1}
                   </div>
                 </td>
                 <td className="table-cell">

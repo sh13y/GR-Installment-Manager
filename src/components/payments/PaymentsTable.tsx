@@ -48,6 +48,7 @@ export default function PaymentsTable({ payments, loading, onEdit, onDelete }: P
           <thead className="table-header">
             <tr>
               <th className="table-header-cell">Payment Date</th>
+              <th className="table-header-cell">Sale #</th>
               <th className="table-header-cell">Customer</th>
               <th className="table-header-cell">Product</th>
               <th className="table-header-cell">Amount</th>
@@ -65,6 +66,11 @@ export default function PaymentsTable({ payments, loading, onEdit, onDelete }: P
                 <td className="table-cell">
                   <span className="text-sm font-medium text-gray-900">
                     {formatDate(payment.payment_date)}
+                  </span>
+                </td>
+                <td className="table-cell">
+                  <span className="text-sm font-medium text-blue-600">
+                    {(payment as any).sales?.sale_number || 'No Number'}
                   </span>
                 </td>
                 <td className="table-cell">

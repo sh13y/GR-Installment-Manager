@@ -53,6 +53,7 @@ export default function SalesTable({
         <table className="table">
           <thead className="table-header">
             <tr>
+              <th className="table-header-cell">Sale #</th>
               <th className="table-header-cell">Customer</th>
               <th className="table-header-cell">Product</th>
               <th className="table-header-cell">Qty</th>
@@ -67,6 +68,11 @@ export default function SalesTable({
           <tbody className="bg-white divide-y divide-gray-200">
             {sales.map((sale) => (
               <tr key={sale.id} className="table-row">
+                <td className="table-cell">
+                  <div className="text-sm font-medium text-blue-600">
+                    {sale.sale_number || 'No Number'}
+                  </div>
+                </td>
                 <td className="table-cell">
                   <div>
                     <div className="text-sm font-medium text-gray-900">

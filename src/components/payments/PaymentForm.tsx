@@ -146,7 +146,7 @@ export default function PaymentForm({
           <option value="">Choose a customer sale to record payment for</option>
           {activeSales.map((sale) => (
             <option key={sale.id} value={sale.id}>
-              {sale.customer?.full_name || 'Unknown Customer'} ({sale.customer?.nic_number || 'No NIC'}) - Phone: {sale.customer?.phone || 'No Phone'} | Balance: {formatCurrency(sale.remaining_balance)} | Daily: Rs. {sale.product?.daily_installment || BUSINESS_CONSTANTS.DAILY_INSTALLMENT}
+              {sale.customer?.full_name || 'Unknown Customer'} ({sale.customer?.nic_number || 'No NIC'}) - Phone: {sale.customer?.phone || 'No Phone'} | Balance: {formatCurrency(sale.remaining_balance)} | Sale: {sale.sale_number || 'No Number'}
             </option>
           ))}
         </select>
@@ -157,7 +157,7 @@ export default function PaymentForm({
         
         {/* Helper text */}
         <p className="text-xs text-gray-500 mt-1">
-          Format: Customer Name (NIC) - Phone | Outstanding Balance | Daily Amount
+          Format: Customer Name (NIC) - Phone | Outstanding Balance | Sale Number
         </p>
       </div>
 

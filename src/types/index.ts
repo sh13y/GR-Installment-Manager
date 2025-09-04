@@ -44,6 +44,7 @@ export interface Product {
 // Sales Types
 export interface Sale {
   id: string
+  sale_number: string
   customer_id: string
   product_id: string
   quantity: number

@@ -64,9 +64,9 @@ export default function SaleSelector({ sales, onSelectSale }: SaleSelectorProps)
                 </div>
                 
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Daily Amount:</span>
-                  <span className="font-medium text-green-600">
-                    Rs. {sale.product?.daily_installment || 57}
+                  <span className="text-gray-500">Sale Number:</span>
+                  <span className="font-medium text-blue-600">
+                    {sale.sale_number || 'No Number'}
                   </span>
                 </div>
                 

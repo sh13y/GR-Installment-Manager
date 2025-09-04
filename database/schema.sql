@@ -51,6 +51,7 @@ CREATE TABLE products (
 -- Sales table
 CREATE TABLE sales (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    sale_number VARCHAR(20) UNIQUE NOT NULL,
     customer_id UUID NOT NULL REFERENCES customers(id),
     product_id UUID NOT NULL REFERENCES products(id),
     quantity INTEGER NOT NULL DEFAULT 1 CHECK (quantity > 0),
@@ -177,6 +178,48 @@ JOIN products p ON s.product_id = p.id
 LEFT JOIN payments pay ON s.id = pay.sale_id
 WHERE s.status = 'active'
 GROUP BY s.id, s.customer_id, c.full_name, c.nic_number, p.name, s.total_amount;
+
+-- Sale Number Generation Functions and Triggers
+CREATE OR REPLACE FUNCTION generate_sale_number()
+RETURNS TEXT AS $$
+DECLARE
+    today_date TEXT;
+    next_number INTEGER;
+    sale_number TEXT;
+BEGIN
+    -- Get today's date in YYYYMMDD format
+    today_date := to_char(CURRENT_DATE, 'YYYYMMDD');
+    
+    -- Find the next number for today
+    SELECT COALESCE(MAX(CAST(substring(sale_number from 13 for 4) AS INTEGER)), 0) + 1
+    INTO next_number
+    FROM sales 
+    WHERE sale_number LIKE 'S-' || today_date || '-%';
+    
+    -- Format the sale number
+    sale_number := 'S-' || today_date || '-' || LPAD(next_number::TEXT, 4, '0');
+    
+    RETURN sale_number;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION assign_sale_number()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.sale_number IS NULL THEN
+        NEW.sale_number := generate_sale_number();
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER assign_sale_number_trigger
+    BEFORE INSERT ON sales
+    FOR EACH ROW
+    EXECUTE FUNCTION assign_sale_number();
+
+-- Create index on sale_number for performance
+CREATE INDEX IF NOT EXISTS idx_sales_sale_number ON sales(sale_number);
 
 -- Enable Row Level Security (RLS)
 ALTER TABLE users ENABLE ROW LEVEL SECURITY;

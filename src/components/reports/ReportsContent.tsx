@@ -361,39 +361,6 @@ export default function ReportsContent() {
         </div>
       </div>
 
-      {/* Export Options */}
-      <div className="card">
-        <div className="card-header">
-          <h3 className="text-lg font-medium text-gray-900">Export Reports</h3>
-          <p className="text-sm text-gray-500">Download detailed reports as CSV files</p>
-        </div>
-        <div className="card-body">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <button
-              onClick={() => exportToCSV('sales')}
-              className="btn-outline flex items-center justify-center"
-            >
-              <DocumentArrowDownIcon className="h-5 w-5 mr-2" />
-              Export Sales Report
-            </button>
-            <button
-              onClick={() => exportToCSV('payments')}
-              className="btn-outline flex items-center justify-center"
-            >
-              <DocumentArrowDownIcon className="h-5 w-5 mr-2" />
-              Export Payments Report
-            </button>
-            <button
-              onClick={() => exportToCSV('customers')}
-              className="btn-outline flex items-center justify-center"
-            >
-              <DocumentArrowDownIcon className="h-5 w-5 mr-2" />
-              Export Customers Report
-            </button>
-          </div>
-        </div>
-      </div>
-
       {/* Summary Statistics */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="card">

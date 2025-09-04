@@ -1,18 +1,19 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Customer, Product, SaleForm as SaleFormType } from '@/types'
+import { Customer, Product, Sale, SaleForm as SaleFormType } from '@/types'
 import { supabase } from '@/lib/supabase'
 import { BUSINESS_CONSTANTS } from '@/utils/constants'
 import { formatCurrency } from '@/utils/helpers'
 import toast from 'react-hot-toast'
 
 interface SaleFormProps {
+  editingSale?: Sale | null
   onSubmit: (data: any) => void
   onCancel: () => void
 }
 
-export default function SaleForm({ onSubmit, onCancel }: SaleFormProps) {
+export default function SaleForm({ editingSale, onSubmit, onCancel }: SaleFormProps) {
   const [customers, setCustomers] = useState<Customer[]>([])
   const [products, setProducts] = useState<Product[]>([])
   const [formData, setFormData] = useState<SaleFormType>({
@@ -30,6 +31,26 @@ export default function SaleForm({ onSubmit, onCancel }: SaleFormProps) {
   useEffect(() => {
     fetchInitialData()
   }, [])
+
+  useEffect(() => {
+    // Populate form when editing
+    if (editingSale) {
+      setFormData({
+        customer_id: editingSale.customer_id,
+        product_id: editingSale.product_id,
+        quantity: editingSale.quantity || 1,
+        initial_payment: editingSale.initial_payment,
+      })
+    } else {
+      // Reset form for new sale
+      setFormData({
+        customer_id: '',
+        product_id: '',
+        quantity: 1,
+        initial_payment: BUSINESS_CONSTANTS.INITIAL_PAYMENT,
+      })
+    }
+  }, [editingSale])
 
   useEffect(() => {
     // Update selected customer
@@ -346,10 +367,10 @@ export default function SaleForm({ onSubmit, onCancel }: SaleFormProps) {
           {loading ? (
             <div className="flex items-center">
               <div className="loading-spinner mr-2"></div>
-              Creating Sale...
+              {editingSale ? 'Updating Sale...' : 'Creating Sale...'}
             </div>
           ) : (
-            'Create Sale'
+            editingSale ? 'Update Sale' : 'Create Sale'
           )}
         </button>
       </div>

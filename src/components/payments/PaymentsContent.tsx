@@ -19,6 +19,7 @@ export default function PaymentsContent() {
   const [loading, setLoading] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedSale, setSelectedSale] = useState<Sale | null>(null)
+  const [editingPayment, setEditingPayment] = useState<Payment | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [dateFilter, setDateFilter] = useState<'today' | 'week' | 'month' | 'all'>('all')
   const [filteredPayments, setFilteredPayments] = useState<Payment[]>([])
@@ -88,27 +89,139 @@ export default function PaymentsContent() {
 
   const handleFormSubmit = async (formData: any) => {
     try {
-      // Start a transaction to create payment and update sale balance
-      const { data: payment, error: paymentError } = await supabase
-        .from('payments')
-        .insert([{
-          ...formData,
-          created_by: userProfile?.id
-        }])
-        .select()
-        .single()
+      if (editingPayment) {
+        // Update existing payment
+        const oldAmount = editingPayment.amount
+        
+        const { error: paymentError } = await supabase
+          .from('payments')
+          .update({
+            amount: formData.amount,
+            payment_method: formData.payment_method,
+            notes: formData.notes,
+            payment_date: formData.payment_date
+          })
+          .eq('id', editingPayment.id)
 
-      if (paymentError) {
-        toast.error('Error creating payment')
-        console.error('Error:', paymentError)
+        if (paymentError) {
+          toast.error('Error updating payment')
+          console.error('Error:', paymentError)
+          return
+        }
+
+        // Update sale remaining balance based on the difference
+        const sale = sales.find(s => s.id === formData.sale_id)
+        if (sale) {
+          const balanceAdjustment = oldAmount - formData.amount // Positive if new amount is smaller
+          const newBalance = Math.max(0, sale.remaining_balance + balanceAdjustment)
+          const newStatus = newBalance === 0 ? 'completed' : 'active'
+
+          const { error: updateError } = await supabase
+            .from('sales')
+            .update({ 
+              remaining_balance: newBalance,
+              status: newStatus
+            })
+            .eq('id', formData.sale_id)
+
+          if (updateError) {
+            toast.error('Error updating sale balance')
+            console.error('Error:', updateError)
+            return
+          }
+        }
+
+        toast.success('Payment updated successfully')
+      } else {
+        // Create new payment
+        const { data: payment, error: paymentError } = await supabase
+          .from('payments')
+          .insert([{
+            ...formData,
+            created_by: userProfile?.id
+          }])
+          .select()
+          .single()
+
+        if (paymentError) {
+          toast.error('Error creating payment')
+          console.error('Error:', paymentError)
+          return
+        }
+
+        // Update sale remaining balance
+        const sale = activeSales.find(s => s.id === formData.sale_id)
+        if (sale) {
+          const newBalance = Math.max(0, sale.remaining_balance - formData.amount)
+          const newStatus = newBalance === 0 ? 'completed' : 'active'
+
+          const { error: updateError } = await supabase
+            .from('sales')
+            .update({ 
+              remaining_balance: newBalance,
+              status: newStatus
+            })
+            .eq('id', formData.sale_id)
+
+          if (updateError) {
+            toast.error('Error updating sale balance')
+            console.error('Error:', updateError)
+            return
+          }
+
+          if (newBalance === 0) {
+            toast.success('Payment recorded! Sale completed.')
+          } else {
+            toast.success('Payment recorded successfully')
+          }
+        }
+      }
+
+      setIsModalOpen(false)
+      setSelectedSale(null)
+      setEditingPayment(null)
+      invalidateData() // Refresh both sales and payments data
+    } catch (error) {
+      toast.error('An unexpected error occurred')
+      console.error('Error:', error)
+    }
+  }
+
+  const handleEditPayment = (payment: Payment) => {
+    setEditingPayment(payment)
+    setIsModalOpen(true)
+  }
+
+  const handleDeletePayment = async (payment: Payment) => {
+    if (userProfile?.role !== 'super_admin') {
+      toast.error('Only super administrators can delete payments')
+      return
+    }
+
+    if (!confirm(`Are you sure you want to delete this payment of ${formatCurrency(payment.amount)}? This action cannot be undone.`)) {
+      return
+    }
+
+    try {
+      setLoading(true)
+
+      // Delete the payment
+      const { error: deleteError } = await supabase
+        .from('payments')
+        .delete()
+        .eq('id', payment.id)
+
+      if (deleteError) {
+        toast.error('Error deleting payment')
+        console.error('Error:', deleteError)
         return
       }
 
-      // Update sale remaining balance
-      const sale = activeSales.find(s => s.id === formData.sale_id)
+      // Update the sale's remaining balance by adding back the payment amount
+      const sale = sales.find(s => s.id === payment.sale_id)
       if (sale) {
-        const newBalance = Math.max(0, sale.remaining_balance - formData.amount)
-        const newStatus = newBalance === 0 ? 'completed' : 'active'
+        const newBalance = sale.remaining_balance + payment.amount
+        const newStatus = newBalance > 0 ? 'active' : 'completed'
 
         const { error: updateError } = await supabase
           .from('sales')
@@ -116,27 +229,22 @@ export default function PaymentsContent() {
             remaining_balance: newBalance,
             status: newStatus
           })
-          .eq('id', formData.sale_id)
+          .eq('id', payment.sale_id)
 
         if (updateError) {
           toast.error('Error updating sale balance')
           console.error('Error:', updateError)
           return
         }
-
-        if (newBalance === 0) {
-          toast.success('Payment recorded! Sale completed.')
-        } else {
-          toast.success('Payment recorded successfully')
-        }
       }
 
-      setIsModalOpen(false)
-      setSelectedSale(null)
+      toast.success('Payment deleted successfully')
       invalidateData() // Refresh both sales and payments data
     } catch (error) {
       toast.error('An unexpected error occurred')
       console.error('Error:', error)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -302,6 +410,8 @@ export default function PaymentsContent() {
       <PaymentsTable
         payments={filteredPayments}
         loading={loading}
+        onEdit={handleEditPayment}
+        onDelete={handleDeletePayment}
       />
 
       {/* Payment Form Modal */}
@@ -310,17 +420,20 @@ export default function PaymentsContent() {
         onClose={() => {
           setIsModalOpen(false)
           setSelectedSale(null)
+          setEditingPayment(null)
         }}
-        title="Record Payment"
+        title={editingPayment ? "Edit Payment" : "Record Payment"}
         size="lg"
       >
         <PaymentForm
           activeSales={activeSales}
           selectedSale={selectedSale}
+          editingPayment={editingPayment}
           onSubmit={handleFormSubmit}
           onCancel={() => {
             setIsModalOpen(false)
             setSelectedSale(null)
+            setEditingPayment(null)
           }}
         />
       </Modal>

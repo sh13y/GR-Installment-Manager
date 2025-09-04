@@ -1,6 +1,6 @@
 import { Sale } from '@/types'
 import { formatDate, formatCurrency, getStatusColor } from '@/utils/helpers'
-import { CheckCircleIcon, ClockIcon } from '@heroicons/react/24/outline'
+import { CheckCircleIcon, ClockIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
 import Link from 'next/link'
 
@@ -8,12 +8,18 @@ interface SalesTableProps {
   sales: Sale[]
   loading: boolean
   onMarkCompleted: (saleId: string) => void
+  onEdit?: (sale: Sale) => void
+  onDelete?: (saleId: string) => void
+  userRole?: string
 }
 
 export default function SalesTable({ 
   sales, 
   loading, 
-  onMarkCompleted 
+  onMarkCompleted,
+  onEdit,
+  onDelete,
+  userRole
 }: SalesTableProps) {
   if (loading) {
     return (
@@ -129,6 +135,24 @@ export default function SalesTable({
                     >
                       <ClockIcon className="h-4 w-4" />
                     </Link>
+                    {onEdit && (
+                      <button
+                        onClick={() => onEdit(sale)}
+                        className="text-blue-600 hover:text-blue-700 p-1"
+                        title="Edit sale"
+                      >
+                        <PencilIcon className="h-4 w-4" />
+                      </button>
+                    )}
+                    {onDelete && userRole === 'super_admin' && (
+                      <button
+                        onClick={() => onDelete(sale.id)}
+                        className="text-red-600 hover:text-red-700 p-1"
+                        title="Delete sale (Super Admin only)"
+                      >
+                        <TrashIcon className="h-4 w-4" />
+                      </button>
+                    )}
                   </div>
                 </td>
               </tr>

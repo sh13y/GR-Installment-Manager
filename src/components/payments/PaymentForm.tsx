@@ -1,13 +1,14 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Sale, PaymentForm as PaymentFormType } from '@/types'
+import { Sale, PaymentForm as PaymentFormType, Payment } from '@/types'
 import { formatCurrency } from '@/utils/helpers'
 import { BUSINESS_CONSTANTS, PAYMENT_METHODS } from '@/utils/constants'
 
 interface PaymentFormProps {
   activeSales: Sale[]
   selectedSale?: Sale | null
+  editingPayment?: Payment | null
   onSubmit: (data: PaymentFormType & { payment_date: string }) => void
   onCancel: () => void
 }
@@ -15,6 +16,7 @@ interface PaymentFormProps {
 export default function PaymentForm({ 
   activeSales, 
   selectedSale, 
+  editingPayment,
   onSubmit, 
   onCancel 
 }: PaymentFormProps) {
@@ -54,6 +56,23 @@ export default function PaymentForm({
       setFormData(prev => ({ ...prev, amount: suggestedAmount }))
     }
   }, [formData.sale_id, activeSales])
+
+  useEffect(() => {
+    // Pre-fill form when editing a payment
+    if (editingPayment) {
+      setFormData({
+        sale_id: editingPayment.sale_id,
+        amount: editingPayment.amount,
+        payment_method: editingPayment.payment_method,
+        notes: editingPayment.notes || '',
+        payment_date: editingPayment.payment_date,
+      })
+      
+      // Find and set the related sale data
+      const sale = activeSales.find(s => s.id === editingPayment.sale_id)
+      setSelectedSaleData(sale || null)
+    }
+  }, [editingPayment, activeSales])
 
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {}
@@ -306,10 +325,10 @@ export default function PaymentForm({
           {loading ? (
             <div className="flex items-center">
               <div className="loading-spinner mr-2"></div>
-              Recording Payment...
+              {editingPayment ? 'Updating Payment...' : 'Recording Payment...'}
             </div>
           ) : (
-            'Record Payment'
+            editingPayment ? 'Update Payment' : 'Record Payment'
           )}
         </button>
       </div>

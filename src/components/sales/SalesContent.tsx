@@ -17,6 +17,7 @@ import LoadingSpinner from '@/components/ui/LoadingSpinner'
 export default function SalesContent() {
   const [submitting, setSubmitting] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [editingSale, setEditingSale] = useState<Sale | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'completed' | 'defaulted'>('all')
   const [filteredSales, setFilteredSales] = useState<Sale[]>([])
@@ -43,27 +44,107 @@ export default function SalesContent() {
   }, [sales, searchTerm, statusFilter])
 
   const handleCreateSale = () => {
+    setEditingSale(null)
     setIsModalOpen(true)
+  }
+
+  const handleEditSale = (sale: Sale) => {
+    setEditingSale(sale)
+    setIsModalOpen(true)
+  }
+
+  const handleDeleteSale = async (saleId: string) => {
+    if (!confirm('Are you sure you want to delete this sale? This action cannot be undone.')) {
+      return
+    }
+
+    if (userProfile?.role !== 'super_admin') {
+      toast.error('Only super admin can delete sales')
+      return
+    }
+
+    try {
+      setSubmitting(true)
+      
+      // Check if sale has any payments
+      const { data: payments, error: paymentsError } = await supabase
+        .from('payments')
+        .select('id')
+        .eq('sale_id', saleId)
+
+      if (paymentsError) {
+        toast.error('Error checking payments')
+        console.error('Error:', paymentsError)
+        return
+      }
+
+      if (payments && payments.length > 0) {
+        toast.error('Cannot delete sale: Sale has payment records. Delete payments first.')
+        return
+      }
+
+      const { error } = await supabase
+        .from('sales')
+        .delete()
+        .eq('id', saleId)
+
+      if (error) {
+        toast.error('Error deleting sale')
+        console.error('Error:', error)
+        return
+      }
+
+      toast.success('Sale deleted successfully')
+      invalidateData('sales')
+    } catch (error) {
+      toast.error('An unexpected error occurred')
+      console.error('Error:', error)
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   const handleFormSubmit = async (formData: any) => {
     try {
       setSubmitting(true)
-      const { error } = await supabase
-        .from('sales')
-        .insert([{
-          ...formData,
-          created_by: userProfile?.id
-        }])
+      
+      if (editingSale) {
+        // Update existing sale
+        const { error } = await supabase
+          .from('sales')
+          .update({
+            ...formData,
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', editingSale.id)
 
-      if (error) {
-        toast.error('Error creating sale')
-        console.error('Error:', error)
-        return
+        if (error) {
+          toast.error('Error updating sale')
+          console.error('Error:', error)
+          return
+        }
+
+        toast.success('Sale updated successfully')
+      } else {
+        // Create new sale
+        const { error } = await supabase
+          .from('sales')
+          .insert([{
+            ...formData,
+            created_by: userProfile?.id
+          }])
+
+        if (error) {
+          toast.error('Error creating sale')
+          console.error('Error:', error)
+          return
+        }
+
+        toast.success('Sale created successfully')
       }
-
-      toast.success('Sale created successfully')
+      
       setIsModalOpen(false)
+      setEditingSale(null)
       invalidateData('sales')
     } catch (error) {
       toast.error('An unexpected error occurred')
@@ -264,18 +345,28 @@ export default function SalesContent() {
         sales={filteredSales}
         loading={submitting}
         onMarkCompleted={handleMarkCompleted}
+        onEdit={handleEditSale}
+        onDelete={handleDeleteSale}
+        userRole={userProfile?.role}
       />
 
       {/* Sale Form Modal */}
       <Modal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        title="Create New Sale"
+        onClose={() => {
+          setIsModalOpen(false)
+          setEditingSale(null)
+        }}
+        title={editingSale ? "Edit Sale" : "Create New Sale"}
         size="lg"
       >
         <SaleForm
+          editingSale={editingSale}
           onSubmit={handleFormSubmit}
-          onCancel={() => setIsModalOpen(false)}
+          onCancel={() => {
+            setIsModalOpen(false)
+            setEditingSale(null)
+          }}
         />
       </Modal>
     </div>

@@ -1,13 +1,20 @@
 import { Payment } from '@/types'
 import { formatDate, formatCurrency } from '@/utils/helpers'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
+import { PencilIcon, TrashIcon } from '@heroicons/react/24/outline'
+import { useAuth } from '@/components/providers/AuthProvider'
 
 interface PaymentsTableProps {
   payments: Payment[]
   loading: boolean
+  onEdit?: (payment: Payment) => void
+  onDelete?: (payment: Payment) => void
 }
 
-export default function PaymentsTable({ payments, loading }: PaymentsTableProps) {
+export default function PaymentsTable({ payments, loading, onEdit, onDelete }: PaymentsTableProps) {
+  const { userProfile } = useAuth()
+  const canDelete = userProfile?.role === 'super_admin'
+
   if (loading) {
     return (
       <div className="card">
@@ -47,6 +54,9 @@ export default function PaymentsTable({ payments, loading }: PaymentsTableProps)
               <th className="table-header-cell">Payment Method</th>
               <th className="table-header-cell">Notes</th>
               <th className="table-header-cell">Recorded At</th>
+              {(onEdit || onDelete) && (
+                <th className="table-header-cell">Actions</th>
+              )}
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
@@ -95,6 +105,30 @@ export default function PaymentsTable({ payments, loading }: PaymentsTableProps)
                     {formatDate(payment.created_at)}
                   </span>
                 </td>
+                {(onEdit || onDelete) && (
+                  <td className="table-cell">
+                    <div className="flex items-center space-x-2">
+                      {onEdit && (
+                        <button
+                          onClick={() => onEdit(payment)}
+                          className="p-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-lg transition-colors"
+                          title="Edit payment"
+                        >
+                          <PencilIcon className="h-4 w-4" />
+                        </button>
+                      )}
+                      {onDelete && canDelete && (
+                        <button
+                          onClick={() => onDelete(payment)}
+                          className="p-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-lg transition-colors"
+                          title="Delete payment (Super Admin only)"
+                        >
+                          <TrashIcon className="h-4 w-4" />
+                        </button>
+                      )}
+                    </div>
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>

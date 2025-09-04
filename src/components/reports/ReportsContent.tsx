@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
+import { useData } from '@/components/providers/DataProvider'
 import { formatCurrency, formatDate, downloadAsCSV } from '@/utils/helpers'
 import { 
   DocumentArrowDownIcon, 
@@ -26,15 +27,100 @@ export default function ReportsContent() {
     recentPayments: [],
     topCustomers: []
   })
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
+  const { customers, sales, payments } = useData()
   const [dateRange, setDateRange] = useState({
     startDate: new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString().split('T')[0],
     endDate: new Date().toISOString().split('T')[0]
   })
 
   useEffect(() => {
-    fetchReportData()
-  }, [dateRange])
+    if (customers.length >= 0 && sales.length >= 0 && payments.length >= 0) {
+      calculateReportData()
+    }
+  }, [customers, sales, payments, dateRange])
+
+  const calculateReportData = () => {
+    try {
+      setLoading(true)
+
+      // Calculate metrics from cached data
+      const totalCustomers = customers.length
+      const totalSales = sales.length
+      const completedSales = sales.filter(s => s.status === 'completed').length
+      const activeSales = sales.filter(s => s.status === 'active').length
+      
+      // Calculate revenue from payments only (actual money received)
+      const totalRevenue = payments.reduce((sum, payment) => sum + (payment.amount || 0), 0)
+      
+      // Outstanding balance from active sales
+      const outstandingBalance = sales
+        .filter(s => s.status === 'active')
+        .reduce((sum, sale) => sum + (sale.remaining_balance || 0), 0)
+
+      // Today's collections
+      const today = new Date().toISOString().split('T')[0]
+      const todayCollections = payments
+        .filter(payment => payment.payment_date?.startsWith(today) || payment.created_at?.startsWith(today))
+        .reduce((sum, payment) => sum + (payment.amount || 0), 0)
+
+      // Monthly revenue (current month only)
+      const currentMonth = new Date().toISOString().slice(0, 7)
+      const monthlyRevenue = payments
+        .filter(payment => 
+          payment.created_at?.startsWith(currentMonth) || 
+          payment.payment_date?.startsWith(currentMonth)
+        )
+        .reduce((sum, payment) => sum + (payment.amount || 0), 0)
+
+      // Recent sales (last 10)
+      const recentSales = sales
+        .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+        .slice(0, 10)
+
+      // Recent payments (last 10) 
+      const recentPayments = payments
+        .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+        .slice(0, 10)
+
+      // Top customers by total sales value
+      const customerSales = sales.reduce((acc, sale) => {
+        const customerId = sale.customer_id
+        if (!acc[customerId]) {
+          acc[customerId] = {
+            customer: sale.customer,
+            totalAmount: 0,
+            salesCount: 0
+          }
+        }
+        acc[customerId].totalAmount += sale.total_amount || 0
+        acc[customerId].salesCount += 1
+        return acc
+      }, {})
+
+      const topCustomers = Object.values(customerSales)
+        .sort((a: any, b: any) => b.totalAmount - a.totalAmount)
+        .slice(0, 5)
+
+      setReportData({
+        totalCustomers,
+        totalSales,
+        totalRevenue,
+        outstandingBalance,
+        completedSales,
+        activeSales,
+        todayCollections,
+        monthlyRevenue,
+        recentSales,
+        recentPayments,
+        topCustomers
+      })
+    } catch (error) {
+      console.error('Error calculating report data:', error)
+      toast.error('Error calculating report data')
+    } finally {
+      setLoading(false)
+    }
 
   const fetchReportData = async () => {
     try {

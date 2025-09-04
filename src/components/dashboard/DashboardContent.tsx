@@ -7,52 +7,36 @@ import RecentActivity from './RecentActivity'
 import PaymentOverview from './PaymentOverview'
 import { DashboardStats } from '@/types'
 import { supabase } from '@/lib/supabase'
+import { useData } from '@/components/providers/DataProvider'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
 
 export default function DashboardContent() {
   const [stats, setStats] = useState<DashboardStats | null>(null)
   const [loading, setLoading] = useState(true)
+  const { customers, sales, payments, isLoading } = useData()
 
   useEffect(() => {
-    fetchDashboardData()
-  }, [])
+    if (!isLoading && customers.length >= 0 && sales.length >= 0 && payments.length >= 0) {
+      calculateDashboardStats()
+    }
+  }, [customers, sales, payments, isLoading])
 
-  const fetchDashboardData = async () => {
+  const calculateDashboardStats = async () => {
     try {
       setLoading(true)
 
-      // Fetch various stats in parallel
-      const [
-        customersResult,
-        salesResult,
-        paymentsResult,
-        todayPaymentsResult,
-        registrationFeesResult
-      ] = await Promise.all([
-        supabase.from('customers').select('id, registration_fee_paid', { count: 'exact' }),
-        supabase.from('sales').select('id, total_amount, status, initial_payment', { count: 'exact' }),
-        supabase.from('payments').select('amount, created_at'),
-        supabase
-          .from('payments')
-          .select('amount')
-          .gte('payment_date', new Date().toISOString().split('T')[0]),
-        supabase.from('customers').select('registration_fee_paid').eq('registration_fee_paid', true)
-      ])
-
-      const customers = customersResult.data || []
-      const totalCustomers = customersResult.count || 0
-      const totalSales = salesResult.count || 0
+      // Calculate stats from cached data
+      const totalCustomers = customers.length
+      const totalSales = sales.length
       
       // Calculate registration fee revenue (Rs. 250 per customer who paid)
-      const registrationFeesCount = registrationFeesResult.data?.length || 0
+      const registrationFeesCount = customers.filter(c => c.registration_fee_paid).length
       const registrationRevenue = registrationFeesCount * 250 // Rs. 250 per registration
 
       // Calculate initial payments revenue (Rs. 610 each sale)
-      const sales = salesResult.data || []
       const initialPaymentsRevenue = sales.reduce((sum, sale) => sum + (sale.initial_payment || 0), 0)
 
       // Calculate installment payments revenue (daily payments received)
-      const payments = paymentsResult.data || []
       const installmentPaymentsRevenue = payments.reduce((sum, payment) => sum + (payment.amount || 0), 0)
       
       // Total actual revenue = Registration fees + Initial payments + Installment payments
@@ -62,14 +46,15 @@ export default function DashboardContent() {
       const completedSales = sales.filter(sale => sale.status === 'completed').length
 
       // Calculate pending amounts (outstanding balances from sales)
-      const salesData = await supabase
-        .from('sales')
-        .select('remaining_balance')
-        .eq('status', 'active')
-      
-      const pendingPayments = salesData.data?.reduce((sum, sale) => sum + (sale.remaining_balance || 0), 0) || 0
+      const pendingPayments = sales
+        .filter(sale => sale.status === 'active')
+        .reduce((sum, sale) => sum + (sale.remaining_balance || 0), 0)
 
-      const todayPayments = todayPaymentsResult.data || []
+      // Today's payments
+      const today = new Date().toISOString().split('T')[0]
+      const todayPayments = payments.filter(payment => 
+        payment.payment_date?.startsWith(today) || payment.created_at?.startsWith(today)
+      )
       const todayTotal = todayPayments.reduce((sum, payment) => sum + (payment.amount || 0), 0)
 
       // Calculate monthly revenue (current month) - only actual payments + registrations
@@ -80,23 +65,17 @@ export default function DashboardContent() {
       const monthlyInstallmentRevenue = monthlyPayments.reduce((sum, payment) => sum + (payment.amount || 0), 0)
       
       // Get monthly registrations
-      const monthlyRegistrations = await supabase
-        .from('customers')
-        .select('registration_fee_paid, created_at')
-        .eq('registration_fee_paid', true)
-        .gte('created_at', `${currentMonth}-01`)
-        .lt('created_at', `${currentMonth}-32`)
-      
-      const monthlyRegistrationRevenue = (monthlyRegistrations.data?.length || 0) * 250
+      const monthlyRegistrations = customers.filter(customer =>
+        customer.registration_fee_paid && 
+        customer.created_at?.startsWith(currentMonth)
+      )
+      const monthlyRegistrationRevenue = monthlyRegistrations.length * 250
       
       // Get monthly initial payments (from sales created this month)
-      const monthlySales = await supabase
-        .from('sales')
-        .select('initial_payment, created_at')
-        .gte('created_at', `${currentMonth}-01`)
-        .lt('created_at', `${currentMonth}-32`)
-      
-      const monthlyInitialPayments = monthlySales.data?.reduce((sum, sale) => sum + (sale.initial_payment || 0), 0) || 0
+      const monthlySales = sales.filter(sale =>
+        sale.created_at?.startsWith(currentMonth)
+      )
+      const monthlyInitialPayments = monthlySales.reduce((sum, sale) => sum + (sale.initial_payment || 0), 0)
       
       const monthlyRevenue = monthlyInstallmentRevenue + monthlyRegistrationRevenue + monthlyInitialPayments
 
@@ -113,10 +92,15 @@ export default function DashboardContent() {
         paymentsRevenue: initialPaymentsRevenue + installmentPaymentsRevenue, // Total payment revenue
       })
     } catch (error) {
-      console.error('Error fetching dashboard data:', error)
+      console.error('Error calculating dashboard stats:', error)
     } finally {
       setLoading(false)
     }
+  }
+
+  const handleRefresh = () => {
+    setLoading(true)
+    calculateDashboardStats()
   }
 
   if (loading) {
@@ -137,10 +121,11 @@ export default function DashboardContent() {
         </div>
         <div className="mt-4 flex md:mt-0 md:ml-4">
           <button
-            onClick={fetchDashboardData}
+            onClick={handleRefresh}
             className="btn-outline"
+            disabled={loading}
           >
-            Refresh Data
+            {loading ? 'Refreshing...' : 'Refresh Data'}
           </button>
         </div>
       </div>

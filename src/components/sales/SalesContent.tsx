@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { Sale, Customer, Product } from '@/types'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/components/providers/AuthProvider'
+import { useData } from '@/components/providers/DataProvider'
 import SalesTable from './SalesTable'
 import SaleForm from './SaleForm'
 import Modal from '@/components/ui/Modal'
@@ -11,19 +12,16 @@ import SearchFilter from '@/components/ui/SearchFilter'
 import { PlusIcon, FunnelIcon } from '@heroicons/react/24/outline'
 import toast from 'react-hot-toast'
 import { formatCurrency } from '@/utils/helpers'
+import LoadingSpinner from '@/components/ui/LoadingSpinner'
 
 export default function SalesContent() {
-  const [sales, setSales] = useState<Sale[]>([])
-  const [loading, setLoading] = useState(true)
+  const [submitting, setSubmitting] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'completed' | 'defaulted'>('all')
   const [filteredSales, setFilteredSales] = useState<Sale[]>([])
   const { userProfile } = useAuth()
-
-  useEffect(() => {
-    fetchSales()
-  }, [])
+  const { sales, invalidateData, isLoading } = useData()
 
   useEffect(() => {
     // Filter sales based on search term and status
@@ -44,58 +42,13 @@ export default function SalesContent() {
     setFilteredSales(filtered)
   }, [sales, searchTerm, statusFilter])
 
-  const fetchSales = async () => {
-    try {
-      setLoading(true)
-      const { data, error } = await supabase
-        .from('sales')
-        .select(`
-          *,
-          customer:customers!customer_id (
-            id,
-            full_name,
-            nic_number,
-            phone
-          ),
-          product:products!product_id (
-            id,
-            name,
-            selling_price,
-            service_charge
-          )
-        `)
-        .order('created_at', { ascending: false })
-
-      if (error) {
-        toast.error('Error fetching sales')
-        console.error('❌ Sales fetch error:', error)
-        return
-      }
-
-      console.log('📊 Sales Data:', data?.map(sale => ({
-        id: sale.id,
-        customerName: sale.customer?.full_name,
-        customerNIC: sale.customer?.nic_number,
-        customerPhone: sale.customer?.phone,
-        customerObject: sale.customer,
-        customerId: sale.customer_id
-      })))
-
-      setSales(data || [])
-    } catch (error) {
-      toast.error('An unexpected error occurred')
-      console.error('Error:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
-
   const handleCreateSale = () => {
     setIsModalOpen(true)
   }
 
   const handleFormSubmit = async (formData: any) => {
     try {
+      setSubmitting(true)
       const { error } = await supabase
         .from('sales')
         .insert([{
@@ -111,10 +64,12 @@ export default function SalesContent() {
 
       toast.success('Sale created successfully')
       setIsModalOpen(false)
-      fetchSales()
+      invalidateData('sales')
     } catch (error) {
       toast.error('An unexpected error occurred')
       console.error('Error:', error)
+    } finally {
+      setSubmitting(false)
     }
   }
 
@@ -139,7 +94,7 @@ export default function SalesContent() {
       }
 
       toast.success('Sale marked as completed')
-      fetchSales()
+      invalidateData('sales')
     } catch (error) {
       toast.error('An unexpected error occurred')
       console.error('Error:', error)
@@ -148,12 +103,16 @@ export default function SalesContent() {
 
   // Calculate stats
   const totalSales = sales.length
-  const activeSales = sales.filter(s => s.status === 'active').length
-  const completedSales = sales.filter(s => s.status === 'completed').length
-  const totalRevenue = sales.reduce((sum, sale) => sum + (sale.total_amount || 0), 0)
+  const activeSales = sales.filter((s: Sale) => s.status === 'active').length
+  const completedSales = sales.filter((s: Sale) => s.status === 'completed').length
+  const totalRevenue = sales.reduce((sum: number, sale: Sale) => sum + (sale.total_amount || 0), 0)
   const outstandingBalance = sales
-    .filter(s => s.status === 'active')
-    .reduce((sum, sale) => sum + (sale.remaining_balance || 0), 0)
+    .filter((s: Sale) => s.status === 'active')
+    .reduce((sum: number, sale: Sale) => sum + (sale.remaining_balance || 0), 0)
+
+  if (isLoading) {
+    return <LoadingSpinner />
+  }
 
   return (
     <div className="space-y-6">
@@ -303,7 +262,7 @@ export default function SalesContent() {
       {/* Sales Table */}
       <SalesTable
         sales={filteredSales}
-        loading={loading}
+        loading={submitting}
         onMarkCompleted={handleMarkCompleted}
       />
 

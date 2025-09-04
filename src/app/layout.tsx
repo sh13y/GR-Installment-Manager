@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import { APP_CONFIG } from '@/utils/constants'
+import { DataProvider } from '@/components/providers/DataProvider'
 
 export const metadata: Metadata = {
   title: APP_CONFIG.APP_NAME,
@@ -34,7 +35,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="font-sans antialiased">
-        {children}
+        <DataProvider>
+          {children}
+        </DataProvider>
       </body>
     </html>
   )

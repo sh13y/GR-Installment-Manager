@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation'
 import { Payment, Sale } from '@/types'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/components/providers/AuthProvider'
+import { useData } from '@/components/providers/DataProvider'
 import PaymentsTable from './PaymentsTable'
 import PaymentForm from './PaymentForm'
 import SaleSelector from './SaleSelector'
@@ -15,22 +16,20 @@ import toast from 'react-hot-toast'
 import { formatCurrency } from '@/utils/helpers'
 
 export default function PaymentsContent() {
-  const [payments, setPayments] = useState<Payment[]>([])
-  const [activeSales, setActiveSales] = useState<Sale[]>([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedSale, setSelectedSale] = useState<Sale | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [dateFilter, setDateFilter] = useState<'today' | 'week' | 'month' | 'all'>('all')
   const [filteredPayments, setFilteredPayments] = useState<Payment[]>([])
   const { userProfile } = useAuth()
+  const { payments, sales, invalidateData } = useData()
   
   const searchParams = useSearchParams()
   const saleIdFromUrl = searchParams.get('sale_id')
 
-  useEffect(() => {
-    fetchData()
-  }, [])
+  // Get active sales from cached data
+  const activeSales = sales.filter(sale => sale.status === 'active')
 
   useEffect(() => {
     // Auto-select sale if provided in URL
@@ -81,83 +80,6 @@ export default function PaymentsContent() {
 
     setFilteredPayments(filtered)
   }, [payments, searchTerm, dateFilter])
-
-  const fetchData = async () => {
-    try {
-      setLoading(true)
-      
-      const [paymentsResult, salesResult] = await Promise.all([
-        supabase
-          .from('payments')
-          .select(`
-            *,
-            sales (
-              id,
-              total_amount,
-              remaining_balance,
-              customers (
-                id,
-                full_name,
-                nic_number,
-                phone
-              ),
-              products (
-                name
-              )
-            )
-          `)
-          .order('created_at', { ascending: false }),
-        supabase
-          .from('sales')
-          .select(`
-            *,
-            customer:customers!customer_id (
-              id,
-              full_name,
-              nic_number,
-              phone
-            ),
-            product:products!product_id (
-              name,
-              daily_installment
-            )
-          `)
-          .eq('status', 'active')
-          .gt('remaining_balance', 0)
-          .order('created_at', { ascending: false })
-      ])
-
-      if (paymentsResult.error) {
-        toast.error('Error fetching payments')
-        console.error('Error:', paymentsResult.error)
-        return
-      }
-
-      if (salesResult.error) {
-        toast.error('Error fetching active sales')
-        console.error('Error:', salesResult.error)
-        return
-      }
-
-      setPayments(paymentsResult.data || [])
-      setActiveSales(salesResult.data || [])
-      
-      // Debug: Log sales data to see if customer info is loading
-      console.log('💳 Active Sales Data:', salesResult.data?.map(sale => ({
-        id: sale.id,
-        customerName: sale.customer?.full_name,
-        customerNIC: sale.customer?.nic_number,
-        customerPhone: sale.customer?.phone,
-        remainingBalance: sale.remaining_balance
-      })))
-      
-    } catch (error) {
-      toast.error('An unexpected error occurred')
-      console.error('Error:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
 
   const handleCreatePayment = (sale?: Sale) => {
     setSelectedSale(sale || null)
@@ -211,7 +133,7 @@ export default function PaymentsContent() {
 
       setIsModalOpen(false)
       setSelectedSale(null)
-      fetchData()
+      invalidateData() // Refresh both sales and payments data
     } catch (error) {
       toast.error('An unexpected error occurred')
       console.error('Error:', error)

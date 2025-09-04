@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { Customer } from '@/types'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/components/providers/AuthProvider'
+import { useData } from '@/components/providers/DataProvider'
 import CustomersTable from './CustomersTable'
 import CustomerForm from './CustomerForm'
 import Modal from '@/components/ui/Modal'
@@ -12,17 +13,13 @@ import { PlusIcon } from '@heroicons/react/24/outline'
 import toast from 'react-hot-toast'
 
 export default function CustomersContent() {
-  const [customers, setCustomers] = useState<Customer[]>([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingCustomer, setEditingCustomer] = useState<Customer | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredCustomers, setFilteredCustomers] = useState<Customer[]>([])
   const { userProfile } = useAuth()
-
-  useEffect(() => {
-    fetchCustomers()
-  }, [])
+  const { customers, invalidateData } = useData()
 
   useEffect(() => {
     // Filter customers based on search term
@@ -33,29 +30,6 @@ export default function CustomersContent() {
     )
     setFilteredCustomers(filtered)
   }, [customers, searchTerm])
-
-  const fetchCustomers = async () => {
-    try {
-      setLoading(true)
-      const { data, error } = await supabase
-        .from('customers')
-        .select('*')
-        .order('created_at', { ascending: false })
-
-      if (error) {
-        toast.error('Error fetching customers')
-        console.error('Error:', error)
-        return
-      }
-
-      setCustomers(data || [])
-    } catch (error) {
-      toast.error('An unexpected error occurred')
-      console.error('Error:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
 
   const handleCreateCustomer = () => {
     setEditingCustomer(null)
@@ -116,7 +90,7 @@ export default function CustomersContent() {
       }
 
       toast.success('Customer deleted successfully')
-      fetchCustomers()
+      invalidateData('customers')
     } catch (error) {
       toast.error('An unexpected error occurred')
       console.error('Error:', error)
@@ -141,7 +115,7 @@ export default function CustomersContent() {
       }
 
       toast.success(`Customer ${!currentStatus ? 'activated' : 'deactivated'} successfully`)
-      fetchCustomers()
+      invalidateData('customers')
     } catch (error) {
       toast.error('An unexpected error occurred')
       console.error('Error:', error)
@@ -184,10 +158,12 @@ export default function CustomersContent() {
 
       setIsModalOpen(false)
       setEditingCustomer(null)
-      fetchCustomers()
+      invalidateData('customers')
     } catch (error) {
       toast.error('An unexpected error occurred')
       console.error('Error:', error)
+    } finally {
+      setLoading(false)
     }
   }
 

@@ -87,9 +87,17 @@ export function DataProvider({ children }: DataProviderProps) {
         .from('payments')
         .select(`
           *,
-          sale:sales!sale_id(
+          sales!sale_id(
             id,
-            customer:customers!customer_id(full_name, nic_number)
+            sale_number,
+            customers!customer_id(
+              full_name, 
+              nic_number, 
+              phone
+            ),
+            products!product_id(
+              name
+            )
           )
         `)
         .order('created_at', { ascending: false })

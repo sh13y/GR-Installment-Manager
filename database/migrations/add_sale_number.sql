@@ -12,21 +12,21 @@ RETURNS TEXT AS $$
 DECLARE
     today_date TEXT;
     next_number INTEGER;
-    sale_number TEXT;
+    generated_sale_number TEXT;
 BEGIN
     -- Get today's date in YYYYMMDD format
     today_date := to_char(CURRENT_DATE, 'YYYYMMDD');
     
     -- Find the next number for today
-    SELECT COALESCE(MAX(CAST(substring(sale_number from 13 for 4) AS INTEGER)), 0) + 1
+    SELECT COALESCE(MAX(CAST(substring(sales.sale_number from 13 for 4) AS INTEGER)), 0) + 1
     INTO next_number
     FROM sales 
-    WHERE sale_number LIKE 'S-' || today_date || '-%';
+    WHERE sales.sale_number LIKE 'S-' || today_date || '-%';
     
     -- Format the sale number
-    sale_number := 'S-' || today_date || '-' || LPAD(next_number::TEXT, 4, '0');
+    generated_sale_number := 'S-' || today_date || '-' || LPAD(next_number::TEXT, 4, '0');
     
-    RETURN sale_number;
+    RETURN generated_sale_number;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -50,41 +50,18 @@ CREATE TRIGGER assign_sale_number_trigger
 
 -- Step 5: Backfill existing sales with sale numbers
 -- This will assign sale numbers based on creation date
-DO $$
-DECLARE
-    sale_record RECORD;
-    sale_date TEXT;
-    counter INTEGER;
-    sale_number TEXT;
-BEGIN
-    counter := 1;
-    
-    -- Process sales in order of creation date
-    FOR sale_record IN 
-        SELECT id, created_at::DATE as sale_date_only
-        FROM sales 
-        WHERE sale_number IS NULL
-        ORDER BY created_at
-    LOOP
-        -- Get date in YYYYMMDD format
-        sale_date := to_char(sale_record.sale_date_only, 'YYYYMMDD');
-        
-        -- Reset counter for each new date
-        IF sale_date != COALESCE(LAG(to_char(sale_record.sale_date_only, 'YYYYMMDD')) OVER (ORDER BY sale_record.sale_date_only), '') THEN
-            counter := 1;
-        END IF;
-        
-        -- Generate sale number
-        sale_number := 'S-' || sale_date || '-' || LPAD(counter::TEXT, 4, '0');
-        
-        -- Update the sale
-        UPDATE sales 
-        SET sale_number = sale_number 
-        WHERE id = sale_record.id;
-        
-        counter := counter + 1;
-    END LOOP;
-END $$;
+WITH numbered_sales AS (
+  SELECT 
+    id,
+    created_at::DATE as sale_date,
+    ROW_NUMBER() OVER (PARTITION BY created_at::DATE ORDER BY created_at) as daily_sequence
+  FROM sales 
+  WHERE sale_number IS NULL
+)
+UPDATE sales 
+SET sale_number = 'S-' || to_char(numbered_sales.sale_date, 'YYYYMMDD') || '-' || LPAD(numbered_sales.daily_sequence::TEXT, 4, '0')
+FROM numbered_sales
+WHERE sales.id = numbered_sales.id;
 
 -- Step 6: Make sale_number NOT NULL after backfill
 ALTER TABLE sales 

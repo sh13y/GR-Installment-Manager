@@ -79,10 +79,10 @@ export default function PaymentsTable({ payments, loading, onEdit, onDelete }: P
                       {(payment as any).sales?.customers?.full_name || 'Unknown Customer'}
                     </div>
                     <div className="text-sm text-gray-500">
-                      NIC: {(payment as any).sales?.customers?.nic_number}
+                      NIC: {(payment as any).sales?.customers?.nic_number || 'No NIC'}
                     </div>
                     <div className="text-sm text-gray-500">
-                      {(payment as any).sales?.customers?.phone}
+                      {(payment as any).sales?.customers?.phone || 'No Phone'}
                     </div>
                   </div>
                 </td>

@@ -75,7 +75,8 @@ export default function PaymentsContent() {
         const paymentWithRefs = payment as any
         return paymentWithRefs.sales?.customers?.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                paymentWithRefs.sales?.customers?.nic_number?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-               paymentWithRefs.sales?.customers?.phone?.includes(searchTerm)
+               paymentWithRefs.sales?.customers?.phone?.includes(searchTerm) ||
+               paymentWithRefs.sales?.sale_number?.toLowerCase().includes(searchTerm.toLowerCase())
       })
     }
 

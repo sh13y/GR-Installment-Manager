@@ -12,7 +12,10 @@ export default function FaviconTest() {
             <li><a href="/favicon-16x16.png" target="_blank" className="text-blue-600 hover:underline">favicon-16x16.png</a></li>
             <li><a href="/favicon-32x32.png" target="_blank" className="text-blue-600 hover:underline">favicon-32x32.png</a></li>
             <li><a href="/apple-touch-icon.png" target="_blank" className="text-blue-600 hover:underline">apple-touch-icon.png</a></li>
-            <li><a href="/site.webmanifest" target="_blank" className="text-blue-600 hover:underline">site.webmanifest</a></li>
+            <li><a href="/site.webmanifest" target="_blank" className="text-blue-600 hover:underline">site.webmanifest (Static)</a></li>
+            <li><a href="/manifest.json" target="_blank" className="text-blue-600 hover:underline">manifest.json (Static)</a></li>
+            <li><a href="/api/site.webmanifest" target="_blank" className="text-blue-600 hover:underline">site.webmanifest (API)</a></li>
+            <li><a href="/api/manifest.json" target="_blank" className="text-blue-600 hover:underline">manifest.json (API)</a></li>
           </ul>
         </div>
         

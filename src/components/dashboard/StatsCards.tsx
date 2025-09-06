@@ -19,24 +19,24 @@ export default function StatsCards({ stats }: StatsCardsProps) {
       name: 'Total Customers',
       value: stats.totalCustomers.toLocaleString(),
       icon: UsersIcon,
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-50',
+      color: 'text-blue-600 dark:text-blue-400',
+      bgColor: 'bg-blue-50 dark:bg-blue-900/20',
       change: null,
     },
     {
       name: 'Total Sales',
       value: stats.totalSales.toLocaleString(),
       icon: ShoppingCartIcon,
-      color: 'text-green-600',
-      bgColor: 'bg-green-50',
+      color: 'text-green-600 dark:text-green-400',
+      bgColor: 'bg-green-50 dark:bg-green-900/20',
       change: null,
     },
     {
       name: 'Total Revenue',
       value: formatCurrency(stats.totalRevenue),
       icon: CurrencyDollarIcon,
-      color: 'text-purple-600',
-      bgColor: 'bg-purple-50',
+      color: 'text-purple-600 dark:text-purple-400',
+      bgColor: 'bg-purple-50 dark:bg-purple-900/20',
       change: null,
       subtitle: `Registration: ${formatCurrency(stats.registrationRevenue || 0)} + Payments: ${formatCurrency(stats.paymentsRevenue || 0)}`,
     },
@@ -44,24 +44,24 @@ export default function StatsCards({ stats }: StatsCardsProps) {
       name: 'Active Sales',
       value: stats.activeSales.toLocaleString(),
       icon: ClockIcon,
-      color: 'text-yellow-600',
-      bgColor: 'bg-yellow-50',
+      color: 'text-yellow-600 dark:text-yellow-400',
+      bgColor: 'bg-yellow-50 dark:bg-yellow-900/20',
       change: null,
     },
     {
       name: 'Completed Sales',
       value: stats.completedSales.toLocaleString(),
       icon: CheckCircleIcon,
-      color: 'text-green-600',
-      bgColor: 'bg-green-50',
+      color: 'text-green-600 dark:text-green-400',
+      bgColor: 'bg-green-50 dark:bg-green-900/20',
       change: null,
     },
     {
       name: 'Pending Payments',
       value: formatCurrency(stats.pendingPayments),
       icon: ExclamationTriangleIcon,
-      color: 'text-red-600',
-      bgColor: 'bg-red-50',
+      color: 'text-red-600 dark:text-red-400',
+      bgColor: 'bg-red-50 dark:bg-red-900/20',
       change: null,
     },
   ]
@@ -81,14 +81,14 @@ export default function StatsCards({ stats }: StatsCardsProps) {
                 </div>
                 <div className="ml-5 w-0 flex-1">
                   <dl>
-                    <dt className="text-sm font-medium text-gray-500 truncate">
+                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
                       {card.name}
                     </dt>
-                    <dd className="text-lg font-medium text-gray-900">
+                    <dd className="text-lg font-medium text-gray-900 dark:text-gray-100">
                       {card.value}
                     </dd>
                     {card.subtitle && (
-                      <dd className="text-xs text-gray-500 mt-1">
+                      <dd className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                         {card.subtitle}
                       </dd>
                     )}

@@ -11,7 +11,7 @@ export default function LoadingSpinner({ size = 'md', className = '' }: LoadingS
   }
 
   return (
-    <div className={`flex items-center justify-center min-h-screen ${className}`}>
+    <div className={`flex items-center justify-center min-h-screen bg-white dark:bg-gray-900 ${className}`}>
       <div className={`loading-spinner ${sizeClasses[size]}`}></div>
     </div>
   )

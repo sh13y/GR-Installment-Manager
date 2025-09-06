@@ -179,9 +179,9 @@ export default function LoginForm() {
           </div>
 
           <div className="text-center">
-            <p className="text-sm text-gray-600">
-              Default login: eworks.rajapaksha@gmail.com / [your_password]
-            </p>
+            {/* <p className="text-sm text-gray-600">
+              Default login: [your_email] / [your_password]
+            </p> */}
           </div>
         </form>
       </div>

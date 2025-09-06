@@ -5,19 +5,23 @@ import { DataProvider } from '@/components/providers/DataProvider'
 
 export const metadata: Metadata = {
   title: APP_CONFIG.APP_NAME,
-  description: 'Comprehensive installment management system for product sales',
-  keywords: ['installment management', 'installment sales', 'business management'],
+  description: 'Comprehensive installment management system for tire sales and payments',
+  keywords: ['installment management', 'tire sales', 'business management', 'payment tracking'],
   authors: [{ name: APP_CONFIG.COMPANY_NAME }],
   icons: {
     icon: [
-      { url: '/favicon.svg', type: 'image/svg+xml' },
-      { url: '/favicon-16x16.svg', sizes: '16x16', type: 'image/svg+xml' },
-      { url: '/favicon-32x32.svg', sizes: '32x32', type: 'image/svg+xml' },
+      { url: '/favicon.ico', type: 'image/x-icon' },
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
     ],
     apple: [
-      { url: '/apple-touch-icon.svg', sizes: '180x180', type: 'image/svg+xml' },
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
     ],
-    shortcut: '/favicon.svg',
+    shortcut: '/favicon.ico',
+    other: [
+      { url: '/android-chrome-192x192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/android-chrome-512x512.png', sizes: '512x512', type: 'image/png' },
+    ],
   },
   manifest: '/site.webmanifest',
 }

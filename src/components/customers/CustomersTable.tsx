@@ -1,6 +1,6 @@
 import { Customer } from '@/types'
 import { formatDate } from '@/utils/helpers'
-import { PencilIcon, TrashIcon, CheckCircleIcon, XCircleIcon, NoSymbolIcon } from '@heroicons/react/24/outline'
+import { PencilIcon, TrashIcon, CheckCircleIcon, XCircleIcon, NoSymbolIcon, ClockIcon } from '@heroicons/react/24/outline'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
 
 interface CustomersTableProps {
@@ -9,6 +9,7 @@ interface CustomersTableProps {
   onEdit: (customer: Customer) => void
   onDelete: (customerId: string) => void
   onToggleStatus?: (customerId: string, currentStatus: boolean) => void
+  onViewHistory?: (customer: Customer) => void
 }
 
 export default function CustomersTable({ 
@@ -16,7 +17,8 @@ export default function CustomersTable({
   loading, 
   onEdit, 
   onDelete,
-  onToggleStatus 
+  onToggleStatus,
+  onViewHistory 
 }: CustomersTableProps) {
   if (loading) {
     return (
@@ -122,6 +124,15 @@ export default function CustomersTable({
                     >
                       <PencilIcon className="h-4 w-4" />
                     </button>
+                    {onViewHistory && (
+                      <button
+                        onClick={() => onViewHistory(customer)}
+                        className="text-blue-600 hover:text-blue-700 p-1"
+                        title="View payment history"
+                      >
+                        <ClockIcon className="h-4 w-4" />
+                      </button>
+                    )}
                     {onToggleStatus && (
                       <button
                         onClick={() => onToggleStatus(customer.id, customer.is_active)}

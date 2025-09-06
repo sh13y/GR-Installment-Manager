@@ -7,6 +7,7 @@ import { useAuth } from '@/components/providers/AuthProvider'
 import { useData } from '@/components/providers/DataProvider'
 import CustomersTable from './CustomersTable'
 import CustomerForm from './CustomerForm'
+import CustomerPaymentHistory from './CustomerPaymentHistory'
 import Modal from '@/components/ui/Modal'
 import SearchFilter from '@/components/ui/SearchFilter'
 import { PlusIcon } from '@heroicons/react/24/outline'
@@ -16,6 +17,7 @@ export default function CustomersContent() {
   const [loading, setLoading] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingCustomer, setEditingCustomer] = useState<Customer | null>(null)
+  const [viewingHistoryCustomer, setViewingHistoryCustomer] = useState<Customer | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredCustomers, setFilteredCustomers] = useState<Customer[]>([])
   const { userProfile } = useAuth()
@@ -39,6 +41,10 @@ export default function CustomersContent() {
   const handleEditCustomer = (customer: Customer) => {
     setEditingCustomer(customer)
     setIsModalOpen(true)
+  }
+
+  const handleViewHistory = (customer: Customer) => {
+    setViewingHistoryCustomer(customer)
   }
 
   const handleDeleteCustomer = async (customerId: string) => {
@@ -264,6 +270,7 @@ export default function CustomersContent() {
         onEdit={handleEditCustomer}
         onDelete={handleDeleteCustomer}
         onToggleStatus={handleToggleCustomerStatus}
+        onViewHistory={handleViewHistory}
       />
 
       {/* Customer Form Modal */}
@@ -284,6 +291,14 @@ export default function CustomersContent() {
           }}
         />
       </Modal>
+
+      {/* Customer Payment History Modal */}
+      {viewingHistoryCustomer && (
+        <CustomerPaymentHistory
+          customer={viewingHistoryCustomer}
+          onClose={() => setViewingHistoryCustomer(null)}
+        />
+      )}
     </div>
   )
 }

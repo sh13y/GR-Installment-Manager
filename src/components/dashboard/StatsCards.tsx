@@ -79,20 +79,20 @@ export default function StatsCards({ stats }: StatsCardsProps) {
                     <IconComponent className={`h-6 w-6 ${card.color}`} />
                   </div>
                 </div>
-                <div className="ml-5 w-0 flex-1">
-                  <dl>
-                    <dt className="text-sm font-medium text-gray-500 truncate">
+                <div className="ml-4 min-w-0 flex-1">
+                  <div>
+                    <p className="text-sm font-medium text-gray-500 truncate">
                       {card.name}
-                    </dt>
-                    <dd className="text-lg font-medium text-gray-900">
+                    </p>
+                    <p className="text-2xl font-bold text-gray-900 mt-1">
                       {card.value}
-                    </dd>
+                    </p>
                     {card.subtitle && (
-                      <dd className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs text-gray-500 mt-1">
                         {card.subtitle}
-                      </dd>
+                      </p>
                     )}
-                  </dl>
+                  </div>
                 </div>
               </div>
             </div>

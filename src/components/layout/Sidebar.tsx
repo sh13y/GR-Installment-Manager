@@ -11,6 +11,7 @@ import {
   ShoppingCartIcon,
   CreditCardIcon,
   ArchiveBoxIcon,
+  CubeIcon,
   ChartBarIcon,
   UserGroupIcon,
   Bars3Icon,
@@ -25,6 +26,7 @@ const icons = {
   ShoppingCartIcon,
   CreditCardIcon,
   ArchiveBoxIcon,
+  CubeIcon,
   ChartBarIcon,
   UserGroupIcon,
 }

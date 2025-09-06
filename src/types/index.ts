@@ -153,6 +153,15 @@ export interface UserForm {
   role: 'super_admin' | 'data_entry_staff'
 }
 
+export interface ProductForm {
+  name: string
+  cost_price: number
+  selling_price: number
+  service_charge: number
+  daily_installment: number
+  max_installments: number
+}
+
 // API Response Types
 export interface ApiResponse<T> {
   data: T | null

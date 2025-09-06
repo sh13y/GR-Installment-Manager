@@ -80,6 +80,12 @@ export const NAVIGATION = {
     href: '/inventory',
     icon: 'ArchiveBoxIcon',
   },
+  PRODUCTS: {
+    name: 'Products',
+    href: '/products',
+    icon: 'CubeIcon',
+    adminOnly: true,
+  },
   REPORTS: {
     name: 'Reports',
     href: '/reports',

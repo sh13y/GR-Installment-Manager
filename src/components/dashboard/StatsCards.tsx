@@ -38,7 +38,7 @@ export default function StatsCards({ stats }: StatsCardsProps) {
       color: 'text-purple-600 dark:text-purple-400',
       bgColor: 'bg-purple-50 dark:bg-purple-900/20',
       change: null,
-      subtitle: `Registration: ${formatCurrency(stats.registrationRevenue || 0)} + Payments: ${formatCurrency(stats.paymentsRevenue || 0)}`,
+      subtitle: `Registration: ${formatCurrency(stats.registrationRevenue || 0)} + Sales: ${formatCurrency(stats.salesRevenue || 0)}`,
     },
     {
       name: 'Active Sales',
@@ -71,29 +71,27 @@ export default function StatsCards({ stats }: StatsCardsProps) {
       {cards.map((card) => {
         const IconComponent = card.icon
         return (
-          <div key={card.name} className="card hover:shadow-medium transition-shadow duration-200">
-            <div className="card-body">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <div className={`p-3 rounded-lg ${card.bgColor}`}>
-                    <IconComponent className={`h-6 w-6 ${card.color}`} />
-                  </div>
+          <div key={card.name} className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm hover:shadow-md dark:hover:shadow-lg transition-shadow duration-200 border border-gray-200 dark:border-gray-700">
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <div className={`p-3 rounded-lg ${card.bgColor}`}>
+                  <IconComponent className={`h-6 w-6 ${card.color}`} />
                 </div>
-                <div className="ml-5 w-0 flex-1">
-                  <dl>
-                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
-                      {card.name}
-                    </dt>
-                    <dd className="text-lg font-medium text-gray-900 dark:text-gray-100">
-                      {card.value}
+              </div>
+              <div className="ml-5 w-0 flex-1">
+                <dl>
+                  <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
+                    {card.name}
+                  </dt>
+                  <dd className="text-lg font-medium text-gray-900 dark:text-gray-100">
+                    {card.value}
+                  </dd>
+                  {card.subtitle && (
+                    <dd className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                      {card.subtitle}
                     </dd>
-                    {card.subtitle && (
-                      <dd className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                        {card.subtitle}
-                      </dd>
-                    )}
-                  </dl>
-                </div>
+                  )}
+                </dl>
               </div>
             </div>
           </div>

@@ -7,100 +7,87 @@ import RecentActivity from './RecentActivity'
 import PaymentOverview from './PaymentOverview'
 import { DashboardStats } from '@/types'
 import { supabase } from '@/lib/supabase'
-import { useData } from '@/components/providers/DataProvider'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
 
 export default function DashboardContent() {
   const [stats, setStats] = useState<DashboardStats | null>(null)
   const [loading, setLoading] = useState(true)
-  const { customers, sales, payments, isLoading } = useData()
 
   useEffect(() => {
-    if (!isLoading && customers.length >= 0 && sales.length >= 0 && payments.length >= 0) {
-      calculateDashboardStats()
-    }
-  }, [customers, sales, payments, isLoading])
+    fetchDashboardData()
+  }, [])
 
-  const calculateDashboardStats = async () => {
+  const fetchDashboardData = async () => {
     try {
       setLoading(true)
 
-      // Calculate stats from cached data
-      const totalCustomers = customers.length
-      const totalSales = sales.length
-      
-      // Calculate registration fee revenue (Rs. 250 per customer who paid)
-      const registrationFeesCount = customers.filter(c => c.registration_fee_paid).length
-      const registrationRevenue = registrationFeesCount * 250 // Rs. 250 per registration
+      // Fetch various stats in parallel
+      const [
+        customersResult,
+        salesResult,
+        paymentsResult,
+        todayPaymentsResult,
+        registrationFeesResult
+      ] = await Promise.all([
+        supabase.from('customers').select('id, registration_fee_paid', { count: 'exact' }),
+        supabase.from('sales').select('id, total_amount, status', { count: 'exact' }),
+        supabase.from('payments').select('amount, created_at'),
+        supabase
+          .from('payments')
+          .select('amount')
+          .gte('payment_date', new Date().toISOString().split('T')[0]),
+        supabase.from('customers').select('registration_fee_paid').eq('registration_fee_paid', true)
+      ])
 
-      // Calculate initial payments revenue (Rs. 610 each sale)
-      const initialPaymentsRevenue = sales.reduce((sum, sale) => sum + (sale.initial_payment || 0), 0)
-
-      // Calculate installment payments revenue (daily payments received)
-      const installmentPaymentsRevenue = payments.reduce((sum, payment) => sum + (payment.amount || 0), 0)
+      const customers = customersResult.data || []
+      const totalCustomers = customersResult.count || 0
+      const totalSales = salesResult.count || 0
       
-      // Total actual revenue = Registration fees + Initial payments + Installment payments
-      const totalRevenue = registrationRevenue + initialPaymentsRevenue + installmentPaymentsRevenue
+      // Calculate registration fee revenue
+      const registrationFeesCount = registrationFeesResult.data?.length || 0
+      const registrationRevenue = registrationFeesCount * 250 // ₹250 per registration
+
+      // Calculate sales revenue
+      const sales = salesResult.data || []
+      const salesRevenue = sales.reduce((sum, sale) => sum + (sale.total_amount || 0), 0)
+      
+      // Total revenue = Registration fees + Sales revenue
+      const totalRevenue = registrationRevenue + salesRevenue
       
       const activeSales = sales.filter(sale => sale.status === 'active').length
       const completedSales = sales.filter(sale => sale.status === 'completed').length
 
-      // Calculate pending amounts (outstanding balances from sales)
-      const pendingPayments = sales
-        .filter(sale => sale.status === 'active')
-        .reduce((sum, sale) => sum + (sale.remaining_balance || 0), 0)
+      const payments = paymentsResult.data || []
+      const totalPaid = payments.reduce((sum, payment) => sum + (payment.amount || 0), 0)
+      const pendingPayments = salesRevenue - totalPaid // Only sales create pending payments
 
-      // Today's payments
-      const today = new Date().toISOString().split('T')[0]
-      const todayPayments = payments.filter(payment => 
-        payment.payment_date?.startsWith(today) || payment.created_at?.startsWith(today)
-      )
+      const todayPayments = todayPaymentsResult.data || []
       const todayTotal = todayPayments.reduce((sum, payment) => sum + (payment.amount || 0), 0)
 
-      // Calculate monthly revenue (current month) - only actual payments + registrations
+      // Calculate monthly revenue (current month)
       const currentMonth = new Date().toISOString().slice(0, 7)
       const monthlyPayments = payments.filter(payment => 
         payment.created_at?.startsWith(currentMonth)
       )
-      const monthlyInstallmentRevenue = monthlyPayments.reduce((sum, payment) => sum + (payment.amount || 0), 0)
-      
-      // Get monthly registrations
-      const monthlyRegistrations = customers.filter(customer =>
-        customer.registration_fee_paid && 
-        customer.created_at?.startsWith(currentMonth)
-      )
-      const monthlyRegistrationRevenue = monthlyRegistrations.length * 250
-      
-      // Get monthly initial payments (from sales created this month)
-      const monthlySales = sales.filter(sale =>
-        sale.created_at?.startsWith(currentMonth)
-      )
-      const monthlyInitialPayments = monthlySales.reduce((sum, sale) => sum + (sale.initial_payment || 0), 0)
-      
-      const monthlyRevenue = monthlyInstallmentRevenue + monthlyRegistrationRevenue + monthlyInitialPayments
+      const monthlyRevenue = monthlyPayments.reduce((sum, payment) => sum + (payment.amount || 0), 0) + registrationRevenue
 
       setStats({
         totalCustomers,
         totalSales,
-        totalRevenue, // Registration + Initial payments + Installment payments
-        pendingPayments, // Outstanding balances 
+        totalRevenue,
+        pendingPayments,
         completedSales,
         activeSales,
         todayPayments: todayTotal,
-        monthlyRevenue, // Only actual money received this month
-        registrationRevenue, // Total registration revenue
-        paymentsRevenue: initialPaymentsRevenue + installmentPaymentsRevenue, // Total payment revenue
+        monthlyRevenue,
+        registrationRevenue, // Add this for detailed breakdown
+        salesRevenue, // Add this for detailed breakdown
       })
     } catch (error) {
-      console.error('Error calculating dashboard stats:', error)
+      console.error('Error fetching dashboard data:', error)
     } finally {
       setLoading(false)
     }
-  }
-
-  const handleRefresh = () => {
-    setLoading(true)
-    calculateDashboardStats()
   }
 
   if (loading) {
@@ -121,11 +108,10 @@ export default function DashboardContent() {
         </div>
         <div className="mt-4 flex md:mt-0 md:ml-4">
           <button
-            onClick={handleRefresh}
-            className="btn-outline"
-            disabled={loading}
+            onClick={fetchDashboardData}
+            className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
           >
-            {loading ? 'Refreshing...' : 'Refresh Data'}
+            Refresh Data
           </button>
         </div>
       </div>

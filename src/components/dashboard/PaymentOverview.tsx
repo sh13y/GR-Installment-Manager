@@ -73,28 +73,30 @@ export default function PaymentOverview() {
   }
 
   return (
-    <div className="card">
-      <div className="card-header">
-        <h3 className="text-lg font-medium text-gray-900">Daily Payments (Last 7 Days)</h3>
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+      <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+        <h3 className="text-lg font-medium text-gray-900 dark:text-white">Daily Payments (Last 7 Days)</h3>
       </div>
-      <div className="card-body">
+      <div className="p-6">
         {loading ? (
           <div className="h-64 flex items-center justify-center">
-            <div className="loading-spinner"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
           </div>
         ) : (
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={data}>
-                <CartesianGrid strokeDasharray="3 3" />
+                <CartesianGrid strokeDasharray="3 3" stroke="#6B7280" opacity={0.3} />
                 <XAxis 
                   dataKey="date"
+                  stroke="#6B7280"
+                  fontSize={12}
                   tickFormatter={(value) => {
                     const date = new Date(value)
                     return date.toLocaleDateString('en-US', { weekday: 'short' })
                   }}
                 />
-                <YAxis />
+                <YAxis stroke="#6B7280" fontSize={12} />
                 <Tooltip
                   labelFormatter={(label) => {
                     const date = new Date(label as string)
@@ -120,16 +122,16 @@ export default function PaymentOverview() {
         {/* Summary */}
         <div className="mt-4 grid grid-cols-2 gap-4 text-center">
           <div>
-            <p className="text-2xl font-semibold text-gray-900">
+            <p className="text-2xl font-semibold text-gray-900 dark:text-white">
               {formatCurrency(data.reduce((sum, item) => sum + item.amount, 0))}
             </p>
-            <p className="text-sm text-gray-500">Total Collected</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">Total Collected</p>
           </div>
           <div>
-            <p className="text-2xl font-semibold text-gray-900">
+            <p className="text-2xl font-semibold text-gray-900 dark:text-white">
               {data.reduce((sum, item) => sum + item.count, 0)}
             </p>
-            <p className="text-sm text-gray-500">Total Payments</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">Total Payments</p>
           </div>
         </div>
       </div>

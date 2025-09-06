@@ -67,36 +67,36 @@ export default function SalesChart() {
   }
 
   return (
-    <div className="card">
-      <div className="card-header">
-        <div className="flex items-center justify-between">
-          <h3 className="text-lg font-medium text-gray-900">Sales Overview</h3>
-          <select
-            value={period}
-            onChange={(e) => setPeriod(e.target.value as any)}
-            className="form-select text-sm"
-          >
-            <option value="7days">Last 7 days</option>
-            <option value="30days">Last 30 days</option>
-            <option value="90days">Last 90 days</option>
-          </select>
-        </div>
+    <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">Sales Overview</h3>
+        <select
+          value={period}
+          onChange={(e) => setPeriod(e.target.value as any)}
+          className="text-sm border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+        >
+          <option value="7days">Last 7 days</option>
+          <option value="30days">Last 30 days</option>
+          <option value="90days">Last 90 days</option>
+        </select>
       </div>
-      <div className="card-body">
+      <div className="h-64">
         {loading ? (
           <div className="h-64 flex items-center justify-center">
-            <div className="loading-spinner"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
           </div>
         ) : data.length > 0 ? (
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={data}>
-                <CartesianGrid strokeDasharray="3 3" />
+                <CartesianGrid strokeDasharray="3 3" stroke="#6B7280" opacity={0.3} />
                 <XAxis
                   dataKey="date"
+                  stroke="#6B7280"
+                  fontSize={12}
                   tickFormatter={(value) => formatDate(value)}
                 />
-                <YAxis />
+                <YAxis stroke="#6B7280" fontSize={12} />
                 <Tooltip
                   labelFormatter={(label) => formatDate(label as string)}
                   formatter={(value, name) => {
@@ -124,7 +124,7 @@ export default function SalesChart() {
             </ResponsiveContainer>
           </div>
         ) : (
-          <div className="h-64 flex items-center justify-center text-gray-500">
+          <div className="h-64 flex items-center justify-center text-gray-500 dark:text-gray-400">
             No sales data available for the selected period
           </div>
         )}

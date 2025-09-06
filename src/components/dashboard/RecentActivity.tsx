@@ -118,11 +118,11 @@ export default function RecentActivity() {
   const getActivityIcon = (type: string) => {
     switch (type) {
       case 'customer':
-        return <UserPlusIcon className="h-5 w-5 text-blue-600" />
+        return <UserPlusIcon className="h-5 w-5 text-blue-600 dark:text-blue-400" />
       case 'sale':
-        return <ShoppingCartIcon className="h-5 w-5 text-green-600" />
+        return <ShoppingCartIcon className="h-5 w-5 text-green-600 dark:text-green-400" />
       case 'payment':
-        return <CreditCardIcon className="h-5 w-5 text-purple-600" />
+        return <CreditCardIcon className="h-5 w-5 text-purple-600 dark:text-purple-400" />
       default:
         return null
     }
@@ -131,54 +131,54 @@ export default function RecentActivity() {
   const getActivityBgColor = (type: string) => {
     switch (type) {
       case 'customer':
-        return 'bg-blue-50'
+        return 'bg-blue-50 dark:bg-blue-900/20'
       case 'sale':
-        return 'bg-green-50'
+        return 'bg-green-50 dark:bg-green-900/20'
       case 'payment':
-        return 'bg-purple-50'
+        return 'bg-purple-50 dark:bg-purple-900/20'
       default:
-        return 'bg-gray-50'
+        return 'bg-gray-50 dark:bg-gray-700/50'
     }
   }
 
   return (
-    <div className="card">
-      <div className="card-header">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+      <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-medium text-gray-900">Recent Activity</h3>
+          <h3 className="text-lg font-medium text-gray-900 dark:text-white">Recent Activity</h3>
           <button
             onClick={fetchRecentActivity}
-            className="text-sm text-primary-600 hover:text-primary-700"
+            className="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300"
           >
             Refresh
           </button>
         </div>
       </div>
-      <div className="card-body p-0">
+      <div className="p-0">
         {loading ? (
           <div className="p-6 flex items-center justify-center">
-            <div className="loading-spinner"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
           </div>
         ) : activities.length > 0 ? (
           <div className="flow-root">
-            <ul className="divide-y divide-gray-200">
+            <ul className="divide-y divide-gray-200 dark:divide-gray-700">
               {activities.map((activity) => (
-                <li key={activity.id} className="p-6 hover:bg-gray-50">
+                <li key={activity.id} className="p-6 hover:bg-gray-50 dark:hover:bg-gray-700/50">
                   <div className="relative flex items-center space-x-3">
                     <div className={`flex-shrink-0 p-2 rounded-lg ${getActivityBgColor(activity.type)}`}>
                       {getActivityIcon(activity.type)}
                     </div>
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center justify-between">
-                        <p className="text-sm font-medium text-gray-900">
+                        <p className="text-sm font-medium text-gray-900 dark:text-white">
                           {activity.title}
                         </p>
-                        <div className="flex items-center text-sm text-gray-500">
+                        <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
                           {formatDateTime(activity.timestamp)}
                           {activity.link && (
                             <Link
                               href={activity.link}
-                              className="ml-2 text-primary-600 hover:text-primary-700"
+                              className="ml-2 text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300"
                             >
                               <ArrowTopRightOnSquareIcon className="h-4 w-4" />
                             </Link>
@@ -186,11 +186,11 @@ export default function RecentActivity() {
                         </div>
                       </div>
                       <div className="flex items-center justify-between mt-1">
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-gray-500 dark:text-gray-400">
                           {activity.description}
                         </p>
                         {activity.amount && (
-                          <p className="text-sm font-medium text-gray-900 text-currency">
+                          <p className="text-sm font-medium text-gray-900 dark:text-white text-currency">
                             {formatCurrency(activity.amount)}
                           </p>
                         )}
@@ -202,7 +202,7 @@ export default function RecentActivity() {
             </ul>
           </div>
         ) : (
-          <div className="p-6 text-center text-gray-500">
+          <div className="p-6 text-center text-gray-500 dark:text-gray-400">
             No recent activity found
           </div>
         )}

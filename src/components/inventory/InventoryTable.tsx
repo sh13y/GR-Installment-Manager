@@ -137,7 +137,7 @@ export default function InventoryTable({
       </div>
       
       {/* Table Footer with Summary */}
-      <div className="bg-gray-50 px-6 py-3 border-t border-gray-200">
+      <div className="bg-gray-50 dark:bg-gray-800/50 px-6 py-3 border-t border-gray-200 dark:border-gray-700">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
           <div>
             <span className="text-gray-600">Total Products: </span>

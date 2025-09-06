@@ -32,7 +32,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   }
 
   return (
-    <div className="h-screen flex overflow-hidden bg-gray-50">
+    <div className="h-screen flex overflow-hidden bg-gray-50 dark:bg-gray-900">
       <Sidebar 
         isMobileOpen={isMobileMenuOpen} 
         setIsMobileOpen={setIsMobileMenuOpen}

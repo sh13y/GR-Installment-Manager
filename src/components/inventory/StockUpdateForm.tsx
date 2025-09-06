@@ -216,7 +216,7 @@ export default function StockUpdateForm({ item, onSubmit, onCancel }: StockUpdat
 
       {/* Summary */}
       {selectedProduct && formData.quantity_in_stock > 0 && (
-        <div className="bg-gray-50 p-4 rounded-lg">
+        <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg">
           <h4 className="text-sm font-medium text-gray-900 mb-3">Inventory Summary</h4>
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">

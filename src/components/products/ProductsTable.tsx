@@ -98,7 +98,7 @@ export default function ProductsTable({ products, onEdit, onDelete, onToggleStat
   return (
     <div className="space-y-4">
       {/* Search and Filters */}
-      <div className="flex flex-col sm:flex-row gap-4 p-4 bg-gray-50 rounded-lg">
+      <div className="flex flex-col sm:flex-row gap-4 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
         <div className="flex-1">
           <SearchFilter
             searchTerm={searchTerm}
@@ -123,9 +123,9 @@ export default function ProductsTable({ products, onEdit, onDelete, onToggleStat
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-gray-200">
+            <tr className="border-b border-gray-200 dark:border-gray-700">
               <th 
-                className="text-left py-3 px-4 font-medium text-gray-700 cursor-pointer hover:bg-gray-50"
+                className="text-left py-3 px-4 font-medium text-gray-700 dark:text-gray-300 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700"
                 onClick={() => handleSort('name')}
               >
                 <div className="flex items-center gap-1">
@@ -134,7 +134,7 @@ export default function ProductsTable({ products, onEdit, onDelete, onToggleStat
                 </div>
               </th>
               <th 
-                className="text-left py-3 px-4 font-medium text-gray-700 cursor-pointer hover:bg-gray-50"
+                className="text-left py-3 px-4 font-medium text-gray-700 dark:text-gray-300 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700"
                 onClick={() => handleSort('cost_price')}
               >
                 <div className="flex items-center gap-1">
@@ -143,7 +143,7 @@ export default function ProductsTable({ products, onEdit, onDelete, onToggleStat
                 </div>
               </th>
               <th 
-                className="text-left py-3 px-4 font-medium text-gray-700 cursor-pointer hover:bg-gray-50"
+                className="text-left py-3 px-4 font-medium text-gray-700 dark:text-gray-300 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700"
                 onClick={() => handleSort('selling_price')}
               >
                 <div className="flex items-center gap-1">
@@ -152,7 +152,7 @@ export default function ProductsTable({ products, onEdit, onDelete, onToggleStat
                 </div>
               </th>
               <th 
-                className="text-left py-3 px-4 font-medium text-gray-700 cursor-pointer hover:bg-gray-50"
+                className="text-left py-3 px-4 font-medium text-gray-700 dark:text-gray-300 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700"
                 onClick={() => handleSort('profit')}
               >
                 <div className="flex items-center gap-1">
@@ -161,7 +161,7 @@ export default function ProductsTable({ products, onEdit, onDelete, onToggleStat
                 </div>
               </th>
               <th 
-                className="text-left py-3 px-4 font-medium text-gray-700 cursor-pointer hover:bg-gray-50"
+                className="text-left py-3 px-4 font-medium text-gray-700 dark:text-gray-300 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700"
                 onClick={() => handleSort('service_charge')}
               >
                 <div className="flex items-center gap-1">
@@ -170,7 +170,7 @@ export default function ProductsTable({ products, onEdit, onDelete, onToggleStat
                 </div>
               </th>
               <th 
-                className="text-left py-3 px-4 font-medium text-gray-700 cursor-pointer hover:bg-gray-50"
+                className="text-left py-3 px-4 font-medium text-gray-700 dark:text-gray-300 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700"
                 onClick={() => handleSort('daily_installment')}
               >
                 <div className="flex items-center gap-1">
@@ -178,14 +178,14 @@ export default function ProductsTable({ products, onEdit, onDelete, onToggleStat
                   <SortIcon field="daily_installment" />
                 </div>
               </th>
-              <th className="text-left py-3 px-4 font-medium text-gray-700">
+              <th className="text-left py-3 px-4 font-medium text-gray-700 dark:text-gray-300">
                 Max Installments
               </th>
-              <th className="text-left py-3 px-4 font-medium text-gray-700">
+              <th className="text-left py-3 px-4 font-medium text-gray-700 dark:text-gray-300">
                 Status
               </th>
               <th 
-                className="text-left py-3 px-4 font-medium text-gray-700 cursor-pointer hover:bg-gray-50"
+                className="text-left py-3 px-4 font-medium text-gray-700 dark:text-gray-300 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700"
                 onClick={() => handleSort('created_at')}
               >
                 <div className="flex items-center gap-1">
@@ -193,7 +193,7 @@ export default function ProductsTable({ products, onEdit, onDelete, onToggleStat
                   <SortIcon field="created_at" />
                 </div>
               </th>
-              <th className="text-left py-3 px-4 font-medium text-gray-700">
+              <th className="text-left py-3 px-4 font-medium text-gray-700 dark:text-gray-300">
                 Actions
               </th>
             </tr>
@@ -211,7 +211,7 @@ export default function ProductsTable({ products, onEdit, onDelete, onToggleStat
                 const totalCustomerPayment = product.selling_price + product.service_charge
                 
                 return (
-                  <tr key={product.id} className="border-b border-gray-100 hover:bg-gray-50">
+                  <tr key={product.id} className="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">
                     <td className="py-3 px-4">
                       <div className="font-medium text-gray-900">{product.name}</div>
                       <div className="text-xs text-gray-500 mt-1">
@@ -285,7 +285,7 @@ export default function ProductsTable({ products, onEdit, onDelete, onToggleStat
 
       {/* Summary */}
       {sortedProducts.length > 0 && (
-        <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg text-sm text-gray-600">
+        <div className="flex justify-between items-center p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg text-sm text-gray-600 dark:text-gray-400">
           <span>
             Showing {sortedProducts.length} of {products.length} products
           </span>

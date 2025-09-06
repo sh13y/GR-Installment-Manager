@@ -142,7 +142,7 @@ export default function PaymentsTable({ payments, loading, onEdit, onDelete }: P
       </div>
       
       {/* Table Footer with Summary */}
-      <div className="bg-gray-50 px-6 py-3 border-t border-gray-200">
+      <div className="bg-gray-50 dark:bg-gray-800/50 px-6 py-3 border-t border-gray-200 dark:border-gray-700">
         <div className="flex justify-between items-center text-sm">
           <span className="text-gray-600">
             Total {payments.length} payment{payments.length !== 1 ? 's' : ''}

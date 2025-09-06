@@ -128,7 +128,7 @@ export default function ProductForm({ product, onSubmit, onCancel, loading = fal
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Product Name */}
       <div>
-        <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+        <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
           Product Name *
         </label>
         <input
@@ -150,7 +150,7 @@ export default function ProductForm({ product, onSubmit, onCancel, loading = fal
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Cost Price */}
         <div>
-          <label htmlFor="cost_price" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="cost_price" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Cost Price * ({APP_CONFIG.CURRENCY_SYMBOL})
           </label>
           <input
@@ -171,7 +171,7 @@ export default function ProductForm({ product, onSubmit, onCancel, loading = fal
 
         {/* Selling Price */}
         <div>
-          <label htmlFor="selling_price" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="selling_price" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Selling Price * ({APP_CONFIG.CURRENCY_SYMBOL})
           </label>
           <input
@@ -200,7 +200,7 @@ export default function ProductForm({ product, onSubmit, onCancel, loading = fal
 
       {/* Service Charge */}
       <div>
-        <label htmlFor="service_charge" className="block text-sm font-medium text-gray-700 mb-1">
+        <label htmlFor="service_charge" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
           Service Charge ({APP_CONFIG.CURRENCY_SYMBOL})
         </label>
         <input
@@ -233,7 +233,7 @@ export default function ProductForm({ product, onSubmit, onCancel, loading = fal
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Daily Installment */}
         <div>
-          <label htmlFor="daily_installment" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="daily_installment" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Daily Installment * ({APP_CONFIG.CURRENCY_SYMBOL})
           </label>
           <input
@@ -254,7 +254,7 @@ export default function ProductForm({ product, onSubmit, onCancel, loading = fal
 
         {/* Max Installments */}
         <div>
-          <label htmlFor="max_installments" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="max_installments" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Max Installments *
           </label>
           <input
@@ -288,7 +288,7 @@ export default function ProductForm({ product, onSubmit, onCancel, loading = fal
         <button
           type="button"
           onClick={onCancel}
-          className="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200"
+          className="px-4 py-2 text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
           disabled={loading}
         >
           Cancel

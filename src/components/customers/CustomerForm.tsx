@@ -189,7 +189,7 @@ export default function CustomerForm({ customer, onSubmit, onCancel }: CustomerF
       </div>
 
       {/* Registration Fee */}
-      <div className="bg-gray-50 p-4 rounded-lg">
+      <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg">
         <div className="flex items-center justify-between">
           <div>
             <h4 className="text-sm font-medium text-gray-900">

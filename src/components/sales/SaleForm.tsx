@@ -310,7 +310,7 @@ export default function SaleForm({ editingSale, onSubmit, onCancel }: SaleFormPr
 
       {/* Sale Summary */}
       {selectedProduct && (
-        <div className="bg-gray-50 p-4 rounded-lg">
+        <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg">
           <h4 className="text-sm font-medium text-gray-900 mb-3">Sale Summary</h4>
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">

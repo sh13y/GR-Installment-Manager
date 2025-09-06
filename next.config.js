@@ -20,8 +20,38 @@ const nextConfig = {
         ],
       },
       {
+        source: '/android-chrome-192x192.png',
+        headers: [
+          {
+            key: 'Content-Type',
+            value: 'image/png',
+          },
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/android-chrome-512x512.png',
+        headers: [
+          {
+            key: 'Content-Type',
+            value: 'image/png',
+          },
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
         source: '/:path*\\.(png|jpg|jpeg|svg|ico|webp)',
         headers: [
+          {
+            key: 'Content-Type',
+            value: 'image/png',
+          },
           {
             key: 'Cache-Control',
             value: 'public, max-age=31536000, immutable',
@@ -55,6 +85,10 @@ const nextConfig = {
         ],
       },
     ]
+  },
+  // Ensure public files are included in the build
+  publicRuntimeConfig: {
+    staticFolder: '/public',
   },
 }
 

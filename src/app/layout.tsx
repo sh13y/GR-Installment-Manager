@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import { APP_CONFIG } from '@/utils/constants'
 import { DataProvider } from '@/components/providers/DataProvider'
+import { ThemeProvider } from '@/components/providers/ThemeProvider'
 
 export const metadata: Metadata = {
   title: APP_CONFIG.APP_NAME,
@@ -43,10 +44,12 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <link rel="manifest" href="/site.webmanifest" />
       </head>
-      <body className="font-sans antialiased">
-        <DataProvider>
-          {children}
-        </DataProvider>
+      <body className="font-sans antialiased bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+        <ThemeProvider>
+          <DataProvider>
+            {children}
+          </DataProvider>
+        </ThemeProvider>
       </body>
     </html>
   )

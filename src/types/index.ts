@@ -107,6 +107,7 @@ export interface DashboardStats {
   monthlyRevenue: number // Only actual money received this month
   registrationRevenue?: number // Total registration fees collected
   paymentsRevenue?: number // Total installment payments collected
+  salesRevenue?: number // Total value of all sales (not necessarily collected)
 }
 
 export interface SalesChart {

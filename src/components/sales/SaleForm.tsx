@@ -21,6 +21,7 @@ export default function SaleForm({ editingSale, onSubmit, onCancel }: SaleFormPr
     product_id: '',
     quantity: 1,
     initial_payment: BUSINESS_CONSTANTS.INITIAL_PAYMENT,
+    sale_date: new Date().toISOString().split('T')[0], // Today's date as default
   })
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null)
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
@@ -40,6 +41,7 @@ export default function SaleForm({ editingSale, onSubmit, onCancel }: SaleFormPr
         product_id: editingSale.product_id,
         quantity: editingSale.quantity || 1,
         initial_payment: editingSale.initial_payment,
+        sale_date: editingSale.sale_date || new Date().toISOString().split('T')[0],
       })
     } else {
       // Reset form for new sale
@@ -48,6 +50,7 @@ export default function SaleForm({ editingSale, onSubmit, onCancel }: SaleFormPr
         product_id: '',
         quantity: 1,
         initial_payment: BUSINESS_CONSTANTS.INITIAL_PAYMENT,
+        sale_date: new Date().toISOString().split('T')[0],
       })
     }
   }, [editingSale])
@@ -166,7 +169,7 @@ export default function SaleForm({ editingSale, onSubmit, onCancel }: SaleFormPr
         total_amount: totalAmount,
         remaining_balance: remainingBalance,
         status: 'active',
-        sale_date: new Date().toISOString().split('T')[0],
+        sale_date: formData.sale_date,
       }
       
       await onSubmit(submitData)
@@ -305,6 +308,28 @@ export default function SaleForm({ editingSale, onSubmit, onCancel }: SaleFormPr
         )}
         <p className="text-sm text-gray-500 mt-1">
           Recommended: {formatCurrency(BUSINESS_CONSTANTS.INITIAL_PAYMENT)}
+        </p>
+      </div>
+
+      {/* Sale Date */}
+      <div>
+        <label htmlFor="sale_date" className="form-label">
+          Sale Date *
+        </label>
+        <input
+          id="sale_date"
+          type="date"
+          required
+          className={`form-input ${errors.sale_date ? 'border-red-500' : ''}`}
+          value={formData.sale_date}
+          onChange={(e) => handleInputChange('sale_date', e.target.value)}
+          max={new Date().toISOString().split('T')[0]} // Prevent future dates
+        />
+        {errors.sale_date && (
+          <p className="form-error">{errors.sale_date}</p>
+        )}
+        <p className="text-xs text-gray-500 mt-1">
+          Select the date when this sale was made (cannot be in the future)
         </p>
       </div>
 

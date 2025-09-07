@@ -135,6 +135,7 @@ export interface SaleForm {
   product_id: string
   quantity: number
   initial_payment: number
+  sale_date: string
 }
 
 export interface PaymentForm {

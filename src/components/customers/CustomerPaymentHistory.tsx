@@ -47,8 +47,10 @@ export default function CustomerPaymentHistory({ customer, onClose }: CustomerPa
         .select(`
           id,
           total_amount,
+          initial_payment,
           status,
           created_at,
+          sale_date,
           products (name)
         `)
         .eq('customer_id', customer.id)
@@ -104,7 +106,25 @@ export default function CustomerPaymentHistory({ customer, onClose }: CustomerPa
         })
       }
 
-      // Add payments
+      // Add initial payments from sales
+      (sales || []).forEach(sale => {
+        if (sale.initial_payment && sale.initial_payment > 0) {
+          const productName = Array.isArray(sale.products) && sale.products.length > 0 
+            ? sale.products[0].name 
+            : (sale.products as any)?.name || 'Product'
+          
+          historyItems.push({
+            id: `initial-${sale.id}`,
+            type: 'payment',
+            amount: sale.initial_payment,
+            date: sale.sale_date || sale.created_at,
+            description: `Initial Payment for ${productName}`,
+            sale_id: sale.id,
+          })
+        }
+      })
+
+      // Add installment payments
       payments.forEach(payment => {
         const sale = payment.sales as any
         historyItems.push({
@@ -112,7 +132,7 @@ export default function CustomerPaymentHistory({ customer, onClose }: CustomerPa
           type: 'payment',
           amount: payment.amount,
           date: payment.payment_date || payment.created_at,
-          description: `Payment for ${sale?.products?.name || 'Product'}`,
+          description: `Installment Payment for ${sale?.products?.name || 'Product'}`,
           sale_id: sale?.id,
         })
       })
@@ -123,8 +143,13 @@ export default function CustomerPaymentHistory({ customer, onClose }: CustomerPa
       // Calculate summary
       const totalPaid = historyItems.reduce((sum, item) => sum + item.amount, 0)
       const totalSalesAmount = (sales || []).reduce((sum, sale) => sum + (sale.total_amount || 0), 0)
-      const paymentsTotal = payments.reduce((sum, payment) => sum + payment.amount, 0)
-      const totalDue = totalSalesAmount - paymentsTotal
+      
+      // Calculate total payments received (initial payments + installment payments)
+      const initialPaymentsTotal = (sales || []).reduce((sum, sale) => sum + (sale.initial_payment || 0), 0)
+      const installmentPaymentsTotal = payments.reduce((sum, payment) => sum + payment.amount, 0)
+      const totalPaymentsReceived = initialPaymentsTotal + installmentPaymentsTotal
+      
+      const totalDue = totalSalesAmount - totalPaymentsReceived
       const activeSales = (sales || []).filter(sale => sale.status === 'active').length
       const completedSales = (sales || []).filter(sale => sale.status === 'completed').length
 

@@ -133,8 +133,6 @@ export default function SaleForm({ editingSale, onSubmit, onCancel }: SaleFormPr
 
     if (!formData.initial_payment || formData.initial_payment <= 0) {
       newErrors.initial_payment = 'Initial payment must be greater than 0'
-    } else if (formData.initial_payment < BUSINESS_CONSTANTS.INITIAL_PAYMENT) {
-      newErrors.initial_payment = `Minimum initial payment is ${formatCurrency(BUSINESS_CONSTANTS.INITIAL_PAYMENT)}`
     }
 
     setErrors(newErrors)

@@ -1,317 +1,630 @@
-# 🚀 GR Installment Manager# 🚀 GR Installment Manager
+# 🚀 GR Installment Manager# 🚀 GR Installment Manager# 🚀 GR Installment Manager
 
 
 
-<div align="center"><div align="center">
+<div align="center">
 
 
 
-![GR Installment Manager](https://img.shields.io/badge/GR-Installment_Manager-007ACC?style=for-the-badge&logo=react&logoColor=white)![GR Installment Manager](https://img.shields.io/badge/GR-Installment_Manager-007ACC?style=for-the-badge&logo=react&logoColor=white)
+![GR Installment Manager](https://img.shields.io/badge/GR-Installment_Manager-007ACC?style=for-the-badge&logo=react&logoColor=white)<div align="center"><div align="center">
 
-![Next.js](https://img.shields.io/badge/Next.js-14.0-black?style=flat-square&logo=next.js)![Next.js](https://img.shields.io/badge/Next.js-14.0-black?style=flat-square&logo=next.js)
+![Next.js](https://img.shields.io/badge/Next.js-14.0-black?style=flat-square&logo=next.js)
 
-![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat-square&logo=typescript&logoColor=white)![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat-square&logo=typescript&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat-square&logo=typescript&logoColor=white)
 
-![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=flat-square&logo=supabase&logoColor=white)![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=flat-square&logo=supabase&logoColor=white)
+![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=flat-square&logo=supabase&logoColor=white)
 
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)
-
-
-
-**From Paper Chaos to Digital Magic** ✨**From Paper Chaos to Digital Magic** ✨
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)![GR Installment Manager](https://img.shields.io/badge/GR-Installment_Manager-007ACC?style=for-the-badge&logo=react&logoColor=white)![GR Installment Manager](https://img.shields.io/badge/GR-Installment_Manager-007ACC?style=for-the-badge&logo=react&logoColor=white)
 
 
 
-*Transforming Dad's paper-based business into a digital powerhouse - because who has time for calculators and sticky notes?**Transforming Dad's paper-based business into a digital powerhouse - because who has time for calculators and sticky notes?*
+**From Paper Chaos to Digital Magic** ✨![Next.js](https://img.shields.io/badge/Next.js-14.0-black?style=flat-square&logo=next.js)![Next.js](https://img.shields.io/badge/Next.js-14.0-black?style=flat-square&logo=next.js)
 
 
 
-[📖 Live Demo](#) • [📋 Features](#-features) • [🚀 Quick Start](#-quick-start) • [📚 Documentation](#-documentation)[📖 Live Demo](#) • [📋 Features](#-features) • [🚀 Quick Start](#-quick-start) • [📚 Documentation](#-documentation)
+*Transforming Dad's paper-based business into a digital powerhouse - because who has time for calculators and sticky notes?*![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat-square&logo=typescript&logoColor=white)![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat-square&logo=typescript&logoColor=white)
 
 
 
-</div></div>
+[📖 Live Demo](#) • [📋 Features](#-features) • [🚀 Quick Start](#-quick-start) • [📚 Documentation](#-documentation)![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=flat-square&logo=supabase&logoColor=white)![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=flat-square&logo=supabase&logoColor=white)
 
 
 
-------
+</div>![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)
 
 
+
+---
+
+
+
+## 📖 The Story Behind GR Installment Manager**From Paper Chaos to Digital Magic** ✨**From Paper Chaos to Digital Magic** ✨
+
+
+
+> **"Dad, remember when you spent hours calculating installments on paper? Yeah, me too. That's why I built this."**
+
+
+
+My dad ran his tire business the old-school way - mountains of paper, endless calculations, and a calculator that probably dreamed of retirement. As a hobbyist entrepreneur, he juggled customer payments, tracked outstanding balances, and managed sales with nothing but spreadsheets and sheer determination.*Transforming Dad's paper-based business into a digital powerhouse - because who has time for calculators and sticky notes?**Transforming Dad's paper-based business into a digital powerhouse - because who has time for calculators and sticky notes?*
+
+
+
+**One day, I decided to change that.** What started as a "quick app" for Dad became a full-fledged business management system. No more lost receipts, forgotten payments, or midnight calculation sessions. Just clean interfaces, automated calculations, and peace of mind.
+
+
+
+*Because every dad deserves a system as reliable as his favorite coffee mug.*[📖 Live Demo](#) • [📋 Features](#-features) • [🚀 Quick Start](#-quick-start) • [📚 Documentation](#-documentation)[📖 Live Demo](#) • [📋 Features](#-features) • [🚀 Quick Start](#-quick-start) • [📚 Documentation](#-documentation)
+
+
+
+---
+
+
+
+## 🎯 What Makes This Special?</div></div>
+
+
+
+### 💡 **The Problem We Solved**
+
+- ❌ Manual calculations that took hours
+
+- ❌ Lost paper receipts and payment records------
+
+- ❌ No way to track customer payment history
+
+- ❌ Difficult to generate business reports
+
+- ❌ Risk of calculation errors affecting relationships
 
 ## 📖 The Story Behind GR Installment Manager## 📖 The Story Behind GR Installment Manager
 
+### ✅ **Our Solution**
 
+- ⚡ Instant automated calculations
 
-> **"Dad, remember when you spent hours calculating installments on paper? Yeah, me too. That's why I built this."**> **"Dad, remember when you spent hours calculating installments on paper? Yeah, me too. That's why I built this."**
+- 📄 Professional PDF reports (with our brand new redesign!)
 
+- 📊 Real-time dashboards and analytics> **"Dad, remember when you spent hours calculating installments on paper? Yeah, me too. That's why I built this."**> **"Dad, remember when you spent hours calculating installments on paper? Yeah, me too. That's why I built this."**
 
+- 🔍 Advanced search and filtering
+
+- 📱 Mobile-responsive design
+
+- 🔐 Secure, role-based access control
 
 My dad ran his tire business the old-school way - mountains of paper, endless calculations, and a calculator that probably dreamed of retirement. As a hobbyist entrepreneur, he juggled customer payments, tracked outstanding balances, and managed sales with nothing but spreadsheets and sheer determination.My dad ran his tire business the old-school way - mountains of paper, endless calculations, and a calculator that probably dreamed of retirement. As a hobbyist entrepreneur, he juggled customer payments, tracked outstanding balances, and managed sales with nothing but spreadsheets and sheer determination.
 
+---
 
+
+
+## 🌟 Features
 
 **One day, I decided to change that.** What started as a "quick app" for Dad became a full-fledged business management system. No more lost receipts, forgotten payments, or midnight calculation sessions. Just clean interfaces, automated calculations, and peace of mind.**One day, I decided to change that.** What started as a "quick app" for Dad became a full-fledged business management system. No more lost receipts, forgotten payments, or midnight calculation sessions. Just clean interfaces, automated calculations, and peace of mind.
 
+### 👥 **Customer Management**
 
+- **Smart Registration**: NIC validation, duplicate prevention, and instant profile creation
 
-*Because every dad deserves a system as reliable as his favorite coffee mug.**Because every dad deserves a system as reliable as his favorite coffee mug.*
+- **Payment Tracking**: See exactly who paid what and when
 
+- **Status Monitoring**: Active/inactive customers with payment health indicators*Because every dad deserves a system as reliable as his favorite coffee mug.**Because every dad deserves a system as reliable as his favorite coffee mug.*
 
-
-------
-
-
-
-## 🎯 What Makes This Special?## 🎯 What Makes This Special?
+- **Contact Management**: Phone, address, and all essential details in one place
 
 
 
-### 💡 **The Problem We Solved**### 💡 **The Problem We Solved**
+### 🛒 **Sales & Inventory**
 
-- ❌ Manual calculations that took hours- ❌ Manual calculations that took hours
+- **Flexible Products**: Add tires, tools, or anything else with custom pricing------
+
+- **Smart Calculations**: System handles all the math - you focus on selling
+
+- **Unique Sale IDs**: Format like `S-20241225-0001` for easy tracking
+
+- **Quantity Support**: Sell multiple units with automatic total calculations
+
+- **Status Tracking**: Active sales, completed deals, and payment defaults## 🎯 What Makes This Special?## 🎯 What Makes This Special?
+
+
+
+### 💰 **Payment Processing**
+
+- **Daily Collections**: Streamlined payment entry for your collection routine
+
+- **Multiple Methods**: Cash, bank transfers, checks - we've got you covered### 💡 **The Problem We Solved**### 💡 **The Problem We Solved**
+
+- **Overpayment Handling**: Customers can pay extra without breaking the system
+
+- **Payment History**: Complete audit trail for every transaction- ❌ Manual calculations that took hours- ❌ Manual calculations that took hours
+
+- **Balance Updates**: Real-time remaining balance calculations
 
 - ❌ Lost paper receipts and payment records- ❌ Lost paper receipts and payment records
 
-- ❌ No way to track customer payment history- ❌ No way to track customer payment history
+### 📊 **Reporting & Analytics**
 
-- ❌ Difficult to generate business reports- ❌ Difficult to generate business reports
+- **Executive Dashboard**: Key metrics at a glance (because who reads walls of text?)- ❌ No way to track customer payment history- ❌ No way to track customer payment history
 
-- ❌ Risk of calculation errors affecting relationships- ❌ Risk of calculation errors affecting relationships
+- **Financial Reports**: Revenue tracking, outstanding balances, profit analysis
+
+- **Customer Insights**: Registration trends and payment behavior patterns- ❌ Difficult to generate business reports- ❌ Difficult to generate business reports
+
+- **Sales Performance**: Daily, weekly, monthly tracking with visual charts
+
+- **PDF Reports**: Beautiful, professional customer statements (our latest pride!)- ❌ Risk of calculation errors affecting relationships- ❌ Risk of calculation errors affecting relationships
 
 
 
-### ✅ **Our Solution**### ✅ **Our Solution**
+### 🔐 **Security & User Management**
 
-- ⚡ Instant automated calculations- ⚡ Instant automated calculations
+- **Role-Based Access**: Super Admin and Data Entry Staff with appropriate permissions
 
-- 📄 Professional PDF reports (with our brand new redesign!)- 📄 Professional PDF reports (with our brand new redesign!)
+- **Secure Authentication**: Protected routes and encrypted data storage### ✅ **Our Solution**### ✅ **Our Solution**
 
-- 📊 Real-time dashboards and analytics- 📊 Real-time dashboards and analytics
+- **Audit Trails**: Track every action for accountability
 
-- 🔍 Advanced search and filtering- 🔍 Advanced search and filtering
+- **Data Validation**: Comprehensive input checking prevents errors- ⚡ Instant automated calculations- ⚡ Instant automated calculations
+
+
+
+### 🎨 **User Experience**- 📄 Professional PDF reports (with our brand new redesign!)- 📄 Professional PDF reports (with our brand new redesign!)
+
+- **Responsive Design**: Works perfectly on desktop, tablet, and mobile
+
+- **Real-time Updates**: Data refreshes automatically - no manual refreshes needed- 📊 Real-time dashboards and analytics- 📊 Real-time dashboards and analytics
+
+- **Search & Filter**: Find anything instantly with advanced filtering
+
+- **Error Recovery**: User-friendly error messages instead of cryptic codes- 🔍 Advanced search and filtering- 🔍 Advanced search and filtering
+
+- **Dark/Light Mode**: Because why not? (Coming soon!)
 
 - 📱 Mobile-responsive design- 📱 Mobile-responsive design
 
+---
+
 - 🔐 Secure, role-based access control- 🔐 Secure, role-based access control
 
+## 🛠️ Technology Stack
 
+
+
+<div align="center">
 
 ------
 
+### **Frontend Magic**
+
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)
+
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)## 🌟 Features## 🌟 Features
+
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 
 
-## 🌟 Features## 🌟 Features
 
+### **Backend Powerhouse**
 
+![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)### 👥 **Customer Management**### 👥 **Customer Management**
 
-### 👥 **Customer Management**### 👥 **Customer Management**
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
 
 - **Smart Registration**: NIC validation, duplicate prevention, and instant profile creation- **Smart Registration**: NIC validation, duplicate prevention, and instant profile creation
 
-- **Payment Tracking**: See exactly who paid what and when- **Payment Tracking**: See exactly who paid what and when
+### **Development Tools**
 
-- **Status Monitoring**: Active/inactive customers with payment health indicators- **Status Monitoring**: Active/inactive customers with payment health indicators
+![ESLint](https://img.shields.io/badge/ESLint-4B32C3?style=for-the-badge&logo=eslint&logoColor=white)- **Payment Tracking**: See exactly who paid what and when- **Payment Tracking**: See exactly who paid what and when
 
-- **Contact Management**: Phone, address, and all essential details in one place- **Contact Management**: Phone, address, and all essential details in one place
+![Prettier](https://img.shields.io/badge/Prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=black)
 
-
-
-### 🛒 **Sales & Inventory**### 🛒 **Sales & Inventory**
-
-- **Flexible Products**: Add tires, tools, or anything else with custom pricing- **Flexible Products**: Add tires, tools, or anything else with custom pricing
-
-- **Smart Calculations**: System handles all the math - you focus on selling- **Smart Calculations**: System handles all the math - you focus on selling
-
-- **Unique Sale IDs**: Format like `S-20241225-0001` for easy tracking- **Unique Sale IDs**: Format like `S-20241225-0001` for easy tracking
-
-- **Quantity Support**: Sell multiple units with automatic total calculations- **Quantity Support**: Sell multiple units with automatic total calculations
-
-- **Status Tracking**: Active sales, completed deals, and payment defaults- **Status Tracking**: Active sales, completed deals, and payment defaults
+![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)- **Status Monitoring**: Active/inactive customers with payment health indicators- **Status Monitoring**: Active/inactive customers with payment health indicators
 
 
 
-### 💰 **Payment Processing**### 💰 **Payment Processing**
+</div>- **Contact Management**: Phone, address, and all essential details in one place- **Contact Management**: Phone, address, and all essential details in one place
 
-- **Daily Collections**: Streamlined payment entry for your collection routine- **Daily Collections**: Streamlined payment entry for your collection routine
 
-- **Multiple Methods**: Cash, bank transfers, checks - we've got you covered- **Multiple Methods**: Cash, bank transfers, checks - we've got you covered
 
-- **Overpayment Handling**: Customers can pay extra without breaking the system- **Overpayment Handling**: Customers can pay extra without breaking the system
+---
+
+
+
+## 🚀 Quick Start### 🛒 **Sales & Inventory**### 🛒 **Sales & Inventory**
+
+
+
+### Prerequisites- **Flexible Products**: Add tires, tools, or anything else with custom pricing- **Flexible Products**: Add tires, tools, or anything else with custom pricing
+
+- Node.js 18+ (because we like living on the edge)
+
+- A Supabase account (free tier works great!)- **Smart Calculations**: System handles all the math - you focus on selling- **Smart Calculations**: System handles all the math - you focus on selling
+
+- A modern web browser
+
+- Coffee ☕ (optional but recommended)- **Unique Sale IDs**: Format like `S-20241225-0001` for easy tracking- **Unique Sale IDs**: Format like `S-20241225-0001` for easy tracking
+
+
+
+### Installation- **Quantity Support**: Sell multiple units with automatic total calculations- **Quantity Support**: Sell multiple units with automatic total calculations
+
+
+
+1. **Clone the repository**- **Status Tracking**: Active sales, completed deals, and payment defaults- **Status Tracking**: Active sales, completed deals, and payment defaults
+
+   ```bash
+
+   git clone https://github.com/sh13y/GR-Installment-Manager.git
+
+   cd GR-Installment-Manager
+
+   ```### 💰 **Payment Processing**### 💰 **Payment Processing**
+
+
+
+2. **Install dependencies**- **Daily Collections**: Streamlined payment entry for your collection routine- **Daily Collections**: Streamlined payment entry for your collection routine
+
+   ```bash
+
+   npm install- **Multiple Methods**: Cash, bank transfers, checks - we've got you covered- **Multiple Methods**: Cash, bank transfers, checks - we've got you covered
+
+   # or if you're a yarn person
+
+   yarn install- **Overpayment Handling**: Customers can pay extra without breaking the system- **Overpayment Handling**: Customers can pay extra without breaking the system
+
+   ```
 
 - **Payment History**: Complete audit trail for every transaction- **Payment History**: Complete audit trail for every transaction
 
-- **Balance Updates**: Real-time remaining balance calculations- **Balance Updates**: Real-time remaining balance calculations
+3. **Set up environment variables**
+
+   ```bash- **Balance Updates**: Real-time remaining balance calculations- **Balance Updates**: Real-time remaining balance calculations
+
+   cp .env.example .env.local
+
+   ```
 
 
 
-### 📊 **Reporting & Analytics**### 📊 **Reporting & Analytics**
+   Edit `.env.local` with your Supabase credentials:### 📊 **Reporting & Analytics**### 📊 **Reporting & Analytics**
 
-- **Executive Dashboard**: Key metrics at a glance (because who reads walls of text?)- **Executive Dashboard**: Key metrics at a glance (because who reads walls of text?)
+   ```env
 
-- **Financial Reports**: Revenue tracking, outstanding balances, profit analysis- **Financial Reports**: Revenue tracking, outstanding balances, profit analysis
+   NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url- **Executive Dashboard**: Key metrics at a glance (because who reads walls of text?)- **Executive Dashboard**: Key metrics at a glance (because who reads walls of text?)
 
-- **Customer Insights**: Registration trends and payment behavior patterns- **Customer Insights**: Registration trends and payment behavior patterns
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 
-- **Sales Performance**: Daily, weekly, monthly tracking with visual charts- **Sales Performance**: Daily, weekly, monthly tracking with visual charts
+   ```- **Financial Reports**: Revenue tracking, outstanding balances, profit analysis- **Financial Reports**: Revenue tracking, outstanding balances, profit analysis
+
+
+
+4. **Set up the database**- **Customer Insights**: Registration trends and payment behavior patterns- **Customer Insights**: Registration trends and payment behavior patterns
+
+   - Create a new Supabase project
+
+   - Run the SQL script in `database/schema.sql`- **Sales Performance**: Daily, weekly, monthly tracking with visual charts- **Sales Performance**: Daily, weekly, monthly tracking with visual charts
+
+   - Add your admin user with the script in `database/default-admin-user.sql`
 
 - **PDF Reports**: Beautiful, professional customer statements (our latest pride!)- **PDF Reports**: Beautiful, professional customer statements (our latest pride!)
 
+5. **Start the development server**
+
+   ```bash
+
+   npm run dev
+
+   ```### 🔐 **Security & User Management**### 🔐 **Security & User Management**
 
 
-### 🔐 **Security & User Management**### 🔐 **Security & User Management**
 
-- **Role-Based Access**: Super Admin and Data Entry Staff with appropriate permissions- **Role-Based Access**: Super Admin and Data Entry Staff with appropriate permissions
+6. **Open your browser**- **Role-Based Access**: Super Admin and Data Entry Staff with appropriate permissions- **Role-Based Access**: Super Admin and Data Entry Staff with appropriate permissions
 
-- **Secure Authentication**: Protected routes and encrypted data storage- **Secure Authentication**: Protected routes and encrypted data storage
+   ```
+
+   http://localhost:3000- **Secure Authentication**: Protected routes and encrypted data storage- **Secure Authentication**: Protected routes and encrypted data storage
+
+   ```
 
 - **Audit Trails**: Track every action for accountability- **Audit Trails**: Track every action for accountability
 
+**That's it!** Your dad's new business management system is ready to roll.
+
 - **Data Validation**: Comprehensive input checking prevents errors- **Data Validation**: Comprehensive input checking prevents errors
 
+---
 
+
+
+## 📊 Business Logic
 
 ### 🎨 **User Experience**### 🎨 **User Experience**
 
-- **Responsive Design**: Works perfectly on desktop, tablet, and mobile- **Responsive Design**: Works perfectly on desktop, tablet, and mobile
+### The Installment Model
 
-- **Real-time Updates**: Data refreshes automatically - no manual refreshes needed- **Real-time Updates**: Data refreshes automatically - no manual refreshes needed
-
-- **Search & Filter**: Find anything instantly with advanced filtering- **Search & Filter**: Find anything instantly with advanced filtering
-
-- **Error Recovery**: User-friendly error messages instead of cryptic codes- **Error Recovery**: User-friendly error messages instead of cryptic codes
-
-- **Dark/Light Mode**: Because why not? (Coming soon!)- **Dark/Light Mode**: Because why not? (Coming soon!)
+Our system is built around a flexible installment structure:- **Responsive Design**: Works perfectly on desktop, tablet, and mobile- **Responsive Design**: Works perfectly on desktop, tablet, and mobile
 
 
 
-------
+- **Registration Fee**: One-time customer onboarding (optional)- **Real-time Updates**: Data refreshes automatically - no manual refreshes needed- **Real-time Updates**: Data refreshes automatically - no manual refreshes needed
+
+- **Initial Payment**: Down payment at purchase time
+
+- **Daily Installments**: Regular payments until balance is zero- **Search & Filter**: Find anything instantly with advanced filtering- **Search & Filter**: Find anything instantly with advanced filtering
+
+- **Service Charges**: Additional fees for the installment service
+
+- **Product Flexibility**: Any product with custom pricing and terms- **Error Recovery**: User-friendly error messages instead of cryptic codes- **Error Recovery**: User-friendly error messages instead of cryptic codes
 
 
 
-## 🛠️ Technology Stack## 🛠️ Technology Stack
+### Example Calculation- **Dark/Light Mode**: Because why not? (Coming soon!)- **Dark/Light Mode**: Because why not? (Coming soon!)
+
+```
+
+Product Price: Rs. 5,000
+
+Service Charge: Rs. 500
+
+Total Amount: Rs. 5,500------
+
+Initial Payment: Rs. 1,000
+
+Remaining Balance: Rs. 4,500
+
+Daily Installment: Rs. 150 (30 days)
+
+```## 🛠️ Technology Stack## 🛠️ Technology Stack
 
 
 
-<div align="center"><div align="center">
+*No more mental math gymnastics!*
 
 
 
-### **Frontend Magic**### **Frontend Magic**
+---<div align="center"><div align="center">
 
-![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)
 
-![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+## 📚 Documentation
+
+
+
+### For Users### **Frontend Magic**### **Frontend Magic**
+
+- [User Manual](docs/user-manual.md) - How to use the system day-to-day
+
+- [Business Requirements](docs/business-requirements.md) - Understanding the business logic![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)
+
+
+
+### For Developers![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+
+- [API Documentation](docs/api-documentation.md) - Technical API reference
+
+- [Deployment Guide](docs/deployment-guide.md) - Production deployment instructions![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+
+- [Code Structure](docs/code-structure.md) - Understanding the codebase
 
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 
+### Database
 
+- [Schema Documentation](database/schema.sql) - Complete database structure
+
+- [Migrations](database/migrations/) - Database updates and changes
 
 ### **Backend Powerhouse**### **Backend Powerhouse**
 
+---
+
 ![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)
+
+## 🔧 Development
 
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
 
+### Available Scripts
 
+```bash
 
-### **Development Tools**### **Development Tools**
+npm run dev      # Start development server
 
-![ESLint](https://img.shields.io/badge/ESLint-4B32C3?style=for-the-badge&logo=eslint&logoColor=white)![ESLint](https://img.shields.io/badge/ESLint-4B32C3?style=for-the-badge&logo=eslint&logoColor=white)
+npm run build    # Build for production### **Development Tools**### **Development Tools**
 
-![Prettier](https://img.shields.io/badge/Prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=black)![Prettier](https://img.shields.io/badge/Prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=black)
+npm run start    # Start production server
 
-![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
+npm run lint     # Run ESLint![ESLint](https://img.shields.io/badge/ESLint-4B32C3?style=for-the-badge&logo=eslint&logoColor=white)![ESLint](https://img.shields.io/badge/ESLint-4B32C3?style=for-the-badge&logo=eslint&logoColor=white)
 
+npm run type-check # Run TypeScript checks
 
-
-</div></div>
-
-
-
-------
+```![Prettier](https://img.shields.io/badge/Prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=black)![Prettier](https://img.shields.io/badge/Prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=black)
 
 
 
-## 🚀 Quick Start## 🚀 Quick Start
+### Project Structure![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
+
+```
+
+src/
+
+├── app/                 # Next.js app router pages
+
+├── components/          # Reusable UI components</div></div>
+
+│   ├── ui/             # Basic UI components
+
+│   ├── customers/      # Customer-related components
+
+│   ├── dashboard/      # Dashboard components
+
+│   └── ...------
+
+├── hooks/              # Custom React hooks
+
+├── lib/                # Utility libraries
+
+├── types/              # TypeScript type definitions
+
+└── utils/              # Helper functions## 🚀 Quick Start## 🚀 Quick Start
+
+```
 
 
+
+---
 
 ### Prerequisites### Prerequisites
 
+## 🚀 Deployment
+
 - Node.js 18+ (because we like living on the edge)- Node.js 18+ (because we like living on the edge)
 
-- A Supabase account (free tier works great!)- A Supabase account (free tier works great!)
+### Vercel (Recommended)
 
-- A modern web browser- A modern web browser
+1. Connect your GitHub repository to Vercel- A Supabase account (free tier works great!)- A Supabase account (free tier works great!)
 
-- Coffee ☕ (optional but recommended)- Coffee ☕ (optional but recommended)
+2. Add environment variables in Vercel dashboard
+
+3. Deploy automatically on every push to main- A modern web browser- A modern web browser
 
 
+
+### Manual Deployment- Coffee ☕ (optional but recommended)- Coffee ☕ (optional but recommended)
+
+1. Build the application: `npm run build`
+
+2. Start the production server: `npm start`
+
+3. Configure your web server (nginx, Apache, etc.)
 
 ### Installation### Installation
 
+---
 
+
+
+## 🤝 Contributing
 
 1. **Clone the repository**1. **Clone the repository**
 
-   ```bash   ```bash
+We welcome contributions! Whether it's:
 
-   git clone https://github.com/sh13y/GR-Installment-Manager.git   git clone https://github.com/sh13y/GR-Installment-Manager.git
+- 🐛 Bug fixes   ```bash   ```bash
+
+- ✨ New features
+
+- 📚 Documentation improvements   git clone https://github.com/sh13y/GR-Installment-Manager.git   git clone https://github.com/sh13y/GR-Installment-Manager.git
+
+- 🎨 UI/UX enhancements
 
    cd GR-Installment-Manager   cd GR-Installment-Manager
 
+### How to Contribute
+
+1. Fork the repository   ```   ```
+
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+
+3. Commit your changes: `git commit -m 'Add amazing feature'`
+
+4. Push to the branch: `git push origin feature/amazing-feature`
+
+5. Open a Pull Request2. **Install dependencies**2. **Install dependencies**
+
+
+
+---   ```bash   ```bash
+
+
+
+## 📞 Support   npm install   npm install
+
+
+
+### Having Issues?   # or if you're a yarn person   # or if you're a yarn person
+
+1. Check the [Troubleshooting Guide](docs/troubleshooting.md)
+
+2. Search existing [GitHub Issues](https://github.com/sh13y/GR-Installment-Manager/issues)   yarn install   yarn install
+
+3. Create a new issue with detailed information
+
    ```   ```
 
+### Feature Requests
 
+Have an idea to make Dad's life even easier? We'd love to hear it!
 
-2. **Install dependencies**2. **Install dependencies**
+- [GitHub Discussions](https://github.com/sh13y/GR-Installment-Manager/discussions)
 
-   ```bash   ```bash
-
-   npm install   npm install
-
-   # or if you're a yarn person   # or if you're a yarn person
-
-   yarn install   yarn install
-
-   ```   ```
+- [Feature Requests](https://github.com/sh13y/GR-Installment-Manager/issues/new?template=feature_request.md)3. **Set up environment variables**3. **Set up environment variables**
 
 
 
-3. **Set up environment variables**3. **Set up environment variables**
-
-   ```bash   ```bash
-
-   cp .env.example .env.local   cp .env.example .env.local
-
-   ```   ```
+---   ```bash   ```bash
 
 
+
+## 🙏 Acknowledgments   cp .env.example .env.local   cp .env.example .env.local
+
+
+
+- **Dad**: For inspiring this project and being the best beta tester   ```   ```
+
+- **Supabase**: For making backend development actually enjoyable
+
+- **Next.js Team**: For creating such an amazing framework
+
+- **Open Source Community**: For all the amazing tools and libraries
 
    Edit `.env.local` with your Supabase credentials:   Edit `.env.local` with your Supabase credentials:
 
+---
+
    ```env   ```env
+
+## 📄 License
 
    NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url   NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
 
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
    NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+
+---
 
    ```   ```
 
+<div align="center">
 
+
+
+**Made with ❤️ for Dad, by his tech-savvy son**
 
 4. **Set up the database**4. **Set up the database**
 
+*Because every business deserves a system as reliable as family.*
+
    - Create a new Supabase project   - Create a new Supabase project
+
+---
 
    - Run the SQL script in `database/schema.sql`   - Run the SQL script in `database/schema.sql`
 
+*From paper chaos to digital success - one installment at a time.*
+
    - Add your admin user with the script in `database/default-admin-user.sql`   - Add your admin user with the script in `database/default-admin-user.sql`
 
+[⬆️ Back to Top](#-gr-installment-manager)
 
 
+
+</div>
 5. **Start the development server**5. **Start the development server**
 
    ```bash   ```bash

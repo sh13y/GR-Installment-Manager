@@ -1,6 +1,6 @@
 # 🚗 GR Installment Manager
 
-> **From Paper Piles to Digital Power** - Because even tire businesses deserve a tech upgrade!
+> **From Paper Piles to Digital Power** - Because every small business deserves a tech upgrade!
 
 [![Next.js](https://img.shields.io/badge/Next.js-14.0.4-black)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)](https://www.typescriptlang.org/)
@@ -10,9 +10,9 @@
 
 ## 👋 About This Project
 
-**Hey there!** I'm a hobbyist developer who built this for my dad. He used to manage his tire business with stacks of paper, handwritten ledgers, and what seemed like an endless supply of coffee to stay organized. As his tech-savvy son, I decided to modernize his workflow and give him the digital tools he deserves.
+**Hey there!** I'm a hobbyist developer who built this for my dad. He used to manage his small retail business with stacks of paper, handwritten ledgers, and what seemed like an endless supply of coffee to stay organized. As his tech-savvy son, I decided to modernize his workflow and give him the digital tools he deserves.
 
-This isn't just another business management app - it's a labor of love designed specifically for small tire businesses that want to ditch the paperwork and embrace the future. Whether you're tracking customer payments, managing inventory, or just trying to remember who still owes you for those premium tires, this app has got your back!
+This isn't just another business management app - it's a labor of love designed specifically for small businesses that want to ditch the paperwork and embrace the future. Whether you're tracking customer payments, managing inventory, or just trying to remember who still owes you for their purchases, this app has got your back!
 
 ## ✨ Features That Make Life Easier
 
@@ -23,9 +23,9 @@ This isn't just another business management app - it's a labor of love designed 
 - **Payment Tracking**: See exactly who owes what and when payments are due
 
 ### 🛒 Sales & Inventory
-- **Product Catalog**: Manage your tire inventory with detailed product information
+- **Product Catalog**: Manage your inventory with detailed product information
 - **Sales Recording**: Record sales transactions with automatic inventory updates
-- **Stock Monitoring**: Never run out of tires again with real-time stock alerts
+- **Stock Monitoring**: Never run out of stock again with real-time inventory alerts
 - **Sales History**: Complete transaction history with detailed breakdowns
 
 ### 💰 Payment Management
@@ -65,7 +65,7 @@ This app is built with modern, reliable technologies:
 
 ## 🚀 Quick Start
 
-Getting started is easier than changing a tire! Here's how:
+Getting started is easier than you think! Here's how:
 
 ### Prerequisites
 - Node.js 18 or higher
@@ -105,7 +105,7 @@ Getting started is easier than changing a tire! Here's how:
 
 ## 🎯 Who Is This For?
 
-- **Small Tire Business Owners**: Like my dad, who want to modernize their operations
+- **Small Business Owners**: Like my dad, who want to modernize their operations
 - **Installment-Based Businesses**: Perfect for businesses offering payment plans
 - **Paper-to-Digital Migrants**: Businesses ready to leave paper behind
 - **Family-Owned Businesses**: Built with love for family entrepreneurs
@@ -129,7 +129,7 @@ Need help? Having trouble? Don't worry - we're here to help!
 ## 🙏 Acknowledgments
 
 A special thank you to:
-- **My Dad**: For inspiring this project and being the best tire business owner I know
+- **My Dad**: For inspiring this project and being the best small business owner I know
 - **The Open Source Community**: For the amazing tools that made this possible
 - **Supabase**: For the incredible backend-as-a-service platform
 - **Vercel**: For making deployment as easy as pie

@@ -1,53 +1,630 @@
-# GR Installment Manager
+# 🚀 GR Installment Manager# 🚀 GR Installment Manager
 
-A comprehensive web-based installment management system designed for businesses that sell products through installment plans. While originally developed for tire sales, this flexible system can accommodate any product-based installment business model.
 
-## Table of Contents
 
-- [Overview](#overview)
-- [Features](#features)
-- [Technology Stack](#technology-stack)
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Database Setup](#database-setup)
-- [Configuration](#configuration)
-- [Usage Guide](#usage-guide)
-- [API Documentation](#api-documentation)
-- [Code Structure](#code-structure)
-- [Business Logic](#business-logic)
-- [Development](#development)
-- [Deployment](#deployment)
-- [Contributing](#contributing)
-- [Security](#security)
-- [Troubleshooting](#troubleshooting)
-- [License](#license)
+<div align="center"><div align="center">
 
-## Overview
 
-The GR Installment Manager is a full-stack business management application that streamlines the process of selling products through installment plans. It handles everything from customer registration and sales creation to daily payment collection and comprehensive reporting.
 
-### Why This System?
+![GR Installment Manager](https://img.shields.io/badge/GR-Installment_Manager-007ACC?style=for-the-badge&logo=react&logoColor=white)![GR Installment Manager](https://img.shields.io/badge/GR-Installment_Manager-007ACC?style=for-the-badge&logo=react&logoColor=white)
 
-Managing installment-based sales manually is like trying to juggle while riding a unicycle - possible, but unnecessarily complicated and prone to spectacular failures. This system automates the complex calculations, tracks payments meticulously, and provides insights that help grow your business.
+![Next.js](https://img.shields.io/badge/Next.js-14.0-black?style=flat-square&logo=next.js)![Next.js](https://img.shields.io/badge/Next.js-14.0-black?style=flat-square&logo=next.js)
 
-### Core Business Model
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat-square&logo=typescript&logoColor=white)![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat-square&logo=typescript&logoColor=white)
 
-The system is built around a flexible installment model:
-- **Registration Fee**: One-time customer onboarding fee
-- **Initial Payment**: Down payment at the time of sale
-- **Daily Installments**: Regular payments until the balance is cleared
-- **Service Charges**: Additional fees for the installment service
-- **Product Flexibility**: Any product can be configured with custom pricing
+![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=flat-square&logo=supabase&logoColor=white)![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=flat-square&logo=supabase&logoColor=white)
 
-## Features
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)
 
-### Customer Management
-- **Registration System**: Comprehensive customer onboarding with NIC validation
-- **Profile Management**: Complete customer information with contact details
-- **Payment History**: Track registration fees and payment patterns
-- **Status Tracking**: Active, inactive, and payment status monitoring
 
-### Sales Management
+
+**From Paper Chaos to Digital Magic** ✨**From Paper Chaos to Digital Magic** ✨
+
+
+
+*Transforming Dad's paper-based business into a digital powerhouse - because who has time for calculators and sticky notes?**Transforming Dad's paper-based business into a digital powerhouse - because who has time for calculators and sticky notes?*
+
+
+
+[📖 Live Demo](#) • [📋 Features](#-features) • [🚀 Quick Start](#-quick-start) • [📚 Documentation](#-documentation)[📖 Live Demo](#) • [📋 Features](#-features) • [🚀 Quick Start](#-quick-start) • [📚 Documentation](#-documentation)
+
+
+
+</div></div>
+
+
+
+------
+
+
+
+## 📖 The Story Behind GR Installment Manager## 📖 The Story Behind GR Installment Manager
+
+
+
+> **"Dad, remember when you spent hours calculating installments on paper? Yeah, me too. That's why I built this."**> **"Dad, remember when you spent hours calculating installments on paper? Yeah, me too. That's why I built this."**
+
+
+
+My dad ran his tire business the old-school way - mountains of paper, endless calculations, and a calculator that probably dreamed of retirement. As a hobbyist entrepreneur, he juggled customer payments, tracked outstanding balances, and managed sales with nothing but spreadsheets and sheer determination.My dad ran his tire business the old-school way - mountains of paper, endless calculations, and a calculator that probably dreamed of retirement. As a hobbyist entrepreneur, he juggled customer payments, tracked outstanding balances, and managed sales with nothing but spreadsheets and sheer determination.
+
+
+
+**One day, I decided to change that.** What started as a "quick app" for Dad became a full-fledged business management system. No more lost receipts, forgotten payments, or midnight calculation sessions. Just clean interfaces, automated calculations, and peace of mind.**One day, I decided to change that.** What started as a "quick app" for Dad became a full-fledged business management system. No more lost receipts, forgotten payments, or midnight calculation sessions. Just clean interfaces, automated calculations, and peace of mind.
+
+
+
+*Because every dad deserves a system as reliable as his favorite coffee mug.**Because every dad deserves a system as reliable as his favorite coffee mug.*
+
+
+
+------
+
+
+
+## 🎯 What Makes This Special?## 🎯 What Makes This Special?
+
+
+
+### 💡 **The Problem We Solved**### 💡 **The Problem We Solved**
+
+- ❌ Manual calculations that took hours- ❌ Manual calculations that took hours
+
+- ❌ Lost paper receipts and payment records- ❌ Lost paper receipts and payment records
+
+- ❌ No way to track customer payment history- ❌ No way to track customer payment history
+
+- ❌ Difficult to generate business reports- ❌ Difficult to generate business reports
+
+- ❌ Risk of calculation errors affecting relationships- ❌ Risk of calculation errors affecting relationships
+
+
+
+### ✅ **Our Solution**### ✅ **Our Solution**
+
+- ⚡ Instant automated calculations- ⚡ Instant automated calculations
+
+- 📄 Professional PDF reports (with our brand new redesign!)- 📄 Professional PDF reports (with our brand new redesign!)
+
+- 📊 Real-time dashboards and analytics- 📊 Real-time dashboards and analytics
+
+- 🔍 Advanced search and filtering- 🔍 Advanced search and filtering
+
+- 📱 Mobile-responsive design- 📱 Mobile-responsive design
+
+- 🔐 Secure, role-based access control- 🔐 Secure, role-based access control
+
+
+
+------
+
+
+
+## 🌟 Features## 🌟 Features
+
+
+
+### 👥 **Customer Management**### 👥 **Customer Management**
+
+- **Smart Registration**: NIC validation, duplicate prevention, and instant profile creation- **Smart Registration**: NIC validation, duplicate prevention, and instant profile creation
+
+- **Payment Tracking**: See exactly who paid what and when- **Payment Tracking**: See exactly who paid what and when
+
+- **Status Monitoring**: Active/inactive customers with payment health indicators- **Status Monitoring**: Active/inactive customers with payment health indicators
+
+- **Contact Management**: Phone, address, and all essential details in one place- **Contact Management**: Phone, address, and all essential details in one place
+
+
+
+### 🛒 **Sales & Inventory**### 🛒 **Sales & Inventory**
+
+- **Flexible Products**: Add tires, tools, or anything else with custom pricing- **Flexible Products**: Add tires, tools, or anything else with custom pricing
+
+- **Smart Calculations**: System handles all the math - you focus on selling- **Smart Calculations**: System handles all the math - you focus on selling
+
+- **Unique Sale IDs**: Format like `S-20241225-0001` for easy tracking- **Unique Sale IDs**: Format like `S-20241225-0001` for easy tracking
+
+- **Quantity Support**: Sell multiple units with automatic total calculations- **Quantity Support**: Sell multiple units with automatic total calculations
+
+- **Status Tracking**: Active sales, completed deals, and payment defaults- **Status Tracking**: Active sales, completed deals, and payment defaults
+
+
+
+### 💰 **Payment Processing**### 💰 **Payment Processing**
+
+- **Daily Collections**: Streamlined payment entry for your collection routine- **Daily Collections**: Streamlined payment entry for your collection routine
+
+- **Multiple Methods**: Cash, bank transfers, checks - we've got you covered- **Multiple Methods**: Cash, bank transfers, checks - we've got you covered
+
+- **Overpayment Handling**: Customers can pay extra without breaking the system- **Overpayment Handling**: Customers can pay extra without breaking the system
+
+- **Payment History**: Complete audit trail for every transaction- **Payment History**: Complete audit trail for every transaction
+
+- **Balance Updates**: Real-time remaining balance calculations- **Balance Updates**: Real-time remaining balance calculations
+
+
+
+### 📊 **Reporting & Analytics**### 📊 **Reporting & Analytics**
+
+- **Executive Dashboard**: Key metrics at a glance (because who reads walls of text?)- **Executive Dashboard**: Key metrics at a glance (because who reads walls of text?)
+
+- **Financial Reports**: Revenue tracking, outstanding balances, profit analysis- **Financial Reports**: Revenue tracking, outstanding balances, profit analysis
+
+- **Customer Insights**: Registration trends and payment behavior patterns- **Customer Insights**: Registration trends and payment behavior patterns
+
+- **Sales Performance**: Daily, weekly, monthly tracking with visual charts- **Sales Performance**: Daily, weekly, monthly tracking with visual charts
+
+- **PDF Reports**: Beautiful, professional customer statements (our latest pride!)- **PDF Reports**: Beautiful, professional customer statements (our latest pride!)
+
+
+
+### 🔐 **Security & User Management**### 🔐 **Security & User Management**
+
+- **Role-Based Access**: Super Admin and Data Entry Staff with appropriate permissions- **Role-Based Access**: Super Admin and Data Entry Staff with appropriate permissions
+
+- **Secure Authentication**: Protected routes and encrypted data storage- **Secure Authentication**: Protected routes and encrypted data storage
+
+- **Audit Trails**: Track every action for accountability- **Audit Trails**: Track every action for accountability
+
+- **Data Validation**: Comprehensive input checking prevents errors- **Data Validation**: Comprehensive input checking prevents errors
+
+
+
+### 🎨 **User Experience**### 🎨 **User Experience**
+
+- **Responsive Design**: Works perfectly on desktop, tablet, and mobile- **Responsive Design**: Works perfectly on desktop, tablet, and mobile
+
+- **Real-time Updates**: Data refreshes automatically - no manual refreshes needed- **Real-time Updates**: Data refreshes automatically - no manual refreshes needed
+
+- **Search & Filter**: Find anything instantly with advanced filtering- **Search & Filter**: Find anything instantly with advanced filtering
+
+- **Error Recovery**: User-friendly error messages instead of cryptic codes- **Error Recovery**: User-friendly error messages instead of cryptic codes
+
+- **Dark/Light Mode**: Because why not? (Coming soon!)- **Dark/Light Mode**: Because why not? (Coming soon!)
+
+
+
+------
+
+
+
+## 🛠️ Technology Stack## 🛠️ Technology Stack
+
+
+
+<div align="center"><div align="center">
+
+
+
+### **Frontend Magic**### **Frontend Magic**
+
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)
+
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+
+
+
+### **Backend Powerhouse**### **Backend Powerhouse**
+
+![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)
+
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
+
+
+
+### **Development Tools**### **Development Tools**
+
+![ESLint](https://img.shields.io/badge/ESLint-4B32C3?style=for-the-badge&logo=eslint&logoColor=white)![ESLint](https://img.shields.io/badge/ESLint-4B32C3?style=for-the-badge&logo=eslint&logoColor=white)
+
+![Prettier](https://img.shields.io/badge/Prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=black)![Prettier](https://img.shields.io/badge/Prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=black)
+
+![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
+
+
+
+</div></div>
+
+
+
+------
+
+
+
+## 🚀 Quick Start## 🚀 Quick Start
+
+
+
+### Prerequisites### Prerequisites
+
+- Node.js 18+ (because we like living on the edge)- Node.js 18+ (because we like living on the edge)
+
+- A Supabase account (free tier works great!)- A Supabase account (free tier works great!)
+
+- A modern web browser- A modern web browser
+
+- Coffee ☕ (optional but recommended)- Coffee ☕ (optional but recommended)
+
+
+
+### Installation### Installation
+
+
+
+1. **Clone the repository**1. **Clone the repository**
+
+   ```bash   ```bash
+
+   git clone https://github.com/sh13y/GR-Installment-Manager.git   git clone https://github.com/sh13y/GR-Installment-Manager.git
+
+   cd GR-Installment-Manager   cd GR-Installment-Manager
+
+   ```   ```
+
+
+
+2. **Install dependencies**2. **Install dependencies**
+
+   ```bash   ```bash
+
+   npm install   npm install
+
+   # or if you're a yarn person   # or if you're a yarn person
+
+   yarn install   yarn install
+
+   ```   ```
+
+
+
+3. **Set up environment variables**3. **Set up environment variables**
+
+   ```bash   ```bash
+
+   cp .env.example .env.local   cp .env.example .env.local
+
+   ```   ```
+
+
+
+   Edit `.env.local` with your Supabase credentials:   Edit `.env.local` with your Supabase credentials:
+
+   ```env   ```env
+
+   NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url   NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+
+   ```   ```
+
+
+
+4. **Set up the database**4. **Set up the database**
+
+   - Create a new Supabase project   - Create a new Supabase project
+
+   - Run the SQL script in `database/schema.sql`   - Run the SQL script in `database/schema.sql`
+
+   - Add your admin user with the script in `database/default-admin-user.sql`   - Add your admin user with the script in `database/default-admin-user.sql`
+
+
+
+5. **Start the development server**5. **Start the development server**
+
+   ```bash   ```bash
+
+   npm run dev   npm run dev
+
+   ```   ```
+
+
+
+6. **Open your browser**6. **Open your browser**
+
+   ```   ```
+
+   http://localhost:3000   http://localhost:3000
+
+   ```   ```
+
+
+
+**That's it!** Your dad's new business management system is ready to roll.**That's it!** Your dad's new business management system is ready to roll.
+
+
+
+------
+
+
+
+## 📊 Business Logic## 📊 Business Logic
+
+
+
+### The Installment Model### The Installment Model
+
+Our system is built around a flexible installment structure:Our system is built around a flexible installment structure:
+
+
+
+- **Registration Fee**: One-time customer onboarding (optional)- **Registration Fee**: One-time customer onboarding (optional)
+
+- **Initial Payment**: Down payment at purchase time- **Initial Payment**: Down payment at purchase time
+
+- **Daily Installments**: Regular payments until balance is zero- **Daily Installments**: Regular payments until balance is zero
+
+- **Service Charges**: Additional fees for the installment service- **Service Charges**: Additional fees for the installment service
+
+- **Product Flexibility**: Any product with custom pricing and terms- **Product Flexibility**: Any product with custom pricing and terms
+
+
+
+### Example Calculation### Example Calculation
+
+``````
+
+Product Price: Rs. 5,000Product Price: Rs. 5,000
+
+Service Charge: Rs. 500Service Charge: Rs. 500
+
+Total Amount: Rs. 5,500Total Amount: Rs. 5,500
+
+Initial Payment: Rs. 1,000Initial Payment: Rs. 1,000
+
+Remaining Balance: Rs. 4,500Remaining Balance: Rs. 4,500
+
+Daily Installment: Rs. 150 (30 days)Daily Installment: Rs. 150 (30 days)
+
+``````
+
+
+
+*No more mental math gymnastics!**No more mental math gymnastics!*
+
+
+
+------
+
+
+
+## 📚 Documentation## 📚 Documentation
+
+
+
+### For Users### For Users
+
+- [User Manual](docs/user-manual.md) - How to use the system day-to-day- [User Manual](docs/user-manual.md) - How to use the system day-to-day
+
+- [Business Requirements](docs/business-requirements.md) - Understanding the business logic- [Business Requirements](docs/business-requirements.md) - Understanding the business logic
+
+
+
+### For Developers### For Developers
+
+- [API Documentation](docs/api-documentation.md) - Technical API reference- [API Documentation](docs/api-documentation.md) - Technical API reference
+
+- [Deployment Guide](docs/deployment-guide.md) - Production deployment instructions- [Deployment Guide](docs/deployment-guide.md) - Production deployment instructions
+
+- [Code Structure](docs/code-structure.md) - Understanding the codebase- [Code Structure](docs/code-structure.md) - Understanding the codebase
+
+
+
+### Database### Database
+
+- [Schema Documentation](database/schema.sql) - Complete database structure- [Schema Documentation](database/schema.sql) - Complete database structure
+
+- [Migrations](database/migrations/) - Database updates and changes- [Migrations](database/migrations/) - Database updates and changes
+
+
+
+------
+
+
+
+## 🔧 Development## 🔧 Development
+
+
+
+### Available Scripts### Available Scripts
+
+```bash```bash
+
+npm run dev      # Start development servernpm run dev      # Start development server
+
+npm run build    # Build for productionnpm run build    # Build for production
+
+npm run start    # Start production servernpm run start    # Start production server
+
+npm run lint     # Run ESLintnpm run lint     # Run ESLint
+
+npm run type-check # Run TypeScript checksnpm run type-check # Run TypeScript checks
+
+``````
+
+
+
+### Project Structure### Project Structure
+
+``````
+
+src/src/
+
+├── app/                 # Next.js app router pages├── app/                 # Next.js app router pages
+
+├── components/          # Reusable UI components├── components/          # Reusable UI components
+
+│   ├── ui/             # Basic UI components│   ├── ui/             # Basic UI components
+
+│   ├── customers/      # Customer-related components│   ├── customers/      # Customer-related components
+
+│   ├── dashboard/      # Dashboard components│   ├── dashboard/      # Dashboard components
+
+│   └── ...│   └── ...
+
+├── hooks/              # Custom React hooks├── hooks/              # Custom React hooks
+
+├── lib/                # Utility libraries├── lib/                # Utility libraries
+
+├── types/              # TypeScript type definitions├── types/              # TypeScript type definitions
+
+└── utils/              # Helper functions└── utils/              # Helper functions
+
+``````
+
+
+
+------
+
+
+
+## 🚀 Deployment## 🚀 Deployment
+
+
+
+### Vercel (Recommended)### Vercel (Recommended)
+
+1. Connect your GitHub repository to Vercel1. Connect your GitHub repository to Vercel
+
+2. Add environment variables in Vercel dashboard2. Add environment variables in Vercel dashboard
+
+3. Deploy automatically on every push to main3. Deploy automatically on every push to main
+
+
+
+### Manual Deployment### Manual Deployment
+
+1. Build the application: `npm run build`1. Build the application: `npm run build`
+
+2. Start the production server: `npm start`2. Start the production server: `npm start`
+
+3. Configure your web server (nginx, Apache, etc.)3. Configure your web server (nginx, Apache, etc.)
+
+
+
+------
+
+
+
+## 🤝 Contributing## 🤝 Contributing
+
+
+
+We welcome contributions! Whether it's:We welcome contributions! Whether it's:
+
+- 🐛 Bug fixes- 🐛 Bug fixes
+
+- ✨ New features- ✨ New features
+
+- 📚 Documentation improvements- 📚 Documentation improvements
+
+- 🎨 UI/UX enhancements- 🎨 UI/UX enhancements
+
+
+
+### How to Contribute### How to Contribute
+
+1. Fork the repository1. Fork the repository
+
+2. Create a feature branch: `git checkout -b feature/amazing-feature`2. Create a feature branch: `git checkout -b feature/amazing-feature`
+
+3. Commit your changes: `git commit -m 'Add amazing feature'`3. Commit your changes: `git commit -m 'Add amazing feature'`
+
+4. Push to the branch: `git push origin feature/amazing-feature`4. Push to the branch: `git push origin feature/amazing-feature`
+
+5. Open a Pull Request5. Open a Pull Request
+
+
+
+------
+
+
+
+## 📞 Support## 📞 Support
+
+
+
+### Having Issues?### Having Issues?
+
+1. Check the [Troubleshooting Guide](docs/troubleshooting.md)1. Check the [Troubleshooting Guide](docs/troubleshooting.md)
+
+2. Search existing [GitHub Issues](https://github.com/sh13y/GR-Installment-Manager/issues)2. Search existing [GitHub Issues](https://github.com/sh13y/GR-Installment-Manager/issues)
+
+3. Create a new issue with detailed information3. Create a new issue with detailed information
+
+
+
+### Feature Requests### Feature Requests
+
+Have an idea to make Dad's life even easier? We'd love to hear it!Have an idea to make Dad's life even easier? We'd love to hear it!
+
+- [GitHub Discussions](https://github.com/sh13y/GR-Installment-Manager/discussions)- [GitHub Discussions](https://github.com/sh13y/GR-Installment-Manager/discussions)
+
+- [Feature Requests](https://github.com/sh13y/GR-Installment-Manager/issues/new?template=feature_request.md)- [Feature Requests](https://github.com/sh13y/GR-Installment-Manager/issues/new?template=feature_request.md)
+
+
+
+------
+
+
+
+## 🙏 Acknowledgments## 🙏 Acknowledgments
+
+
+
+- **Dad**: For inspiring this project and being the best beta tester- **Dad**: For inspiring this project and being the best beta tester
+
+- **Supabase**: For making backend development actually enjoyable- **Supabase**: For making backend development actually enjoyable
+
+- **Next.js Team**: For creating such an amazing framework- **Next.js Team**: For creating such an amazing framework
+
+- **Open Source Community**: For all the amazing tools and libraries- **Open Source Community**: For all the amazing tools and libraries
+
+
+
+------
+
+
+
+## 📄 License## 📄 License
+
+
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+
+
+------
+
+
+
+<div align="center"><div align="center">
+
+
+
+**Made with ❤️ for Dad, by his tech-savvy son****Made with ❤️ for Dad, by his tech-savvy son**
+
+
+
+*Because every business deserves a system as reliable as family.**Because every business deserves a system as reliable as family.*
+
+
+
+------
+
+
+
+*From paper chaos to digital success - one installment at a time.**From paper chaos to digital success - one installment at a time.*
+
+
+
+[⬆️ Back to Top](#-gr-installment-manager)[⬆️ Back to Top](#-gr-installment-manager)
+
+
+
+</div></div>
 - **Flexible Product Configuration**: Add any product with custom pricing
 - **Automated Calculations**: System handles all financial computations
 - **Sale Numbers**: Unique identifiers for easy tracking (Format: S-YYYYMMDD-NNNN)

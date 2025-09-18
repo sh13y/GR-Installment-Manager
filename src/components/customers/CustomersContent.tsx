@@ -12,6 +12,7 @@ import Modal from '@/components/ui/Modal'
 import SearchFilter from '@/components/ui/SearchFilter'
 import { PlusIcon } from '@heroicons/react/24/outline'
 import toast from 'react-hot-toast'
+import { generateCustomerReport } from '@/utils/pdfGenerator'
 
 export default function CustomersContent() {
   const [loading, setLoading] = useState(false)
@@ -173,6 +174,65 @@ export default function CustomersContent() {
     }
   }
 
+  const handleDownloadReport = async (customer: Customer) => {
+    try {
+      setLoading(true)
+      toast.loading('Generating report...', { id: 'report-loading' })
+
+
+      // Fetch customer's sales data with product details
+      const { data: salesData, error: salesError } = await supabase
+        .from('sales')
+        .select(`
+          id,
+          product_id,
+          quantity,
+          sale_date,
+          initial_payment,
+          total_amount,
+          remaining_balance,
+          status,
+          products!inner(name, selling_price)
+        `)
+        .eq('customer_id', customer.id)
+        .order('sale_date', { ascending: false })
+
+      if (salesError) {
+        throw salesError
+      }
+
+      // Fetch all payments for these sales
+      const saleIds = (salesData || []).map(sale => sale.id)
+      let paymentsData: any[] = []
+      if (saleIds.length > 0) {
+        const { data: payments, error: paymentsError } = await supabase
+          .from('payments')
+          .select(`
+            id,
+            amount,
+            payment_date,
+            sale_id,
+            notes
+          `)
+          .in('sale_id', saleIds)
+          .order('payment_date', { ascending: false })
+        if (paymentsError) {
+          throw paymentsError
+        }
+        paymentsData = payments || []
+      }
+
+      // Generate PDF report
+      await generateCustomerReport(customer, paymentsData, salesData || [])
+      toast.success('Report downloaded successfully', { id: 'report-loading' })
+    } catch (error) {
+      console.error('Error generating report:', error)
+      toast.error('Failed to generate report', { id: 'report-loading' })
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <div className="space-y-6">
       {/* Page Header */}
@@ -271,6 +331,7 @@ export default function CustomersContent() {
         onDelete={handleDeleteCustomer}
         onToggleStatus={handleToggleCustomerStatus}
         onViewHistory={handleViewHistory}
+        onDownloadReport={handleDownloadReport}
       />
 
       {/* Customer Form Modal */}

@@ -1,6 +1,6 @@
 import { Customer } from '@/types'
 import { formatDate } from '@/utils/helpers'
-import { PencilIcon, TrashIcon, CheckCircleIcon, XCircleIcon, NoSymbolIcon, ClockIcon } from '@heroicons/react/24/outline'
+import { PencilIcon, TrashIcon, CheckCircleIcon, XCircleIcon, NoSymbolIcon, ClockIcon, DocumentArrowDownIcon } from '@heroicons/react/24/outline'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
 
 interface CustomersTableProps {
@@ -10,6 +10,7 @@ interface CustomersTableProps {
   onDelete: (customerId: string) => void
   onToggleStatus?: (customerId: string, currentStatus: boolean) => void
   onViewHistory?: (customer: Customer) => void
+  onDownloadReport?: (customer: Customer) => void
 }
 
 export default function CustomersTable({ 
@@ -18,7 +19,8 @@ export default function CustomersTable({
   onEdit, 
   onDelete,
   onToggleStatus,
-  onViewHistory 
+  onViewHistory,
+  onDownloadReport 
 }: CustomersTableProps) {
   if (loading) {
     return (
@@ -148,6 +150,15 @@ export default function CustomersTable({
                         ) : (
                           <CheckCircleIcon className="h-4 w-4" />
                         )}
+                      </button>
+                    )}
+                    {onDownloadReport && (
+                      <button
+                        onClick={() => onDownloadReport(customer)}
+                        className="text-purple-600 hover:text-purple-700 p-1"
+                        title="Download customer report"
+                      >
+                        <DocumentArrowDownIcon className="h-4 w-4" />
                       </button>
                     )}
                     <button

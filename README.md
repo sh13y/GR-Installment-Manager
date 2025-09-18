@@ -9,88 +9,93 @@
 ![Supabase](https://img.shields.io/badge/Supabase-3FCF8E?style=for-the-badge&logo=supabase&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
 
-[![Vercel Deployment](https://img.shields.io/vercel/deployment/sh13y/GR-Installment-Manager?style=for-the-badge&logo=vercel)](https://gr-installment-manager.vercel.app/)
 ![GitHub last commit](https://img.shields.io/github/last-commit/sh13y/GR-Installment-Manager?style=for-the-badge&logo=github)
 ![GitHub Repo stars](https://img.shields.io/github/stars/sh13y/GR-Installment-Manager?style=for-the-badge&logo=github)
 
 </div>
 
-Welcome to the GR Installment Manager! Say goodbye to mountains of paper, misplaced ledgers, and the headache of manual tracking. This is a modern, tailor-made business management system designed to make running an installment-based sales business as easy as pie. Or, in this case, as easy as selling tires.
+# Overview
 
-### A Note from the Developer (The "Why")
+GR Installment Manager is a business management system for installment-based tire sales. It helps track customers, sales, payments, and inventory in a simple, organized way. This project was created for my dad to make his business management easier and more efficient.
 
-This project is a special one. I built it for my dad, who, for the longest time, managed his entire tire business with just pen, paper, and a whole lot of patience. As a hobbyist and a son, I saw his hard work and knew there had to be a better, simpler way for him to manage everything.
+# Features
 
-This system is the result of that idea: a tool to bring his business into the digital age, save him countless hours, and let him focus on what he does best. From paper to pixels, this one's for you, Dad!
+- **User Management**: Role-based access for admins and staff.
+- **Customer Registration**: Add and manage customer profiles.
+- **Sales Recording**: Log sales transactions with product details.
+- **Installment Tracking**: Monitor daily payments and outstanding balances.
+- **Inventory Management**: Track stock levels and product information.
+- **Dashboard Analytics**: View business metrics, sales, and payment status.
+- **PDF Reports**: Generate clear, professional customer statements.
 
----
+# Technology Stack
 
-## What Can It Do? ✨
+- **Frontend**: Next.js (React)
+- **Styling**: Tailwind CSS
+- **Backend/Database**: Supabase (PostgreSQL)
+- **Authentication**: Supabase Auth
+- **Deployment**: Vercel
 
-So, what magical powers does this system possess? Glad you asked!
+# Getting Started
 
-- **👤 User Management So Simple, It's Fun**
-  - **Super Admin Powers:** The business owner gets the keys to the kingdom with full control.
-  - **Data Entry Crew:** Staff can help out with limited, safe permissions.
-  - **Fort Knox Security:** Secure login with role-based access control keeps everything safe and sound.
+## Prerequisites
+- Node.js (v18 or newer)
+- npm (comes with Node.js)
+- Supabase account
 
-- **⚙️ Core Business Operations, Supercharged**
-  - **Customer Central:** Register new customers and keep their profiles neat, tidy, and easy to find.
-  - **Sales Tracker:** Record every single sale with just a few clicks. No more lost receipts!
-  - **Payment Patrol:** Keep a close, automated eye on daily installment payments.
-  - **Balance Beam:** Instantly see who owes what with crystal clear payment histories and outstanding balances.
-  - **Inventory Inspector:** Know exactly what's in stock at all times, so you're never caught off guard.
+## Installation
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/sh13y/GR-Installment-Manager.git
+   cd GR-Installment-Manager
+   ```
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+3. **Configure environment variables**
+   - Copy `env.example` to `.env.local`.
+   - Add your Supabase project URL and anon key.
+4. **Set up the database**
+   - Use the SQL files in the `database/` folder to create tables in Supabase.
+5. **Start the development server**
+   ```bash
+   npm run dev
+   ```
+6. **Open the app**
+   - Visit `http://localhost:3000` in your browser.
 
-- **📊 The All Seeing Dashboard**
-  - **Growth Graphs:** Watch your business flourish with beautiful, easy-to-understand charts.
-  - **Profit Pulse:** Keep your finger on the financial pulse with real-time profit and loss analysis.
-  - **Sales Summary:** Get a bird's eye view of all sales activity in one simple screen.
-  - **Payment Radar:** See who's paying on time and who might need a friendly, automated nudge.
+# Code Structure Explained
 
-- **📄 Professional PDF Reports**
-  - Generate clean, professional, and easy-to-read PDF reports for each customer's financial history. Perfect for record keeping or sharing directly with customers.
+- `src/components/` — Contains React components for each feature (customers, sales, payments, dashboard, etc.).
+- `src/utils/pdfGenerator.ts` — Generates PDF reports for customers using jsPDF and autotable.
+- `src/hooks/` — Custom React hooks (e.g., authentication).
+- `src/lib/` — Supabase client setup and helpers.
+- `src/types/` — TypeScript type definitions for data models.
+- `database/` — SQL files for database schema and sample data.
+- `docs/` — Project documentation and guides.
 
----
+# Example: Generating a Customer PDF Report
 
-## The Tech Stack 🛠️
+The PDF generator takes customer, payment, and sales data and creates a professional statement:
 
-This project was built with modern, powerful, and frankly, quite cool technologies.
+```typescript
+import { generateCustomerReport } from './utils/pdfGenerator';
 
-- **Frontend:** React.js & Next.js (for a speedy, seamless user experience)
-- **Styling:** Tailwind CSS (to make it look sharp and professional)
-- **Backend & Database:** Supabase (think of it as PostgreSQL on steroids)
-- **Authentication:** Supabase Auth (to keep the bad guys out)
-- **Deployment:** Vercel (for hassle-free, lightning-fast hosting)
+// Usage
+await generateCustomerReport(customer, payments, sales);
+```
+- The function creates a PDF with customer details, summary, purchase history, and payment history.
+- Uses jsPDF and jspdf-autotable for layout and formatting.
 
----
+# Contributing
 
-## Getting Started 🚀
+Pull requests and suggestions are welcome. Please keep code beginner-friendly and well-documented.
 
-Ready to tame the paper tiger yourself? Here’s how to get this system up and running.
+# License
 
-1. **Clone the Magic:**
-    ```bash
-    git clone https://github.com/sh13y/GR-Installment-Manager.git
-    ```
-2. **Install the Goodies:**
-    ```bash
-    cd GR-Installment-Manager
-    npm install
-    ```
-3. **Set Up Your Secrets:**
-    - Find the `env.example` file and create a copy of it named `.env.local`.
-    - Fill in your Supabase URL and public anon key in the `.env.local` file.
-4. **Fire It Up:**
-    ```bash
-    npm run dev
-    ```
-5. **Watch the Magic Happen!**
-    - Open your browser and go to `http://localhost:3000`.
+MIT
 
----
+# Author
 
-### A Final Word
-
-This system was built with care to solve a real-world problem for a family business. I hope it brings as much ease and efficiency to others as it was intended to for my dad's.
-
-Happy managing!
+Built by sh13y for his dad, to make business management easier and more organized.

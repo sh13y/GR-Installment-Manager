@@ -44,8 +44,8 @@ export default function SaleForm({ editingSale, onSubmit, onCancel }: SaleFormPr
           .eq('sale_id', editingSale.id)
 
         if (!error && payments) {
-          const totalPayments = payments.reduce((sum, payment) => sum + payment.amount, 0)
-          setActualPayments(totalPayments)
+          const totalPaymentsFromTable = payments.reduce((sum, payment) => sum + payment.amount, 0)
+          setActualPayments(totalPaymentsFromTable)
         }
       } else {
         setActualPayments(0)
@@ -225,10 +225,10 @@ export default function SaleForm({ editingSale, onSubmit, onCancel }: SaleFormPr
   const productTotal = selectedProduct ? selectedProduct.selling_price * formData.quantity : 0
   const totalAmount = selectedProduct ? productTotal + selectedProduct.service_charge : 0
   
-  // For editing: remaining balance = new total - actual payments made
+  // For editing: remaining balance = new total - all payments from payments table
   // For new sale: remaining balance = total - initial payment
   const remainingBalance = editingSale 
-    ? totalAmount - actualPayments
+    ? Math.max(0, totalAmount - actualPayments)
     : totalAmount - formData.initial_payment
 
   return (

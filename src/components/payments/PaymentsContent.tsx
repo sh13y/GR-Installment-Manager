@@ -14,6 +14,7 @@ import SearchFilter from '@/components/ui/SearchFilter'
 import { PlusIcon, FunnelIcon } from '@heroicons/react/24/outline'
 import toast from 'react-hot-toast'
 import { formatCurrency } from '@/utils/helpers'
+import { calculateRemainingBalancesForSales, calculateRemainingBalance } from '@/utils/balanceCalculations'
 
 export default function PaymentsContent() {
   const [loading, setLoading] = useState(false)
@@ -23,6 +24,7 @@ export default function PaymentsContent() {
   const [searchTerm, setSearchTerm] = useState('')
   const [dateFilter, setDateFilter] = useState<'today' | 'week' | 'month' | 'all'>('all')
   const [filteredPayments, setFilteredPayments] = useState<Payment[]>([])
+  const [activeSalesWithBalance, setActiveSalesWithBalance] = useState<Sale[]>([])
   const { userProfile } = useAuth()
   const { payments, sales, invalidateData } = useData()
   
@@ -30,18 +32,33 @@ export default function PaymentsContent() {
   const saleIdFromUrl = searchParams.get('sale_id')
 
   // Get active sales from cached data
-  const activeSales = sales.filter(sale => sale.status === 'active')
+  const activeSales = sales.filter((sale: Sale) => sale.status === 'active')
+
+  // Effect to calculate real-time balances for active sales
+  useEffect(() => {
+    const updateActiveSalesWithBalance = async () => {
+      if (activeSales.length > 0) {
+        const activeSalesData = sales.filter((sale: Sale) => sale.status === 'active')
+        const salesWithBalance = await calculateRemainingBalancesForSales(activeSalesData)
+        setActiveSalesWithBalance(salesWithBalance)
+      } else {
+        setActiveSalesWithBalance([])
+      }
+    }
+    
+    updateActiveSalesWithBalance()
+  }, [sales, payments]) // Recalculate when sales or payments change
 
   useEffect(() => {
     // Auto-select sale if provided in URL
-    if (saleIdFromUrl && activeSales.length > 0) {
-      const sale = activeSales.find(s => s.id === saleIdFromUrl)
+    if (saleIdFromUrl && activeSalesWithBalance.length > 0) {
+      const sale = activeSalesWithBalance.find((s: Sale) => s.id === saleIdFromUrl)
       if (sale) {
         setSelectedSale(sale)
         setIsModalOpen(true)
       }
     }
-  }, [saleIdFromUrl, activeSales])
+  }, [saleIdFromUrl, activeSalesWithBalance])
 
   useEffect(() => {
     // Filter payments based on search term and date
@@ -64,19 +81,21 @@ export default function PaymentsContent() {
           break
       }
 
-      filtered = filtered.filter(payment => 
+      filtered = filtered.filter((payment: Payment) => 
         new Date(payment.payment_date) >= startDate
       )
     }
 
     // Search filter
     if (searchTerm) {
-      filtered = filtered.filter(payment => {
-        const paymentWithRefs = payment as any
-        return paymentWithRefs.sales?.customers?.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-               paymentWithRefs.sales?.customers?.nic_number?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-               paymentWithRefs.sales?.customers?.phone?.includes(searchTerm) ||
-               paymentWithRefs.sales?.sale_number?.toLowerCase().includes(searchTerm.toLowerCase())
+      filtered = filtered.filter((payment: Payment) => {
+        const sale = sales.find((s: Sale) => s.id === payment.sale_id)
+        const customerName = sale?.customer?.full_name?.toLowerCase() || ''
+        const searchLower = searchTerm.toLowerCase()
+        
+        return customerName.includes(searchLower) ||
+               payment.payment_method?.toLowerCase().includes(searchLower) ||
+               payment.amount?.toString().includes(searchTerm)
       })
     }
 
@@ -110,20 +129,19 @@ export default function PaymentsContent() {
           return
         }
 
-        // Update sale remaining balance based on the difference
-        const sale = sales.find(s => s.id === formData.sale_id)
+        // Update sale remaining balance using real-time calculation
+        const sale = sales.find((s: Sale) => s.id === formData.sale_id)
         if (sale) {
-          const balanceAdjustment = oldAmount - formData.amount // Positive if new amount is smaller
-          const newBalance = Math.max(0, sale.remaining_balance + balanceAdjustment)
-          const newStatus = newBalance === 0 ? 'completed' : 'active'
+          const newRemainingBalance = await calculateRemainingBalance(sale.id, sale.total_amount)
+          const newStatus = newRemainingBalance === 0 ? 'completed' : 'active'
 
           const { error: updateError } = await supabase
             .from('sales')
-            .update({ 
-              remaining_balance: newBalance,
+            .update({
+              remaining_balance: newRemainingBalance,
               status: newStatus
             })
-            .eq('id', formData.sale_id)
+            .eq('id', sale.id)
 
           if (updateError) {
             toast.error('Error updating sale balance')
@@ -150,19 +168,19 @@ export default function PaymentsContent() {
           return
         }
 
-        // Update sale remaining balance
-        const sale = activeSales.find(s => s.id === formData.sale_id)
+        // Update sale remaining balance using real-time calculation
+        const sale = activeSalesWithBalance.find((s: Sale) => s.id === formData.sale_id)
         if (sale) {
-          const newBalance = Math.max(0, sale.remaining_balance - formData.amount)
-          const newStatus = newBalance === 0 ? 'completed' : 'active'
+          const newRemainingBalance = await calculateRemainingBalance(sale.id, sale.total_amount)
+          const newStatus = newRemainingBalance === 0 ? 'completed' : 'active'
 
           const { error: updateError } = await supabase
             .from('sales')
-            .update({ 
-              remaining_balance: newBalance,
+            .update({
+              remaining_balance: newRemainingBalance,
               status: newStatus
             })
-            .eq('id', formData.sale_id)
+            .eq('id', sale.id)
 
           if (updateError) {
             toast.error('Error updating sale balance')
@@ -170,7 +188,7 @@ export default function PaymentsContent() {
             return
           }
 
-          if (newBalance === 0) {
+          if (newRemainingBalance === 0) {
             toast.success('Payment recorded! Sale completed.')
           } else {
             toast.success('Payment recorded successfully')
@@ -189,8 +207,17 @@ export default function PaymentsContent() {
   }
 
   const handleEditPayment = (payment: Payment) => {
-    setEditingPayment(payment)
-    setIsModalOpen(true)
+    if (userProfile?.role !== 'super_admin') {
+      toast.error('Only super administrators can edit payments')
+      return
+    }
+    
+    const sale = sales.find((s: Sale) => s.id === payment.sale_id)
+    if (sale) {
+      setSelectedSale(sale)
+      setEditingPayment(payment)
+      setIsModalOpen(true)
+    }
   }
 
   const handleDeletePayment = async (payment: Payment) => {
@@ -218,16 +245,16 @@ export default function PaymentsContent() {
         return
       }
 
-      // Update the sale's remaining balance by adding back the payment amount
-      const sale = sales.find(s => s.id === payment.sale_id)
+      // Update the sale's remaining balance using real-time calculation
+      const sale = sales.find((s: Sale) => s.id === payment.sale_id)
       if (sale) {
-        const newBalance = sale.remaining_balance + payment.amount
-        const newStatus = newBalance > 0 ? 'active' : 'completed'
+        const newRemainingBalance = await calculateRemainingBalance(sale.id, sale.total_amount)
+        const newStatus = newRemainingBalance > 0 ? 'active' : 'completed'
 
         const { error: updateError } = await supabase
           .from('sales')
-          .update({ 
-            remaining_balance: newBalance,
+          .update({
+            remaining_balance: newRemainingBalance,
             status: newStatus
           })
           .eq('id', payment.sale_id)
@@ -250,22 +277,22 @@ export default function PaymentsContent() {
   }
 
   // Calculate stats
-  const todayPayments = payments.filter(p => {
+  const todayPayments = payments.filter((p: Payment) => {
     const today = new Date().toISOString().split('T')[0]
     return p.payment_date === today
   })
   
-  const todayTotal = todayPayments.reduce((sum, p) => sum + (p.amount || 0), 0)
+  const todayTotal = todayPayments.reduce((sum: number, p: Payment) => sum + (p.amount || 0), 0)
   const todayCount = todayPayments.length
   
-  const weekPayments = payments.filter(p => {
+  const weekPayments = payments.filter((p: Payment) => {
     const weekAgo = new Date()
     weekAgo.setDate(weekAgo.getDate() - 7)
     return new Date(p.payment_date) >= weekAgo
   })
   
-  const weekTotal = weekPayments.reduce((sum, p) => sum + (p.amount || 0), 0)
-  const totalOutstanding = activeSales.reduce((sum, s) => sum + (s.remaining_balance || 0), 0)
+  const weekTotal = weekPayments.reduce((sum: number, p: Payment) => sum + (p.amount || 0), 0)
+  const totalOutstanding = activeSalesWithBalance.reduce((sum: number, s: Sale) => sum + (s.remaining_balance || 0), 0)
 
   return (
     <div className="space-y-6">
@@ -292,142 +319,133 @@ export default function PaymentsContent() {
 
       {/* Stats Summary */}
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="card">
-          <div className="card-body">
+        <div className="bg-white overflow-hidden shadow rounded-lg">
+          <div className="p-5">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <div className="p-3 rounded-lg bg-green-50">
-                  <span className="text-lg font-bold text-green-600">
-                    {formatCurrency(todayTotal)}
-                  </span>
-                </div>
+                <svg className="h-6 w-6 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+                </svg>
               </div>
-              <div className="ml-5">
-                <p className="text-sm font-medium text-gray-500">
-                  Today's Collections
-                </p>
-                <p className="text-xs text-gray-400">
-                  {todayCount} payments
-                </p>
+              <div className="ml-5 w-0 flex-1">
+                <dl>
+                  <dt className="text-sm font-medium text-gray-500 truncate">Today's Collections</dt>
+                  <dd className="text-lg font-medium text-gray-900">{formatCurrency(todayTotal)}</dd>
+                </dl>
               </div>
             </div>
           </div>
         </div>
-        
-        <div className="card">
-          <div className="card-body">
+
+        <div className="bg-white overflow-hidden shadow rounded-lg">
+          <div className="p-5">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <div className="p-3 rounded-lg bg-blue-50">
-                  <span className="text-lg font-bold text-blue-600">
-                    {formatCurrency(weekTotal)}
-                  </span>
-                </div>
+                <svg className="h-6 w-6 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                </svg>
               </div>
-              <div className="ml-5">
-                <p className="text-sm font-medium text-gray-500">
-                  This Week
-                </p>
-                <p className="text-xs text-gray-400">
-                  {weekPayments.length} payments
-                </p>
+              <div className="ml-5 w-0 flex-1">
+                <dl>
+                  <dt className="text-sm font-medium text-gray-500 truncate">Today's Payments</dt>
+                  <dd className="text-lg font-medium text-gray-900">{todayCount}</dd>
+                </dl>
               </div>
             </div>
           </div>
         </div>
-        
-        <div className="card">
-          <div className="card-body">
+
+        <div className="bg-white overflow-hidden shadow rounded-lg">
+          <div className="p-5">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <div className="p-3 rounded-lg bg-yellow-50">
-                  <span className="text-2xl font-bold text-yellow-600">
-                    {activeSales.length}
-                  </span>
-                </div>
+                <svg className="h-6 w-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                </svg>
               </div>
-              <div className="ml-5">
-                <p className="text-sm font-medium text-gray-500">
-                  Active Sales
-                </p>
+              <div className="ml-5 w-0 flex-1">
+                <dl>
+                  <dt className="text-sm font-medium text-gray-500 truncate">Week's Total</dt>
+                  <dd className="text-lg font-medium text-gray-900">{formatCurrency(weekTotal)}</dd>
+                </dl>
               </div>
             </div>
           </div>
         </div>
-        
-        <div className="card">
-          <div className="card-body">
+
+        <div className="bg-white overflow-hidden shadow rounded-lg">
+          <div className="p-5">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <div className="p-3 rounded-lg bg-red-50">
-                  <span className="text-lg font-bold text-red-600">
-                    {formatCurrency(totalOutstanding)}
-                  </span>
-                </div>
+                <svg className="h-6 w-6 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
               </div>
-              <div className="ml-5">
-                <p className="text-sm font-medium text-gray-500">
-                  Outstanding Balance
-                </p>
+              <div className="ml-5 w-0 flex-1">
+                <dl>
+                  <dt className="text-sm font-medium text-gray-500 truncate">
+                    Active Sales ({activeSalesWithBalance.length})
+                  </dt>
+                  <dd className="text-lg font-medium text-gray-900">{formatCurrency(totalOutstanding)}</dd>
+                </dl>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Active Sales Quick Actions */}
-      {activeSales.length > 0 && (
-        <SaleSelector 
-          sales={activeSales} 
+      {/* Sale Selector - Only show if there are active sales */}
+      {activeSalesWithBalance.length > 0 && (
+        <SaleSelector
+          sales={activeSalesWithBalance} 
           onSelectSale={handleCreatePayment}
         />
       )}
 
-      {/* Search and Filter */}
-      <div className="flex flex-col sm:flex-row gap-4">
-        <div className="flex-1">
-          <SearchFilter
-            searchTerm={searchTerm}
-            onSearchChange={setSearchTerm}
-            placeholder="Search by customer name, NIC, or phone..."
-          />
-        </div>
-        <div className="flex items-center space-x-2">
-          <FunnelIcon className="h-5 w-5 text-gray-400" />
-          <select
-            value={dateFilter}
-            onChange={(e) => setDateFilter(e.target.value as any)}
-            className="form-select"
-          >
-            <option value="all">All Time</option>
-            <option value="today">Today</option>
-            <option value="week">Last 7 Days</option>
-            <option value="month">Last 30 Days</option>
-          </select>
+      {/* Search and Filters */}
+      <div className="bg-white shadow rounded-lg">
+        <div className="px-4 py-5 sm:p-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <SearchFilter
+              searchTerm={searchTerm}
+              onSearchChange={setSearchTerm}
+              placeholder="Search payments..."
+            />
+            <div className="flex items-center space-x-2">
+              <FunnelIcon className="h-5 w-5 text-gray-400" />
+              <select
+                value={dateFilter}
+                onChange={(e) => setDateFilter(e.target.value as any)}
+                className="border-gray-300 rounded-md shadow-sm text-sm"
+              >
+                <option value="all">All Time</option>
+                <option value="today">Today</option>
+                <option value="week">This Week</option>
+                <option value="month">This Month</option>
+              </select>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Payments Table */}
       <PaymentsTable
         payments={filteredPayments}
-        loading={loading}
         onEdit={handleEditPayment}
         onDelete={handleDeletePayment}
+        loading={loading}
       />
 
       {/* Payment Form Modal */}
-      <Modal
-        isOpen={isModalOpen}
+      <Modal 
+        isOpen={isModalOpen} 
+        title={editingPayment ? 'Edit Payment' : 'Record Payment'}
         onClose={() => {
-          setIsModalOpen(false)
-          setSelectedSale(null)
-          setEditingPayment(null)
-        }}
-        title={editingPayment ? "Edit Payment" : "Record Payment"}
-        size="lg"
-      >
+        setIsModalOpen(false)
+        setSelectedSale(null)
+        setEditingPayment(null)
+      }}>
         <PaymentForm
-          activeSales={activeSales}
           selectedSale={selectedSale}
           editingPayment={editingPayment}
           onSubmit={handleFormSubmit}
@@ -436,6 +454,7 @@ export default function PaymentsContent() {
             setSelectedSale(null)
             setEditingPayment(null)
           }}
+          activeSales={activeSalesWithBalance}
         />
       </Modal>
     </div>

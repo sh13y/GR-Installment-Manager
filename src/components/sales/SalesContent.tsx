@@ -12,6 +12,7 @@ import SearchFilter from '@/components/ui/SearchFilter'
 import { PlusIcon, FunnelIcon } from '@heroicons/react/24/outline'
 import toast from 'react-hot-toast'
 import { formatCurrency } from '@/utils/helpers'
+import { calculateRemainingBalancesForSales } from '@/utils/balanceCalculations'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
 
 export default function SalesContent() {
@@ -21,12 +22,33 @@ export default function SalesContent() {
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'completed' | 'defaulted'>('all')
   const [filteredSales, setFilteredSales] = useState<Sale[]>([])
+  const [salesWithRealTimeBalance, setSalesWithRealTimeBalance] = useState<Sale[]>([])
   const { userProfile } = useAuth()
   const { sales, invalidateData, isLoading } = useData()
 
+  // Calculate real-time remaining balance for all sales
+  useEffect(() => {
+    const calculateRealTimeBalances = async () => {
+      if (sales.length === 0) {
+        setSalesWithRealTimeBalance([])
+        return
+      }
+
+      try {
+        const salesWithBalance = await calculateRemainingBalancesForSales(sales)
+        setSalesWithRealTimeBalance(salesWithBalance)
+      } catch (error) {
+        console.error('Error calculating real-time balances:', error)
+        setSalesWithRealTimeBalance(sales)
+      }
+    }
+
+    calculateRealTimeBalances()
+  }, [sales])
+
   useEffect(() => {
     // Filter sales based on search term and status
-    let filtered = sales
+    let filtered = salesWithRealTimeBalance
 
     if (statusFilter !== 'all') {
       filtered = filtered.filter(sale => sale.status === statusFilter)
@@ -41,7 +63,7 @@ export default function SalesContent() {
     }
 
     setFilteredSales(filtered)
-  }, [sales, searchTerm, statusFilter])
+  }, [salesWithRealTimeBalance, searchTerm, statusFilter])
 
   const handleCreateSale = () => {
     setEditingSale(null)
@@ -121,23 +143,11 @@ export default function SalesContent() {
           return
         }
 
-        // Calculate total payments made (including initial payment from sale creation)
+        // Calculate total payments made (only from payments table)
         const totalPayments = payments?.reduce((sum, payment) => sum + payment.amount, 0) || 0
         
-        // Add the initial payment that was made when the sale was created
-        const totalPaymentsIncludingInitial = totalPayments + editingSale.initial_payment
-        
         // Recalculate remaining balance: new total amount minus all payments made
-        const updatedRemainingBalance = Math.max(0, formData.total_amount - totalPaymentsIncludingInitial)
-
-        console.log('Edit Sale Calculation:', {
-          saleId: editingSale.id,
-          newTotalAmount: formData.total_amount,
-          paymentsFromTable: totalPayments,
-          initialPayment: editingSale.initial_payment,
-          totalPaymentsIncludingInitial,
-          updatedRemainingBalance
-        })
+        const updatedRemainingBalance = Math.max(0, formData.total_amount - totalPayments)
 
         // Update existing sale with recalculated remaining balance
         const { error } = await supabase
@@ -213,12 +223,12 @@ export default function SalesContent() {
     }
   }
 
-  // Calculate stats
-  const totalSales = sales.length
-  const activeSales = sales.filter((s: Sale) => s.status === 'active').length
-  const completedSales = sales.filter((s: Sale) => s.status === 'completed').length
-  const totalRevenue = sales.reduce((sum: number, sale: Sale) => sum + (sale.total_amount || 0), 0)
-  const outstandingBalance = sales
+  // Calculate stats using real-time balance data
+  const totalSales = salesWithRealTimeBalance.length
+  const activeSales = salesWithRealTimeBalance.filter((s: Sale) => s.status === 'active').length
+  const completedSales = salesWithRealTimeBalance.filter((s: Sale) => s.status === 'completed').length
+  const totalRevenue = salesWithRealTimeBalance.reduce((sum: number, sale: Sale) => sum + (sale.total_amount || 0), 0)
+  const outstandingBalance = salesWithRealTimeBalance
     .filter((s: Sale) => s.status === 'active')
     .reduce((sum: number, sale: Sale) => sum + (sale.remaining_balance || 0), 0)
 

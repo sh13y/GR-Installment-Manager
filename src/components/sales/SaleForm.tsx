@@ -28,10 +28,32 @@ export default function SaleForm({ editingSale, onSubmit, onCancel }: SaleFormPr
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [loading, setLoading] = useState(false)
   const [loadingData, setLoadingData] = useState(true)
+  const [actualPayments, setActualPayments] = useState(0)
 
   useEffect(() => {
     fetchInitialData()
   }, [])
+
+  useEffect(() => {
+    // Fetch actual payments when editing a sale
+    const fetchPayments = async () => {
+      if (editingSale) {
+        const { data: payments, error } = await supabase
+          .from('payments')
+          .select('amount')
+          .eq('sale_id', editingSale.id)
+
+        if (!error && payments) {
+          const totalPayments = payments.reduce((sum, payment) => sum + payment.amount, 0)
+          setActualPayments(totalPayments)
+        }
+      } else {
+        setActualPayments(0)
+      }
+    }
+
+    fetchPayments()
+  }, [editingSale])
 
   useEffect(() => {
     // Populate form when editing
@@ -157,7 +179,12 @@ export default function SaleForm({ editingSale, onSubmit, onCancel }: SaleFormPr
       // Calculate amounts - service charge is fixed Rs. 700 per sale regardless of quantity
       const productTotal = selectedProduct.selling_price * formData.quantity
       const totalAmount = productTotal + selectedProduct.service_charge
-      const remainingBalance = totalAmount - formData.initial_payment
+      
+      // For editing: remaining balance will be recalculated in SalesContent based on actual payments
+      // For new sale: remaining balance = total - initial payment
+      const remainingBalance = editingSale 
+        ? totalAmount - actualPayments
+        : totalAmount - formData.initial_payment
 
       const submitData = {
         customer_id: formData.customer_id,
@@ -197,7 +224,12 @@ export default function SaleForm({ editingSale, onSubmit, onCancel }: SaleFormPr
   // Calculate totals for display - service charge is fixed Rs. 700 per sale regardless of quantity
   const productTotal = selectedProduct ? selectedProduct.selling_price * formData.quantity : 0
   const totalAmount = selectedProduct ? productTotal + selectedProduct.service_charge : 0
-  const remainingBalance = totalAmount - formData.initial_payment
+  
+  // For editing: remaining balance = new total - actual payments made
+  // For new sale: remaining balance = total - initial payment
+  const remainingBalance = editingSale 
+    ? totalAmount - actualPayments
+    : totalAmount - formData.initial_payment
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -360,6 +392,18 @@ export default function SaleForm({ editingSale, onSubmit, onCancel }: SaleFormPr
               <span className="text-gray-600">Initial Payment:</span>
               <span className="font-medium text-green-600">-{formatCurrency(formData.initial_payment)}</span>
             </div>
+            {editingSale && actualPayments > formData.initial_payment && (
+              <div className="flex justify-between">
+                <span className="text-gray-600">Additional Payments:</span>
+                <span className="font-medium text-green-600">-{formatCurrency(actualPayments - formData.initial_payment)}</span>
+              </div>
+            )}
+            {editingSale && (
+              <div className="flex justify-between">
+                <span className="text-gray-600">Total Payments Made:</span>
+                <span className="font-medium text-green-600">-{formatCurrency(actualPayments)}</span>
+              </div>
+            )}
             <div className="flex justify-between border-t pt-2">
               <span className="text-gray-900 font-medium">Remaining Balance:</span>
               <span className="font-semibold text-red-600">{formatCurrency(remainingBalance)}</span>

@@ -109,11 +109,42 @@ export default function SalesContent() {
       setSubmitting(true)
       
       if (editingSale) {
-        // Update existing sale
+        // For editing, fetch all payments made to this sale and recalculate remaining balance
+        const { data: payments, error: paymentsError } = await supabase
+          .from('payments')
+          .select('amount')
+          .eq('sale_id', editingSale.id)
+
+        if (paymentsError) {
+          toast.error('Error fetching payment history')
+          console.error('Error:', paymentsError)
+          return
+        }
+
+        // Calculate total payments made (including initial payment from sale creation)
+        const totalPayments = payments?.reduce((sum, payment) => sum + payment.amount, 0) || 0
+        
+        // Add the initial payment that was made when the sale was created
+        const totalPaymentsIncludingInitial = totalPayments + editingSale.initial_payment
+        
+        // Recalculate remaining balance: new total amount minus all payments made
+        const updatedRemainingBalance = Math.max(0, formData.total_amount - totalPaymentsIncludingInitial)
+
+        console.log('Edit Sale Calculation:', {
+          saleId: editingSale.id,
+          newTotalAmount: formData.total_amount,
+          paymentsFromTable: totalPayments,
+          initialPayment: editingSale.initial_payment,
+          totalPaymentsIncludingInitial,
+          updatedRemainingBalance
+        })
+
+        // Update existing sale with recalculated remaining balance
         const { error } = await supabase
           .from('sales')
           .update({
             ...formData,
+            remaining_balance: updatedRemainingBalance,
             updated_at: new Date().toISOString()
           })
           .eq('id', editingSale.id)

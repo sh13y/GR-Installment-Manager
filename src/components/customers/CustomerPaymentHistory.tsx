@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { Customer, Sale, Payment } from '@/types'
 import { supabase } from '@/lib/supabase'
 import { formatCurrency, formatDate } from '@/utils/helpers'
+import { calculateRemainingBalancesForSales, calculateRemainingBalanceSync } from '@/utils/balanceCalculations'
 import { XMarkIcon, CreditCardIcon, ShoppingCartIcon, ClockIcon, CheckCircleIcon } from '@heroicons/react/24/outline'
 import { PlayIcon } from '@heroicons/react/24/solid'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
@@ -26,6 +27,7 @@ interface PaymentHistoryItem {
 export default function CustomerPaymentHistory({ customer, onClose }: CustomerPaymentHistoryProps) {
   const [loading, setLoading] = useState(true)
   const [history, setHistory] = useState<PaymentHistoryItem[]>([])
+  const [salesWithBalances, setSalesWithBalances] = useState<Sale[]>([])
   const [summary, setSummary] = useState({
     totalPaid: 0,
     totalDue: 0,
@@ -140,18 +142,49 @@ export default function CustomerPaymentHistory({ customer, onClose }: CustomerPa
       // Sort by date (newest first)
       historyItems.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
-      // Calculate summary
+      // Calculate summary using centralized balance calculation system
       const totalPaid = historyItems.reduce((sum, item) => sum + item.amount, 0)
-      const totalSalesAmount = (sales || []).reduce((sum, sale) => sum + (sale.total_amount || 0), 0)
       
-      // Calculate total payments received (initial payments + installment payments)
-      const initialPaymentsTotal = (sales || []).reduce((sum, sale) => sum + (sale.initial_payment || 0), 0)
-      const installmentPaymentsTotal = payments.reduce((sum, payment) => sum + payment.amount, 0)
-      const totalPaymentsReceived = initialPaymentsTotal + installmentPaymentsTotal
+      // Use centralized balance calculations for consistency
+      // Map the sales data to match Sale interface for balance calculations
+      const salesForCalculation: Sale[] = (sales || []).map(sale => ({
+        id: sale.id,
+        sale_number: `SALE-${sale.id.slice(0, 8)}`,
+        customer_id: customer.id,
+        product_id: 'unknown',
+        quantity: 1,
+        sale_date: sale.sale_date || sale.created_at,
+        initial_payment: sale.initial_payment || 0,
+        total_amount: sale.total_amount || 0,
+        remaining_balance: 0, // Will be calculated
+        status: sale.status,
+        created_by: '',
+        created_at: sale.created_at,
+        updated_at: sale.created_at
+      } as Sale))
       
-      const totalDue = totalSalesAmount - totalPaymentsReceived
-      const activeSales = (sales || []).filter(sale => sale.status === 'active').length
-      const completedSales = (sales || []).filter(sale => sale.status === 'completed').length
+      const salesWithBalances = await calculateRemainingBalancesForSales(salesForCalculation)
+      
+      // Add product name for display purposes
+      const salesWithProductInfo = salesWithBalances.map(sale => {
+        const originalSale = (sales || []).find(originalSale => originalSale.id === sale.id)
+        const productName = Array.isArray(originalSale?.products) && originalSale.products.length > 0
+          ? originalSale.products[0].name
+          : (originalSale?.products as any)?.name || 'Product'
+        
+        return {
+          ...sale,
+          productName
+        }
+      })
+      
+      setSalesWithBalances(salesWithProductInfo as Sale[])
+      
+      const totalSalesAmount = salesWithBalances.reduce((sum, sale) => sum + (sale.total_amount || 0), 0)
+      const totalDue = salesWithBalances.reduce((sum, sale) => sum + (sale.remaining_balance || 0), 0)
+      
+      const activeSales = salesWithBalances.filter(sale => sale.status === 'active').length
+      const completedSales = salesWithBalances.filter(sale => sale.status === 'completed').length
 
       setHistory(historyItems)
       setSummary({
@@ -356,6 +389,75 @@ export default function CustomerPaymentHistory({ customer, onClose }: CustomerPa
                     </div>
                   )}
                 </div>
+
+                {/* Individual Sale Balances */}
+                {salesWithBalances && salesWithBalances.length > 0 && (
+                  <div className="bg-gray-50 rounded-lg border border-gray-200 overflow-hidden mt-6">
+                    <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 bg-gray-100">
+                      <h3 className="text-base sm:text-lg font-medium text-gray-900 flex items-center">
+                        <ShoppingCartIcon className="h-5 w-5 mr-2 text-gray-500" />
+                        Individual Sale Balances
+                      </h3>
+                    </div>
+                    
+                    <div className="overflow-hidden">
+                      <div className="overflow-x-auto">
+                        <table className="min-w-full divide-y divide-gray-200">
+                          <thead className="bg-gray-50">
+                            <tr>
+                              <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Product
+                              </th>
+                              <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Sale Date
+                              </th>
+                              <th className="px-4 sm:px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Total Amount
+                              </th>
+                              <th className="px-4 sm:px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Remaining Balance
+                              </th>
+                              <th className="px-4 sm:px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Status
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody className="bg-white divide-y divide-gray-200">
+                            {salesWithBalances.map((sale) => (
+                              <tr key={sale.id} className="hover:bg-gray-50">
+                                <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                  {(sale as any).productName || 'Product'}
+                                </td>
+                                <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                  {formatDate(sale.sale_date || sale.created_at)}
+                                </td>
+                                <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm font-medium text-right text-gray-900">
+                                  {formatCurrency(sale.total_amount)}
+                                </td>
+                                <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm font-medium text-right">
+                                  <span className={`${sale.remaining_balance > 0 ? 'text-red-600' : 'text-green-600'}`}>
+                                    {formatCurrency(sale.remaining_balance)}
+                                  </span>
+                                </td>
+                                <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-center">
+                                  <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                                    sale.status === 'completed'
+                                      ? 'bg-green-100 text-green-800'
+                                      : sale.status === 'active'
+                                      ? 'bg-yellow-100 text-yellow-800'
+                                      : 'bg-red-100 text-red-800'
+                                  }`}>
+                                    {sale.status.charAt(0).toUpperCase() + sale.status.slice(1)}
+                                  </span>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </>
             )}
           </div>

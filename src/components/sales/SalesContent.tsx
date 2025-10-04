@@ -12,7 +12,7 @@ import SearchFilter from '@/components/ui/SearchFilter'
 import { PlusIcon, FunnelIcon } from '@heroicons/react/24/outline'
 import toast from 'react-hot-toast'
 import { formatCurrency } from '@/utils/helpers'
-import { calculateRemainingBalancesForSales } from '@/utils/balanceCalculations'
+import { calculateRemainingBalancesForSales, calculateRemainingBalance } from '@/utils/balanceCalculations'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
 
 export default function SalesContent() {
@@ -131,30 +131,11 @@ export default function SalesContent() {
       setSubmitting(true)
       
       if (editingSale) {
-        // For editing, fetch all payments made to this sale and recalculate remaining balance
-        const { data: payments, error: paymentsError } = await supabase
-          .from('payments')
-          .select('amount')
-          .eq('sale_id', editingSale.id)
-
-        if (paymentsError) {
-          toast.error('Error fetching payment history')
-          console.error('Error:', paymentsError)
-          return
-        }
-
-        // Calculate total payments made (only from payments table)
-        const totalPayments = payments?.reduce((sum, payment) => sum + payment.amount, 0) || 0
-        
-        // Recalculate remaining balance: new total amount minus all payments made
-        const updatedRemainingBalance = Math.max(0, formData.total_amount - totalPayments)
-
-        // Update existing sale with recalculated remaining balance
+        // Update existing sale - use centralized balance calculation
         const { error } = await supabase
           .from('sales')
           .update({
             ...formData,
-            remaining_balance: updatedRemainingBalance,
             updated_at: new Date().toISOString()
           })
           .eq('id', editingSale.id)
@@ -162,6 +143,23 @@ export default function SalesContent() {
         if (error) {
           toast.error('Error updating sale')
           console.error('Error:', error)
+          return
+        }
+
+        // Recalculate remaining balance using centralized function
+        const newRemainingBalance = await calculateRemainingBalance(editingSale.id, formData.total_amount)
+        
+        // Update the remaining balance
+        const { error: balanceError } = await supabase
+          .from('sales')
+          .update({
+            remaining_balance: newRemainingBalance
+          })
+          .eq('id', editingSale.id)
+
+        if (balanceError) {
+          toast.error('Error updating sale balance')
+          console.error('Error:', balanceError)
           return
         }
 

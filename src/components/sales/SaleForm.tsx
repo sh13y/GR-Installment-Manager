@@ -44,8 +44,10 @@ export default function SaleForm({ editingSale, onSubmit, onCancel }: SaleFormPr
           .eq('sale_id', editingSale.id)
 
         if (!error && payments) {
-          const totalPaymentsFromTable = payments.reduce((sum, payment) => sum + payment.amount, 0)
-          setActualPayments(totalPaymentsFromTable)
+          // Include both initial payment and installment payments for accurate total
+          const installmentPayments = payments.reduce((sum, payment) => sum + payment.amount, 0)
+          const totalPayments = (editingSale.initial_payment || 0) + installmentPayments
+          setActualPayments(totalPayments)
         }
       } else {
         setActualPayments(0)
@@ -180,10 +182,10 @@ export default function SaleForm({ editingSale, onSubmit, onCancel }: SaleFormPr
       const productTotal = selectedProduct.selling_price * formData.quantity
       const totalAmount = productTotal + selectedProduct.service_charge
       
-      // For editing: remaining balance will be recalculated in SalesContent based on actual payments
+      // For editing: remaining balance will be recalculated in SalesContent using centralized function
       // For new sale: remaining balance = total - initial payment
       const remainingBalance = editingSale 
-        ? totalAmount - actualPayments
+        ? 0 // Will be recalculated by centralized function in SalesContent
         : totalAmount - formData.initial_payment
 
       const submitData = {
@@ -225,7 +227,7 @@ export default function SaleForm({ editingSale, onSubmit, onCancel }: SaleFormPr
   const productTotal = selectedProduct ? selectedProduct.selling_price * formData.quantity : 0
   const totalAmount = selectedProduct ? productTotal + selectedProduct.service_charge : 0
   
-  // For editing: remaining balance = new total - all payments from payments table
+  // For editing: remaining balance = new total - all payments (initial + installments)
   // For new sale: remaining balance = total - initial payment
   const remainingBalance = editingSale 
     ? Math.max(0, totalAmount - actualPayments)
@@ -394,7 +396,7 @@ export default function SaleForm({ editingSale, onSubmit, onCancel }: SaleFormPr
             </div>
             {editingSale && actualPayments > formData.initial_payment && (
               <div className="flex justify-between">
-                <span className="text-gray-600">Additional Payments:</span>
+                <span className="text-gray-600">Installment Payments:</span>
                 <span className="font-medium text-green-600">-{formatCurrency(actualPayments - formData.initial_payment)}</span>
               </div>
             )}

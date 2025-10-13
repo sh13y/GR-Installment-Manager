@@ -54,7 +54,7 @@ Since we're using Supabase Auth, we need to create the user through the dashboar
 1. In Supabase dashboard, go to **Authentication > Users**
 2. Click **"Add user"**
 3. Fill in the details:
-   - **Email**: `eworks.rajapaksha@gmail.com`
+   - **Email**: `youmail@example.com`
    - **Password**: `your_secure_password`
    - **Confirm password**: `your_secure_password`
 4. Click **"Create user"**
